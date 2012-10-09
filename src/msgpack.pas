@@ -35,9 +35,28 @@ type
 
   end;
 
+function pack(Data : Pointer) : PByteArray;
+function unpack(Data : PByteArray) : Pointer;
 
+function pack_s(ANum : Integer) : String; overload;
+function pack_s(ANum : Byte)    : String; overload;
 
 implementation
+
+function pack(Data: Pointer): PByteArray;
+begin
+
+end;
+
+function pack_s(ANum : Integer): String;
+begin
+
+end;
+
+function pack_s(ANum : Byte): String;
+begin
+
+end;
 
 end.
 
