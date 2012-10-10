@@ -60,8 +60,8 @@ const
   notRaw32       = $db; // Raw bytes 32 bit
   notMap16       = $de; // Map 16 bit
   notMap32       = $df; // Map 32 bit
-  notNegIntMin   = $e0; // Starting range of Negative Integer from -1
-  notNegIntMax   = $ff; // Ending range of Negative Integer     to -128
+  notNegIntMin   = $e0; // Starting range of Negative Integer   to -32
+  notNegIntMax   = $ff; // Ending range of Negative Integer   from -1
 
 type
   // Enum that explains what is the given data type
@@ -80,6 +80,7 @@ type
   TByteList = array of Byte;
 
 procedure pack(AData : Byte; out APacked : TByteList); overload;
+procedure pack(AData : Shortint; out APacked : TByteList); overload;
 
 procedure unpack(APacked : TByteList; out AData : Byte); overload;
 
@@ -98,6 +99,27 @@ begin
    SetLength(APacked,1);
    APacked[0] := AData;
  end;
+end;
+
+procedure pack(AData: Shortint; out APacked: TByteList);
+begin
+  if AData >= 0 then
+   begin
+    SetLength(APacked,1);
+    APacked[0] := AData;
+   end
+  else begin
+     if AData >= -32 then
+      begin
+        SetLength(APacked, 1);
+        APacked[0] := notNegIntMax + AData +1;
+      end
+     else begin
+       SetLength(APacked, 2);
+       APacked[0] := notInt8;
+       APacked[1] := AData;
+     end;
+  end;
 end;
 
 procedure unpack(APacked: TByteList; out AData: Byte);
