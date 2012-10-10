@@ -74,9 +74,14 @@ type
   // Return type of the serialized content
   TByteList = array of Byte;
 
-
+procedure pack(AData : Byte; out APacked : TByteList); overload;
 
 implementation
+
+procedure pack(AData: Byte; out APacked: TByteList);
+begin
+
+end;
 
 end.
 
