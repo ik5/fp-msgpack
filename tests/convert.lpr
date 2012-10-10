@@ -1,6 +1,6 @@
-{ Test program for converting data types to msgpack
+{ Basic msgpack test program for converter unit
 
-  Copyright (c) 2012 Ido Kanner <idokan@gmail.com>
+  Copyright (c) 2012 Ido Kaner <idokan@gmail.com>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to
@@ -20,23 +20,29 @@
   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
   IN THE SOFTWARE.
 }
-{$IFDEF WINDOWS}{$APPTYPE CONSOLE}{$ENDIF}
 program convert;
-uses sysutils, msgpack;
 
-procedure TestBytes;
-var Data   : Byte;
-    Output : TByteList;
-    i      : Byte;
+{$mode objfpc}{$H+}
+
+uses
+  Classes, consoletestrunner, convert_testcase, msgpack;
+
+type
+
+  { TLazTestRunner }
+
+  TMyTestRunner = class(TTestRunner)
+  protected
+  // override the protected methods of TTestRunner to customize its behavior
+  end;
+
+var
+  Application: TMyTestRunner;
+
 begin
- Data := 1;
- write('The value ', Data, ' should be packed as 1: ');
- pack(Data, Output);
- writeln(Output[0] = Data);
-
-end;
-
-begin
-  TestBytes;
+  Application := TMyTestRunner.Create(nil);
+  Application.Initialize;
+  Application.Title := 'FPCUnit Console test runner';
+  Application.Run;
+  Application.Free;
 end.
-
