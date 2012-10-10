@@ -20,7 +20,7 @@
   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
   IN THE SOFTWARE.
 }
-{$IFDEF WINDOWS}{$APPTYPE CONSOLE}{$EMDIF}
+{$IFDEF WINDOWS}{$APPTYPE CONSOLE}{$ENDIF}
 program convert;
 uses sysutils, msgpack;
 
@@ -29,9 +29,14 @@ var Data   : Byte;
     Output : TByteList;
     i      : Byte;
 begin
+ Data := 1;
+ write('The value ', Data, ' should be packed as 1: ');
+ pack(Data, Output);
+ writeln(Output[0] = Data);
 
 end;
 
 begin
+  TestBytes;
 end.
 
