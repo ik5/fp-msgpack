@@ -24,6 +24,14 @@
 program convert;
 uses sysutils, msgpack;
 
+procedure TestBytes;
+var Data   : Byte;
+    Output : TByteList;
+    i      : Byte;
+begin
+
+end;
+
 begin
 end.
 
