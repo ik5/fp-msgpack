@@ -1,6 +1,6 @@
 Introduction
 ============
-MessagePack saves type-information to the serialized data. Thus each data is
+[MessagePack](http://msgpack.org/) saves type-information to the serialized data. Thus each data is
 stored in **type-data** or **type-length-data** style.
 
 MessagePack supports following types:
