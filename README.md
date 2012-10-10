@@ -53,4 +53,22 @@ Each type has one or more serialize format:
            + map 16
            + map 32
 
+Current Implementation
+======================
+The following code provides pure Object Pascal implementation of msgpack
+according to [Format Specification](http://wiki.msgpack.org/display/MSGPACK/Format+specification) from Jun 06 2011.
 
+Files
+-----
+ * src/
+   - msgpack.pas - basic implementation for packing and unpacking data
+
+ * tests/
+   - convert.lpr - code to validate that the packing and unpacking works
+
+ * examples/
+
+ * docs/
+
+ * license - The following library is using MIT license
+ * README.md - this file
