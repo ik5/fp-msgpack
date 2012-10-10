@@ -76,6 +76,8 @@ type
 
 procedure pack(AData : Byte; out APacked : TByteList); overload;
 
+procedure unpack(APacked : TByteList; out AData : Byte); overload;
+
 implementation
 
 procedure pack(AData: Byte; out APacked: TByteList);
@@ -90,6 +92,18 @@ begin
    SetLength(APacked,1);
    APacked[0] := AData;
  end;
+end;
+
+procedure unpack(APacked: TByteList; out AData: Byte);
+begin
+  if Length(APacked) = 2 then
+   begin
+     if APacked[0] = notUInt8 then
+      begin
+        AData := APacked[1];
+      end
+     else raise ; // TODO: Write an exception for this
+   end;
 end;
 
 end.
