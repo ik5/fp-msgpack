@@ -64,7 +64,8 @@ Files
    - msgpack.pas - basic implementation for packing and unpacking data
 
  * tests/
-   - convert.lpr - code to validate that the packing and unpacking works
+   - convert.lpr - program that uses fpcunit
+   - convert\_testcase.pas - unit test for msgpack.pas
 
  * examples/
 
