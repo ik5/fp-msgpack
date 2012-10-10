@@ -31,23 +31,54 @@ uses
 
 type
 
+  { TConvertTest }
+
   TConvertTest= class(TTestCase)
   protected
     procedure SetUp; override;
   published
-    procedure TestHookUp;
+    procedure TestPackedBytes;
   end;
 
 implementation
-
-procedure TConvertTest.TestHookUp;
-begin
-  Fail('Write your own test');
-end;
+uses msgpack;
 
 procedure TConvertTest.SetUp;
 begin
 
+end;
+
+procedure TConvertTest.TestPackedBytes;
+const
+  ByteLength = 'Input of %d have length of %d';
+  ByteOutput = 'Input of %d must be equal to the value with not change';
+  BytePrefix = 'Byte Prefix: %2x';
+
+var Input  : Byte;
+    Output : TByteList;
+
+begin
+  Input := 1; // Almost start
+  pack(Input, Output);
+  CheckEquals(1, Length(Output), Format(ByteLength, [Input, 1]));
+  CheckEquals(Input, Input, Format(ByteOutput, [Input]));
+
+  Input := 127; // Last low byte
+  pack(Input, Output);
+  CheckEquals(1, Length(Output), Format(ByteLength, [Input, 1]));
+  CheckEquals(Input, Output[0], Format(ByteOutput, [Input]));
+
+  Input := 128; // Start high byte
+  pack(Input, Output);
+  CheckEquals(2, Length(Output), Format(ByteLength, [Input, 2]));
+  CheckEquals(notUInt8, Output[0], Format(BytePrefix, [Output[0]]));
+  CheckEquals(Input, Output[1], Format(ByteOutput, [Input]));
+
+  Input := 255; // Last high byte
+  pack(Input, Output);
+  CheckEquals(2, Length(Output), Format(ByteLength, [Input, 2]));
+  CheckEquals(notUInt8, Output[0], Format(BytePrefix, [Output[0]]));
+  CheckEquals(Input, Output[1], Format(ByteOutput, [Input]));
 end;
 
 
