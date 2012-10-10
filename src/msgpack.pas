@@ -27,9 +27,6 @@ unit msgpack;
 
 interface
 
-uses
-  Classes, SysUtils;
-
 // Notations for information
 const
   notPosIntMin   = $00; // Starting range of Positive Integer from 0
