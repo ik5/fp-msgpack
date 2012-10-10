@@ -26,7 +26,12 @@ unit msgpack;
 {$mode objfpc}{$H+}
 
 interface
-uses fgl; // Generics for TFPGMap
+uses SysUtils, // for exceptions
+     fgl;      // Generics for TFPGMap
+
+type
+  EMsgPack          = class(Exception);
+  EMsgPackWrongType = class(EMsgPack);
 
 // Notations for information
 const
@@ -79,6 +84,7 @@ procedure pack(AData : Byte; out APacked : TByteList); overload;
 procedure unpack(APacked : TByteList; out AData : Byte); overload;
 
 implementation
+uses msgpack_errors;
 
 procedure pack(AData: Byte; out APacked: TByteList);
 begin
@@ -96,14 +102,19 @@ end;
 
 procedure unpack(APacked: TByteList; out AData: Byte);
 begin
-  if Length(APacked) = 2 then
-   begin
-     if APacked[0] = notUInt8 then
-      begin
-        AData := APacked[1];
-      end
-     else raise ; // TODO: Write an exception for this
-   end;
+  case Length(APacked) of
+   1 : begin
+         if APacked[0] >= 0 then
+           AData := APacked[0]
+         else raise EMsgPackWrongType.Create(errInvalidDataType);
+        end;
+   2 : begin
+        if APacked[0] = notUInt8 then
+         AData := APacked[1]
+        else raise EMsgPackWrongType.Create(errInvalidDataType);
+       end;
+   else raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 end.
