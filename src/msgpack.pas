@@ -60,7 +60,17 @@ const
   notNegIntMin   = $e0; // Starting range of Negative Integer from -1
   notNegIntMax   = $ff; // Ending range of Negative Integer     to -127
 
-
+type
+  TDataTypes = (mpdtNil,     // Contain nil data
+                mpdtBoolean, // Contain true or false data
+                mpdtPosInt,  // Contain Positive integer
+                mpdtNegInt,  // Contain Negative integer
+                mpdtFloat,   // Contain floating point
+                mpdtDouble,  // Contain floating point double precision IEEE 754
+                mpdtRaw,     // Contain Non numeric char
+                mpdtArray,   // Contain array
+                mpdtMap      // Contain map of key value
+               );
 
 implementation
 
