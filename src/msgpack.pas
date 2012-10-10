@@ -104,7 +104,7 @@ procedure unpack(APacked: TByteList; out AData: Byte);
 begin
   case Length(APacked) of
    1 : begin
-         if APacked[0] >= 0 then
+         if APacked[0] in [0..127] then
            AData := APacked[0]
          else raise EMsgPackWrongType.Create(errInvalidDataType);
         end;
