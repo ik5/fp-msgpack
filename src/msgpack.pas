@@ -56,7 +56,7 @@ const
   notMap16       = $de; // Map 16 bit
   notMap32       = $df; // Map 32 bit
   notNegIntMin   = $e0; // Starting range of Negative Integer from -1
-  notNegIntMax   = $ff; // Ending range of Negative Integer     to -127
+  notNegIntMax   = $ff; // Ending range of Negative Integer     to -128
 
 type
   // Enum that explains what is the given data type
@@ -80,7 +80,16 @@ implementation
 
 procedure pack(AData: Byte; out APacked: TByteList);
 begin
-
+ if AData > 127 then
+  begin
+    SetLength(APacked, 2);
+    APacked[0] := notUInt8;
+    APacked[1] := AData;
+  end
+ else begin
+   SetLength(APacked,1);
+   APacked[0] := AData;
+ end;
 end;
 
 end.
