@@ -30,33 +30,35 @@ interface
 uses
   Classes, SysUtils;
 
-type
-  TMsgPack = class(TObject)
+// Notations for information
+const
+  notPosIntMin   = $00; // Starting range of Positive Integer from 0
+  notPosIntMax   = $7f; // Ending range of positive Integer     to 127
+  notFixMapMin   = $80; // Starting range of FixMap
+  notFixMapMax   = $8f; // Ending range of FixMap
+  notFixArrayMin = $90; // Starting range of FixArray
+  notFixArrayMax = $9f; // Ending range of FixArray
+  notFixRawMin   = $a0; // Starting range of FixRaw
+  notFixRawMax   = $bf; // Ending range of FixRaw
+  notNil         = $c0; // Nil notation
+  notFalse       = $c2; // False notation
+  notTrue        = $c3; // True notation
+  notFloat       = $ca; // Floting point notation
+  notDouble      = $cb; // Double precision notation
+  notUInt8       = $cc; // Unsgined integer  8 bit
+  notUInt16      = $cd; // Unsigned integer 16 bit
+  notUInt32      = $d2; // Unsigned integer 32 bit
+  notUInt64      = $d3; // Unsigned integer 64 bit
+  notRaw16       = $da; // Raw bytes 16 bit
+  notRaw32       = $db; // Raw bytes 32 bit
+  notMap16       = $de; // Map 16 bit
+  notMap32       = $df; // Map 32 bit
+  notNegIntMin   = $e0; // Starting range of Negative Integer from -1
+  notNegIntMax   = $ff; // Ending range of Negative Integer     to -127
 
-  end;
 
-function pack(Data : Pointer) : PByteArray;
-function unpack(Data : PByteArray) : Pointer;
-
-function pack_s(ANum : Integer) : String; overload;
-function pack_s(ANum : Byte)    : String; overload;
 
 implementation
-
-function pack(Data: Pointer): PByteArray;
-begin
-
-end;
-
-function pack_s(ANum : Integer): String;
-begin
-
-end;
-
-function pack_s(ANum : Byte): String;
-begin
-
-end;
 
 end.
 
