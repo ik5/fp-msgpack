@@ -61,6 +61,7 @@ const
   notNegIntMax   = $ff; // Ending range of Negative Integer     to -127
 
 type
+  // Enum that explains what is the given data type
   TDataTypes = (mpdtNil,     // Contain nil data
                 mpdtBoolean, // Contain true or false data
                 mpdtPosInt,  // Contain Positive integer
