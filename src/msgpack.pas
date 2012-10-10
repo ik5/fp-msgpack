@@ -47,8 +47,12 @@ const
   notDouble      = $cb; // Double precision notation
   notUInt8       = $cc; // Unsgined integer  8 bit
   notUInt16      = $cd; // Unsigned integer 16 bit
-  notUInt32      = $d2; // Unsigned integer 32 bit
-  notUInt64      = $d3; // Unsigned integer 64 bit
+  notUInt32      = $ce; // Unsigned integer 32 bit
+  notUInt64      = $cf; // Unsigned integer 64 bit
+  notInt8        = $d0; // Signed integer  8 bit
+  notInt16       = $d1; // Signed integer 16 bit
+  notInt32       = $d2; // Signed integer 32 bit
+  notInt64       = $d3; // Signed integer 64 bit
   notRaw16       = $da; // Raw bytes 16 bit
   notRaw32       = $db; // Raw bytes 32 bit
   notMap16       = $de; // Map 16 bit
