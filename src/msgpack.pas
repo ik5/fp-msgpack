@@ -26,6 +26,7 @@ unit msgpack;
 {$mode objfpc}{$H+}
 
 interface
+uses fgl; // Generics for TFPGMap
 
 // Notations for information
 const
@@ -69,6 +70,11 @@ type
                 mpdtArray,   // Contain array
                 mpdtMap      // Contain map of key value
                );
+
+  // Return type of the serialized content
+  TByteList = array of Byte;
+
+
 
 implementation
 
