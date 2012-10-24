@@ -26,8 +26,8 @@ unit msgpack;
 {$mode objfpc}{$H+}
 
 interface
-uses SysUtils, // for exceptions
-     fgl;      // Generics for TFPGMap
+uses SysUtils // for exceptions
+;
 
 type
   EMsgPack          = class(Exception);
@@ -138,6 +138,14 @@ type
     function AsBoolean : Boolean; virtual; abstract;
 
     function IsNil : Boolean; virtual; abstract;
+  end;
+
+  TMsgPackArray = class(TMsgPackType)
+
+  end;
+
+  TMsgPackMap  = class(TMsgPackType)
+
   end;
 
 {procedure pack(AData : Byte; out APacked : TByteList); overload;
