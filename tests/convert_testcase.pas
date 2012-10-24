@@ -1,6 +1,6 @@
 { Basic msgpack unit test for converter unit
 
-  Copyright (c) 2012 Ido Kaner <idokan@gmail.com>
+  Copyright (c) 2012 Ido Kanner <idokan@gmail.com>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to
