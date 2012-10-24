@@ -65,7 +65,8 @@ const
 
 type
   // Enum that explains what is the given data type
-  TDataTypes = (mpdtNil,     // Contain nil data
+  TMsgPackDataTypes = (
+                mpdtNil,     // Contain nil data
                 mpdtBoolean, // Contain true or false data
                 mpdtPosInt,  // Contain Positive integer
                 mpdtNegInt,  // Contain Negative integer
@@ -76,18 +77,78 @@ type
                 mpdtMap      // Contain map of key value
                );
 
-  // Return type of the serialized content
-  TByteList = array of Byte;
+  // Enum for the sub type of the data
+  TMsgPackSubTypes = (
+    mpstInt8,   // Signed integer  8 bit
+    mpstInt16,  // Signed integer 16 bit
+    mpstInt32,  // Signed integer 32 bit
+    mpstInt64,  // Signed integer 64 bit
+    mpstUInt8,  // Unsgined integer  8 bit
+    mpstUInt16, // Unsigned integer 16 bit
+    mpstUInt32, // Unsigned integer 32 bit
+    mpstUInt64, // Unsigned integer 64 bit
+    mpsFloat,   // Single floating point
+    mpsDouble,  // Double floating point
+    mpstRaw16,  // Raw bytes 16 bit - String
+    mpstRaw32,  // Raw bytes 32 bit
+    mpstMap16,  // Map 16 bit
+    mpstMap32,  // Map 32 bit
+    mpstTrue,   // Boolean True
+    mpstFalse,  // Boolean False
+    mpstNil     // Nil value
+  );
 
-procedure pack(AData : Byte; out APacked : TByteList); overload;
+  TMsgPackArray = class;
+  TMsgPackMap   = class;
+
+  { TMsgPackType }
+
+  TMsgPackType = class(TObject)
+  protected
+    type
+     TCharArray = Array[0..32767] of Char;
+     TRawData = record
+       Len : Word;
+       case Boolean of
+          False : (RawBytes  : TByteArray);
+          True  : (RawString : TCharArray);
+       end;
+    var
+     RawData : TRawData;
+  public
+    function MsgType : TMsgPackDataTypes; virtual; abstract;
+    function SubType : TMsgPackSubTypes;  virtual; abstract;
+
+    function AsByte     : Byte;     virtual; abstract;
+    function AsWord     : Word;     virtual; abstract;
+    function AsCardinal : Cardinal; virtual; abstract;
+    function AsQWord    : QWord;    virtual; abstract;
+
+    function AsShortInt : ShortInt; virtual; abstract;
+    function AsSmallInt : SmallInt; virtual; abstract;
+    function AsLongInt  : LongInt;  virtual; abstract;
+    function AsInt4     : Int64;    virtual; abstract;
+
+    function AsSingle : Single; virtual; abstract;
+    function AsDouble : Double; virtual; abstract;
+
+    function AsArray  : TMsgPackArray; virtual; abstract;
+    function AsMap    : TMsgPackMap;   virtual; abstract;
+
+    function AsBoolean : Boolean; virtual; abstract;
+
+    function IsNil : Boolean; virtual; abstract;
+  end;
+
+{procedure pack(AData : Byte; out APacked : TByteList); overload;
 procedure pack(AData : Shortint; out APacked : TByteList); overload;
 
 procedure unpack(APacked : TByteList; out AData : Byte); overload;
-
+}
 implementation
 uses msgpack_errors;
 
-procedure pack(AData: Byte; out APacked: TByteList);
+{procedure pack(AData: Byte; out APacked: TByteList);
 begin
  if AData > 127 then
   begin
@@ -105,8 +166,7 @@ procedure pack(AData: Shortint; out APacked: TByteList);
 begin
   if AData >= 0 then
    begin
-    SetLength(APacked,1);
-    APacked[0] := AData;
+    pack(Byte(AData, APacked);
    end
   else begin
      if AData >= -32 then
@@ -138,6 +198,6 @@ begin
    else raise EMsgPackWrongType.Create(errInvalidDataType);
   end;
 end;
-
+}
 end.
 
