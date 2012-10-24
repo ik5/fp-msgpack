@@ -110,8 +110,8 @@ type
      TRawData = record
        Len : Word;
        case Boolean of
-          False : (RawBytes  : TByteArray);
-          True  : (RawString : TCharArray);
+          False : (RawBytes : TByteArray);
+          True  : (RawChars : TCharArray);
        end;
     var
      RawData : TRawData;
