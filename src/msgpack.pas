@@ -152,6 +152,12 @@ type
 
   end;
 
+  { TMsgPackBoolean }
+
+  TMsgPackBoolean = class(TMsgPackType)
+
+  end;
+
   { TMsgPackArray }
 
   TMsgPackArray = class(TMsgPackType)
