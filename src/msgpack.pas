@@ -140,9 +140,19 @@ type
     function IsNil : Boolean; virtual; abstract;
   end;
 
+  { TMsgPackNumber }
+
+  TMsgPackNumber = class(TMsgPackType)
+
+  end;
+
+  { TMsgPackArray }
+
   TMsgPackArray = class(TMsgPackType)
 
   end;
+
+  { TMsgPackMap }
 
   TMsgPackMap  = class(TMsgPackType)
 
