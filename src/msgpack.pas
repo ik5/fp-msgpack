@@ -146,6 +146,12 @@ type
 
   end;
 
+  { TMsgPackNil }
+
+  TMsgPackNil = class(TMsgPackType)
+
+  end;
+
   { TMsgPackArray }
 
   TMsgPackArray = class(TMsgPackType)
