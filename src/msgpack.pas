@@ -149,15 +149,14 @@ type
   { TMsgPackNil }
 
   TMsgPackNil = class(TMsgPackType)
-  private
-    procedure SetValue(AValue: TRawData);
   public
     class function MsgType : TMsgPackDataTypes; override;
     class function SubType : TMsgPackSubTypes;  override;
 
+    constructor Create; virtual;
     function IsNil : Boolean; override;
 
-    property Value : TRawData read RawData write SetValue;
+    property Value : TRawData read RawData;
   end;
 
   { TMsgPackBoolean }
@@ -188,12 +187,6 @@ uses msgpack_errors;
 
 { TMsgPackNil }
 
-procedure TMsgPackNil.SetValue(AValue: TRawData);
-begin
-  RawData.Len         := 1;
-  RawData.RawBytes[0] := notNil;
-end;
-
 class function TMsgPackNil.MsgType: TMsgPackDataTypes;
 begin
   Result := mpdtNil;
@@ -202,6 +195,12 @@ end;
 class function TMsgPackNil.SubType: TMsgPackSubTypes;
 begin
   Result := mpstNil;
+end;
+
+constructor TMsgPackNil.Create;
+begin
+  RawData.Len         := 1;
+  RawData.RawBytes[0] := notNil;
 end;
 
 function TMsgPackNil.IsNil: Boolean;
