@@ -116,8 +116,8 @@ type
     var
      RawData : TRawData;
   public
-    function MsgType : TMsgPackDataTypes; virtual; abstract;
-    function SubType : TMsgPackSubTypes;  virtual; abstract;
+    class function MsgType : TMsgPackDataTypes; virtual; abstract;
+    class function SubType : TMsgPackSubTypes;  virtual; abstract;
 
     function AsByte     : Byte;     virtual; abstract;
     function AsWord     : Word;     virtual; abstract;
@@ -149,7 +149,13 @@ type
   { TMsgPackNil }
 
   TMsgPackNil = class(TMsgPackType)
+  private
+    procedure SetValue(AValue: TRawData);
+  public
+    class function MsgType : TMsgPackDataTypes; override;
+    class function SubType : TMsgPackSubTypes;  override;
 
+    property Value : TRawData read RawData write SetValue;
   end;
 
   { TMsgPackBoolean }
@@ -177,6 +183,24 @@ procedure unpack(APacked : TByteList; out AData : Byte); overload;
 }
 implementation
 uses msgpack_errors;
+
+{ TMsgPackNil }
+
+procedure TMsgPackNil.SetValue(AValue: TRawData);
+begin
+  RawData.Len         := 1;
+  RawData.RawBytes[0] := notNil;
+end;
+
+class function TMsgPackNil.MsgType: TMsgPackDataTypes;
+begin
+  Result := mpdtNil;
+end;
+
+class function TMsgPackNil.SubType: TMsgPackSubTypes;
+begin
+  Result := mpstNil;
+end;
 
 {procedure pack(AData: Byte; out APacked: TByteList);
 begin
