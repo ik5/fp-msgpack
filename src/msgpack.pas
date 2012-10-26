@@ -155,6 +155,8 @@ type
     class function MsgType : TMsgPackDataTypes; override;
     class function SubType : TMsgPackSubTypes;  override;
 
+    function IsNil : Boolean; override;
+
     property Value : TRawData read RawData write SetValue;
   end;
 
@@ -200,6 +202,11 @@ end;
 class function TMsgPackNil.SubType: TMsgPackSubTypes;
 begin
   Result := mpstNil;
+end;
+
+function TMsgPackNil.IsNil: Boolean;
+begin
+  Result := True;
 end;
 
 {procedure pack(AData: Byte; out APacked: TByteList);
