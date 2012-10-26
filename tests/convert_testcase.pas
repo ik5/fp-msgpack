@@ -33,15 +33,21 @@ type
 
   { TConvertTest }
 
-  TConvertTest= class(TTestCase)
+  TConvertTest = class(TTestCase)
   protected
     procedure SetUp; override;
   published
     procedure TestPackedBytes;
+    procedure TestNil;
   end;
 
 implementation
 uses msgpack;
+
+resourcestring
+  IsNilError       = 'IsNil function contain wrong value';
+  RawDataLenError  = 'RawData.Len does not contain the proper length';
+  RawDataWrongType = 'RawData.RawBytes[0] contain wrong data type';
 
 procedure TConvertTest.SetUp;
 begin
@@ -81,6 +87,16 @@ begin
   CheckEquals(notUInt8, Output[0], Format(BytePrefix, [Output[0]]));
   CheckEquals(Input, Output[1], Format(ByteOutput, [Input]));
   *)
+end;
+
+procedure TConvertTest.TestNil;
+var NilClass : TMsgPackNil;
+begin
+  NilClass := TMsgPackNil.create;
+  CheckEquals(True, NilClass.IsNil, IsNilError);
+  CheckEquals(1, NilClass.Value.Len, RawDataLenError);
+  CheckEquals(notNil, NilClass.Value.RawBytes[0], RawDataWrongType);
+  NilClass.Free;
 end;
 
 
