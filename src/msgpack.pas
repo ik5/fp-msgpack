@@ -118,7 +118,7 @@ type
      RawData : TRawData;
   public
     class function MsgType : TMsgPackDataTypes; virtual; abstract;
-    class function SubType : TMsgPackSubTypes;  virtual; abstract;
+    function SubType : TMsgPackSubTypes;  virtual; abstract;
 
     function AsByte     : Byte;     virtual; abstract;
     function AsWord     : Word;     virtual; abstract;
@@ -152,7 +152,7 @@ type
   TMsgPackNil = class(TMsgPackType)
   public
     class function MsgType : TMsgPackDataTypes; override;
-    class function SubType : TMsgPackSubTypes;  override;
+    function SubType : TMsgPackSubTypes;  override;
 
     constructor Create; virtual;
     function IsNil : Boolean; override;
@@ -168,7 +168,7 @@ type
     procedure SetValue(AValue : Boolean);
   public
     class function MsgType : TMsgPackDataTypes; override;
-    function SubType : TMsgPackSubTypes;
+    function SubType : TMsgPackSubTypes; override;
 
     constructor Create; virtual;
 
@@ -253,7 +253,7 @@ begin
   Result := mpdtNil;
 end;
 
-class function TMsgPackNil.SubType: TMsgPackSubTypes;
+function TMsgPackNil.SubType: TMsgPackSubTypes;
 begin
   Result := mpstNil;
 end;
