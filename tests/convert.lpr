@@ -25,7 +25,7 @@ program convert;
 {$mode objfpc}{$H+}
 
 uses
-  Classes, consoletestrunner, convert_testcase, msgpack;
+  Classes, consoletestrunner, convert_testcase, msgpack, msgpack_consts;
 
 type
 

@@ -43,7 +43,7 @@ type
   end;
 
 implementation
-uses msgpack;
+uses msgpack, untMsgPack_Consts;
 
 resourcestring
   IsNilError        = 'IsNil function contain wrong value';
