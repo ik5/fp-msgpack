@@ -141,12 +141,6 @@ type
     function IsNil : Boolean; virtual; abstract;
   end;
 
-  { TMsgPackNumber }
-
-  TMsgPackNumber = class(TMsgPackType)
-
-  end;
-
   { TMsgPackNil }
 
   TMsgPackNil = class(TMsgPackType)
@@ -176,6 +170,12 @@ type
     function AsBoolean : Boolean; override;
 
     property Value : Boolean read GetValue write SetValue;
+  end;
+
+  { TMsgPackNumber }
+
+  TMsgPackNumber = class(TMsgPackType)
+
   end;
 
   { TMsgPackArray }
