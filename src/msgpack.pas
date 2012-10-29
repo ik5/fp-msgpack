@@ -26,8 +26,8 @@ unit msgpack;
 {$mode objfpc}{$H+}
 
 interface
-uses SysUtils // for exceptions
-;
+uses SysUtils,       // for exceptions
+     MsgPack_Consts; // Constants for msgpack
 
 type
   EMsgPack          = class(Exception);
@@ -130,7 +130,7 @@ procedure pack(AData : Shortint; out APacked : TByteList); overload;
 procedure unpack(APacked : TByteList; out AData : Byte); overload;
 }
 implementation
-uses untMsgPack_Consts; //, msgpack_errors;
+//uses msgpack_errors;
 
 { TMsgPackBoolean }
 
