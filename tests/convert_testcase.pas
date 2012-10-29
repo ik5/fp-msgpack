@@ -39,15 +39,17 @@ type
   published
     procedure TestPackedBytes;
     procedure TestNil;
+    procedure TestBoolean;
   end;
 
 implementation
 uses msgpack;
 
 resourcestring
-  IsNilError       = 'IsNil function contain wrong value';
-  RawDataLenError  = 'RawData.Len does not contain the proper length';
-  RawDataWrongType = 'RawData.RawBytes[0] contain wrong data type';
+  IsNilError        = 'IsNil function contain wrong value';
+  RawDataLenError   = 'RawData.Len does not contain the proper length';
+  RawDataWrongType  = 'RawData.RawBytes[0] contain wrong data type';
+  BooleanWrongValue = 'Boolean contain wrong value';
 
 procedure TConvertTest.SetUp;
 begin
@@ -97,6 +99,17 @@ begin
   CheckEquals(1, NilClass.Value.Len, RawDataLenError);
   CheckEquals(notNil, NilClass.Value.RawBytes[0], RawDataWrongType);
   NilClass.Free;
+end;
+
+procedure TConvertTest.TestBoolean;
+var BooleanClass : TMsgPackBoolean;
+begin
+  BooleanClass := TMsgPackBoolean.Create;
+  CheckEquals(False, BooleanClass.Value, BooleanWrongValue);
+  BooleanClass.Value := True;
+  CheckEquals(True, BooleanClass.Value, BooleanWrongValue);
+  CheckEquals(True, BooleanClass.AsBoolean, BooleanWrongValue);
+  BooleanClass.Free;
 end;
 
 
