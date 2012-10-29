@@ -62,6 +62,8 @@ Files
 -----
  * src/
    - msgpack.pas - basic implementation for packing and unpacking data
+   - msgpack_consts - constant information regarding the protocol
+   - msgpack_errors - a unit for error resourcestring holdings
 
  * tests/
    - convert.lpr - program that uses fpcunit
