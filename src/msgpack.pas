@@ -163,9 +163,19 @@ type
   { TMsgPackBoolean }
 
   TMsgPackBoolean = class(TMsgPackType)
+  protected
+    function GetValue : Boolean;
+    procedure SetValue(AValue : Boolean);
   public
     class function MsgType : TMsgPackDataTypes; override;
-    class function SubType : TMsgPackSubTypes;  override;
+    function SubType : TMsgPackSubTypes;
+
+    constructor Create; virtual;
+
+    function IsNil     : Boolean; override;
+    function AsBoolean : Boolean; override;
+
+    property Value : Boolean read GetValue write SetValue;
   end;
 
   { TMsgPackArray }
@@ -190,12 +200,27 @@ uses msgpack_errors;
 
 { TMsgPackBoolean }
 
+function TMsgPackBoolean.GetValue: Boolean;
+begin
+  case RawData.RawBytes[0] of
+    notFalse : Result := False;
+    notTrue  : Result := True;
+  end;
+end;
+
+procedure TMsgPackBoolean.SetValue(AValue: Boolean);
+const Values : array[Boolean] of Byte = (notFalse, notTrue);
+begin
+  RawData.Len         := 1;
+  RawData.RawBytes[0] := Values[AValue];
+end;
+
 class function TMsgPackBoolean.MsgType: TMsgPackDataTypes;
 begin
   Result := mpdtBoolean;
 end;
 
-class function TMsgPackBoolean.SubType: TMsgPackSubTypes;
+function TMsgPackBoolean.SubType: TMsgPackSubTypes;
 begin
   case RawData.RawBytes[0] of
     notFalse : Result := mpstFalse;
@@ -203,6 +228,22 @@ begin
   else
     Result := mpstUnknown;
   end;
+end;
+
+constructor TMsgPackBoolean.Create;
+begin
+  RawData.Len         := 1;
+  RawData.RawBytes[0] := notFalse;
+end;
+
+function TMsgPackBoolean.IsNil: Boolean;
+begin
+  Result := False;
+end;
+
+function TMsgPackBoolean.AsBoolean: Boolean;
+begin
+  Result := self.GetValue;
 end;
 
 { TMsgPackNil }
