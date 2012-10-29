@@ -87,15 +87,16 @@ type
     mpstUInt16, // Unsigned integer 16 bit
     mpstUInt32, // Unsigned integer 32 bit
     mpstUInt64, // Unsigned integer 64 bit
-    mpsFloat,   // Single floating point
-    mpsDouble,  // Double floating point
+    mpstFloat,  // Single floating point
+    mpstDouble, // Double floating point
     mpstRaw16,  // Raw bytes 16 bit - String
     mpstRaw32,  // Raw bytes 32 bit
     mpstMap16,  // Map 16 bit
     mpstMap32,  // Map 32 bit
     mpstTrue,   // Boolean True
     mpstFalse,  // Boolean False
-    mpstNil     // Nil value
+    mpstNil,    // Nil value
+    mpstUnknown // Unknow type
   );
 
   TMsgPackArray = class;
@@ -162,7 +163,9 @@ type
   { TMsgPackBoolean }
 
   TMsgPackBoolean = class(TMsgPackType)
-
+  public
+    class function MsgType : TMsgPackDataTypes; override;
+    class function SubType : TMsgPackSubTypes;  override;
   end;
 
   { TMsgPackArray }
@@ -184,6 +187,23 @@ procedure unpack(APacked : TByteList; out AData : Byte); overload;
 }
 implementation
 uses msgpack_errors;
+
+{ TMsgPackBoolean }
+
+class function TMsgPackBoolean.MsgType: TMsgPackDataTypes;
+begin
+  Result := mpdtBoolean;
+end;
+
+class function TMsgPackBoolean.SubType: TMsgPackSubTypes;
+begin
+  case RawData.RawBytes[0] of
+    notFalse : Result := mpstFalse;
+    notTrue  : Result := mpstTrue;
+  else
+    Result := mpstUnknown;
+  end;
+end;
 
 { TMsgPackNil }
 
