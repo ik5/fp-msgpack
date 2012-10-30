@@ -27,23 +27,23 @@ unit msgpack_bits;
 
 interface
 
-function OneToTwoComplement(AValue : Byte)     : Byte;
-function OneToTwoComplement(AValue : Word)     : Word;
-function OneToTwoComplement(AValue : Cardinal) : Cardinal;
-function OneToTwoComplement(AValue : QWord)    : QWord;
-function OneToTwoComplement(AValue : ShortInt) : ShortInt;
-function OneToTwoComplement(AValue : SmallInt) : SmallInt;
-function OneToTwoComplement(AValue : LongInt)  : LongInt;
-function OneToTwoComplement(AValue : Int64)    : Int64;
+function OneToTwoComplement(AValue : Byte)     : Byte;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : Word)     : Word;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : Cardinal) : Cardinal; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : QWord)    : QWord;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : ShortInt) : ShortInt; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : SmallInt) : SmallInt; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : LongInt)  : LongInt;  {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : Int64)    : Int64;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
 
-function TwoToOneComplement(AValue : Byte)     : Byte;
-function TwoToOneComplement(AValue : Word)     : Word;
-function TwoToOneComplement(AValue : Cardinal) : Cardinal;
-function TwoToOneComplement(AValue : QWord)    : QWord;
-function TwoToOneComplement(AValue : ShortInt) : ShortInt;
-function TwoToOneComplement(AValue : SmallInt) : SmallInt;
-function TwoToOneComplement(AValue : LongInt)  : LongInt;
-function TwoToOneComplement(AValue : Int64)    : Int64;
+function TwoToOneComplement(AValue : Byte)     : Byte;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : Word)     : Word;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : Cardinal) : Cardinal; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : QWord)    : QWord;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : ShortInt) : ShortInt; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : SmallInt) : SmallInt; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : LongInt)  : LongInt;  {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : Int64)    : Int64;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
 
 
 implementation
@@ -51,82 +51,82 @@ implementation
 
 function OneToTwoComplement(AValue: Byte): Byte;
 begin
-
+  Result := (AValue xor $FF) + 1;
 end;
 
 function OneToTwoComplement(AValue: Word): Word;
 begin
-
+  Result := (AValue xor $FFFF) + 1;
 end;
 
 function OneToTwoComplement(AValue: Cardinal): Cardinal;
 begin
-
+  Result := (AValue xor $FFFFFFFF) + 1;
 end;
 
 function OneToTwoComplement(AValue: QWord): QWord;
 begin
-
+  Result := (AValue xor $FFFFFFFFFFFFFFFF) + 1;
 end;
 
 function OneToTwoComplement(AValue: ShortInt): ShortInt;
 begin
-
+  Result := (Abs(AValue) xor $FF) + 1;
 end;
 
 function OneToTwoComplement(AValue: SmallInt): SmallInt;
 begin
-
+  Result := (Abs(AValue) xor $FFFF) + 1;
 end;
 
 function OneToTwoComplement(AValue: LongInt): LongInt;
 begin
-
+  Result := (Abs(AValue) xor $FFFFFFFF) + 1;
 end;
 
 function OneToTwoComplement(AValue: Int64): Int64;
 begin
-
+  Result := (Abs(AValue) xor $FFFFFFFFFFFFFFFF) + 1;
 end;
 
 function TwoToOneComplement(AValue: Byte): Byte;
 begin
-
+  Result := AValue xor $FF;
 end;
 
 function TwoToOneComplement(AValue: Word): Word;
 begin
-
+  Result := AValue xor $FFFF;
 end;
 
 function TwoToOneComplement(AValue: Cardinal): Cardinal;
 begin
-
+  Result := AValue xor $FFFFFFFF;
 end;
 
 function TwoToOneComplement(AValue: QWord): QWord;
 begin
-
+  Result := AValue xor $FFFFFFFFFFFFFFFF;
 end;
 
 function TwoToOneComplement(AValue: ShortInt): ShortInt;
 begin
-
+  Result := Abs(AValue) xor $FF;
 end;
 
 function TwoToOneComplement(AValue: SmallInt): SmallInt;
 begin
-
+  Result := Abs(AValue) xor $FFFF;
 end;
 
 function TwoToOneComplement(AValue: LongInt): LongInt;
 begin
-
+  Result := Abs(AValue) xor $FFFFFFFF;
 end;
 
 function TwoToOneComplement(AValue: Int64): Int64;
 begin
-
+  Result := Abs(AValue) xor $FFFFFFFFFFFFFFFF;
 end;
 
 
