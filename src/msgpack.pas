@@ -50,7 +50,7 @@ type
           True  : (RawChars : TCharArray);
        end;
     var
-     RawData : TRawData;
+     FRawData : TRawData;
   public
     class function MsgType : TMsgPackDataTypes; virtual; abstract;
     function SubType : TMsgPackSubTypes;  virtual; abstract;
@@ -75,6 +75,7 @@ type
     function AsBoolean : Boolean; virtual; abstract;
 
     function IsNil : Boolean; virtual; abstract;
+
   end;
 
   { TMsgPackNil }
@@ -86,8 +87,6 @@ type
 
     constructor Create; virtual;
     function IsNil : Boolean; override;
-
-    property Value : TRawData read RawData;
   end;
 
   { TMsgPackBoolean }
@@ -297,7 +296,7 @@ end;
 
 function TMsgPackBoolean.GetValue: Boolean;
 begin
-  case RawData.RawBytes[0] of
+  case FRawData.RawBytes[0] of
     notFalse : Result := False;
     notTrue  : Result := True;
   end;
@@ -306,8 +305,8 @@ end;
 procedure TMsgPackBoolean.SetValue(AValue: Boolean);
 const Values : array[Boolean] of Byte = (notFalse, notTrue);
 begin
-  RawData.Len         := 1;
-  RawData.RawBytes[0] := Values[AValue];
+  FRawData.Len         := 1;
+  FRawData.RawBytes[0] := Values[AValue];
 end;
 
 class function TMsgPackBoolean.MsgType: TMsgPackDataTypes;
@@ -317,7 +316,7 @@ end;
 
 function TMsgPackBoolean.SubType: TMsgPackSubTypes;
 begin
-  case RawData.RawBytes[0] of
+  case FRawData.RawBytes[0] of
     notFalse : Result := mpstFalse;
     notTrue  : Result := mpstTrue;
   else
@@ -327,8 +326,8 @@ end;
 
 constructor TMsgPackBoolean.Create;
 begin
-  RawData.Len         := 1;
-  RawData.RawBytes[0] := notFalse;
+  FRawData.Len         := 1;
+  FRawData.RawBytes[0] := notFalse;
 end;
 
 function TMsgPackBoolean.IsNil: Boolean;
@@ -355,8 +354,8 @@ end;
 
 constructor TMsgPackNil.Create;
 begin
-  RawData.Len         := 1;
-  RawData.RawBytes[0] := notNil;
+  FRawData.Len         := 1;
+  FRawData.RawBytes[0] := notNil;
 end;
 
 function TMsgPackNil.IsNil: Boolean;

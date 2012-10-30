@@ -96,8 +96,6 @@ var NilClass : TMsgPackNil;
 begin
   NilClass := TMsgPackNil.create;
   CheckEquals(True, NilClass.IsNil, IsNilError);
-  CheckEquals(1, NilClass.Value.Len, RawDataLenError);
-  CheckEquals(notNil, NilClass.Value.RawBytes[0], RawDataWrongType);
   NilClass.Free;
 end;
 
