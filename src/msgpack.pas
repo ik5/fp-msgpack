@@ -168,6 +168,7 @@ procedure pack(AData : Shortint; out APacked : TByteList); overload;
 procedure unpack(APacked : TByteList; out AData : Byte); overload;
 }
 implementation
+uses msgpack_bits;
 
 { TMsgPackNumber }
 
