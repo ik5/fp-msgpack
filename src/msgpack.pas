@@ -35,6 +35,7 @@ type
 
   TMsgPackArray = class;
   TMsgPackMap   = class;
+  TMsgPackRaw   = class;
 
   { TMsgPackType }
 
@@ -67,6 +68,7 @@ type
     function AsSingle : Single; virtual; abstract;
     function AsDouble : Double; virtual; abstract;
 
+    function AsRaw    : TMsgPackRaw;   virtual; abstract;
     function AsArray  : TMsgPackArray; virtual; abstract;
     function AsMap    : TMsgPackMap;   virtual; abstract;
 
@@ -109,6 +111,12 @@ type
   { TMsgPackNumber }
 
   TMsgPackNumber = class(TMsgPackType)
+
+  end;
+
+  { TMsgPackRaw }
+
+  TMsgPackRaw = class(TMsgPackType)
 
   end;
 
