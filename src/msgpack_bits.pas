@@ -45,9 +45,7 @@ function TwoToOneComplement(AValue : SmallInt) : SmallInt; {$ifdef SYSTEMINLINE}
 function TwoToOneComplement(AValue : LongInt)  : LongInt;  {$ifdef SYSTEMINLINE} inline; {$ENDIF}
 function TwoToOneComplement(AValue : Int64)    : Int64;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
 
-
 implementation
-//uses math;
 
 function OneToTwoComplement(AValue: Byte): Byte;
 begin
@@ -128,7 +126,6 @@ function TwoToOneComplement(AValue: Int64): Int64;
 begin
   Result := Abs(AValue) xor $FFFFFFFFFFFFFFFF;
 end;
-
 
 end.
 

@@ -66,6 +66,7 @@ Files
    - msgpack_errors - a unit for error resourcestring holdings
    - msgpack_bits   - a unit that does bit manipulation that does not exists on FPC by itself
 
+
  * tests/
    - convert.lpr - program that uses fpcunit
    - convert\_testcase.pas - unit test for msgpack.pas
