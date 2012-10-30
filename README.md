@@ -61,9 +61,10 @@ according to [Format Specification](http://wiki.msgpack.org/display/MSGPACK/Form
 Files
 -----
  * src/
-   - msgpack.pas - basic implementation for packing and unpacking data
+   - msgpack.pas    - basic implementation for packing and unpacking data
    - msgpack_consts - constant information regarding the protocol
    - msgpack_errors - a unit for error resourcestring holdings
+   - msgpack_bits   - a unit that does bit manipulation that does not exists on FPC by itself
 
  * tests/
    - convert.lpr - program that uses fpcunit
