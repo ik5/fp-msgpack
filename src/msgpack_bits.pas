@@ -36,6 +36,15 @@ function OneToTwoComplement(AValue : SmallInt) : SmallInt;
 function OneToTwoComplement(AValue : LongInt)  : LongInt;
 function OneToTwoComplement(AValue : Int64)    : Int64;
 
+function TwoToOneComplement(AValue : Byte)     : Byte;
+function TwoToOneComplement(AValue : Word)     : Word;
+function TwoToOneComplement(AValue : Cardinal) : Cardinal;
+function TwoToOneComplement(AValue : QWord)    : QWord;
+function TwoToOneComplement(AValue : ShortInt) : ShortInt;
+function TwoToOneComplement(AValue : SmallInt) : SmallInt;
+function TwoToOneComplement(AValue : LongInt)  : LongInt;
+function TwoToOneComplement(AValue : Int64)    : Int64;
+
 
 implementation
 //uses math;
@@ -76,6 +85,46 @@ begin
 end;
 
 function OneToTwoComplement(AValue: Int64): Int64;
+begin
+
+end;
+
+function TwoToOneComplement(AValue: Byte): Byte;
+begin
+
+end;
+
+function TwoToOneComplement(AValue: Word): Word;
+begin
+
+end;
+
+function TwoToOneComplement(AValue: Cardinal): Cardinal;
+begin
+
+end;
+
+function TwoToOneComplement(AValue: QWord): QWord;
+begin
+
+end;
+
+function TwoToOneComplement(AValue: ShortInt): ShortInt;
+begin
+
+end;
+
+function TwoToOneComplement(AValue: SmallInt): SmallInt;
+begin
+
+end;
+
+function TwoToOneComplement(AValue: LongInt): LongInt;
+begin
+
+end;
+
+function TwoToOneComplement(AValue: Int64): Int64;
 begin
 
 end;
