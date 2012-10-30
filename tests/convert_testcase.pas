@@ -96,6 +96,8 @@ var NilClass : TMsgPackNil;
 begin
   NilClass := TMsgPackNil.create;
   CheckEquals(True, NilClass.IsNil, IsNilError);
+  CheckEquals(1, NilClass.RawData.Len, RawDataLenError);
+  CheckEquals(notNil, NilClass.RawData.RawBytes[0], RawDataWrongType);
   NilClass.Free;
 end;
 
@@ -104,9 +106,13 @@ var BooleanClass : TMsgPackBoolean;
 begin
   BooleanClass := TMsgPackBoolean.Create;
   CheckEquals(False, BooleanClass.Value, BooleanWrongValue);
+  CheckEquals(1, BooleanClass.RawData.Len, RawDataLenError);
+  CheckEquals(notFalse, BooleanClass.RawData.RawBytes[0], RawDataWrongType);
   BooleanClass.Value := True;
   CheckEquals(True, BooleanClass.Value, BooleanWrongValue);
   CheckEquals(True, BooleanClass.AsBoolean, BooleanWrongValue);
+  CheckEquals(1, BooleanClass.RawData.Len, RawDataLenError);
+  CheckEquals(notTrue, BooleanClass.RawData.RawBytes[0], RawDataWrongType);
   BooleanClass.Free;
 end;
 
