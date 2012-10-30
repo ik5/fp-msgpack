@@ -111,7 +111,22 @@ type
   { TMsgPackNumber }
 
   TMsgPackNumber = class(TMsgPackType)
+  public
+    class function MsgType : TMsgPackDataTypes; override;
+    function SubType : TMsgPackSubTypes;  override;
 
+    function AsByte     : Byte;     override;
+    function AsWord     : Word;     override;
+    function AsCardinal : Cardinal; override;
+    function AsQWord    : QWord;    override;
+
+    function AsShortInt : ShortInt; override;
+    function AsSmallInt : SmallInt; override;
+    function AsLongInt  : LongInt;  override;
+    function AsInt4     : Int64;    override;
+
+    function AsSingle : Single; override;
+    function AsDouble : Double; override;
   end;
 
   { TMsgPackRaw }
@@ -138,6 +153,69 @@ procedure pack(AData : Shortint; out APacked : TByteList); overload;
 procedure unpack(APacked : TByteList; out AData : Byte); overload;
 }
 implementation
+
+{ TMsgPackNumber }
+
+class function TMsgPackNumber.MsgType: TMsgPackDataTypes;
+begin
+  Result := mpdtNumber;
+end;
+
+function TMsgPackNumber.SubType: TMsgPackSubTypes;
+begin
+
+end;
+
+function TMsgPackNumber.AsByte: Byte;
+begin
+
+end;
+
+function TMsgPackNumber.AsWord: Word;
+begin
+
+end;
+
+function TMsgPackNumber.AsCardinal: Cardinal;
+begin
+
+end;
+
+function TMsgPackNumber.AsQWord: QWord;
+begin
+
+end;
+
+function TMsgPackNumber.AsShortInt: ShortInt;
+begin
+
+end;
+
+function TMsgPackNumber.AsSmallInt: SmallInt;
+begin
+
+end;
+
+function TMsgPackNumber.AsLongInt: LongInt;
+begin
+
+end;
+
+function TMsgPackNumber.AsInt4: Int64;
+begin
+
+end;
+
+function TMsgPackNumber.AsSingle: Single;
+begin
+
+end;
+
+function TMsgPackNumber.AsDouble: Double;
+begin
+
+end;
+
 //uses msgpack_errors;
 
 { TMsgPackBoolean }
