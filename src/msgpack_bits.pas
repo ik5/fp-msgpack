@@ -27,8 +27,58 @@ unit msgpack_bits;
 
 interface
 
+function OneToTwoComplement(AValue : Byte)     : Byte;
+function OneToTwoComplement(AValue : Word)     : Word;
+function OneToTwoComplement(AValue : Cardinal) : Cardinal;
+function OneToTwoComplement(AValue : QWord)    : QWord;
+function OneToTwoComplement(AValue : ShortInt) : ShortInt;
+function OneToTwoComplement(AValue : SmallInt) : SmallInt;
+function OneToTwoComplement(AValue : LongInt)  : LongInt;
+function OneToTwoComplement(AValue : Int64)    : Int64;
+
+
 implementation
-uses math;
+//uses math;
+
+function OneToTwoComplement(AValue: Byte): Byte;
+begin
+
+end;
+
+function OneToTwoComplement(AValue: Word): Word;
+begin
+
+end;
+
+function OneToTwoComplement(AValue: Cardinal): Cardinal;
+begin
+
+end;
+
+function OneToTwoComplement(AValue: QWord): QWord;
+begin
+
+end;
+
+function OneToTwoComplement(AValue: ShortInt): ShortInt;
+begin
+
+end;
+
+function OneToTwoComplement(AValue: SmallInt): SmallInt;
+begin
+
+end;
+
+function OneToTwoComplement(AValue: LongInt): LongInt;
+begin
+
+end;
+
+function OneToTwoComplement(AValue: Int64): Int64;
+begin
+
+end;
 
 
 end.
