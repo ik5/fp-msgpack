@@ -76,6 +76,7 @@ type
 
     function IsNil : Boolean; virtual; abstract;
 
+    property RawData : TRawData read FRawData write FRawData;
   end;
 
   { TMsgPackNil }
