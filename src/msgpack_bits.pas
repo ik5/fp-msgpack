@@ -64,7 +64,7 @@ end;
 
 function OneToTwoComplement(AValue: QWord): QWord;
 begin
-  Result := (AValue xor $FFFFFFFFFFFFFFFF) + 1;
+  Result := (AValue xor QWord($FFFFFFFFFFFFFFFF)) + 1;
 end;
 
 function OneToTwoComplement(AValue: ShortInt): ShortInt;
@@ -104,7 +104,7 @@ end;
 
 function TwoToOneComplement(AValue: QWord): QWord;
 begin
-  Result := AValue xor $FFFFFFFFFFFFFFFF;
+  Result := AValue xor QWord($FFFFFFFFFFFFFFFF);
 end;
 
 function TwoToOneComplement(AValue: ShortInt): ShortInt;
