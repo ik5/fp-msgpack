@@ -61,10 +61,7 @@ type
   TMsgPackDataTypes = (
                 mpdtNil,     // Contain nil data
                 mpdtBoolean, // Contain true or false data
-                mpdtPosInt,  // Contain Positive integer
-                mpdtNegInt,  // Contain Negative integer
-                mpdtFloat,   // Contain floating point
-                mpdtDouble,  // Contain floating point double precision IEEE 754
+                mpdtNumber,  // Number type (Integer or floating point)
                 mpdtRaw,     // Contain Non numeric char
                 mpdtArray,   // Contain array
                 mpdtMap      // Contain map of key value
