@@ -127,6 +127,21 @@ type
 
     function AsSingle : Single; override;
     function AsDouble : Double; override;
+
+    function AsBoolean : Boolean; override;
+
+    function IsNil : Boolean; override;
+
+    procedure Value(AValue : Byte);     virtual;
+    procedure Value(AValue : Word);     virtual;
+    procedure Value(AValue : Cardinal); virtual;
+    procedure Value(AValue : QWord);    virtual;
+    procedure Value(AValue : ShortInt); virtual;
+    procedure Value(AValue : SmallInt); virtual;
+    procedure Value(AValue : LongInt);  virtual;
+    procedure Value(AValue : Int64);    virtual;
+    procedure Value(AValue : Single);   virtual;
+    procedure Value(AValue : Double);   virtual;
   end;
 
   { TMsgPackRaw }
@@ -212,6 +227,66 @@ begin
 end;
 
 function TMsgPackNumber.AsDouble: Double;
+begin
+
+end;
+
+function TMsgPackNumber.AsBoolean: Boolean;
+begin
+
+end;
+
+function TMsgPackNumber.IsNil: Boolean;
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: Byte);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: Word);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: Cardinal);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: QWord);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: ShortInt);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: SmallInt);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: LongInt);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: Int64);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: Single);
+begin
+
+end;
+
+procedure TMsgPackNumber.Value(AValue: Double);
 begin
 
 end;
