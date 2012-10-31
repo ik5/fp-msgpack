@@ -468,43 +468,6 @@ begin
   Result := True;
 end;
 
-{
-procedure pack(AData: Shortint; out APacked: TByteList);
-begin
-  if AData >= 0 then
-   begin
-    pack(Byte(AData, APacked);
-   end
-  else begin
-     if AData >= -32 then
-      begin
-        SetLength(APacked, 1);
-        APacked[0] := notNegIntMax + AData +1;
-      end
-     else begin
-       SetLength(APacked, 2);
-       APacked[0] := notInt8;
-       APacked[1] := AData;
-     end;
-  end;
-end;
 
-procedure unpack(APacked: TByteList; out AData: Byte);
-begin
-  case Length(APacked) of
-   1 : begin
-         if APacked[0] in [0..127] then
-           AData := APacked[0]
-         else raise EMsgPackWrongType.Create(errInvalidDataType);
-        end;
-   2 : begin
-        if APacked[0] = notUInt8 then
-         AData := APacked[1]
-        else raise EMsgPackWrongType.Create(errInvalidDataType);
-       end;
-   else raise EMsgPackWrongType.Create(errInvalidDataType);
-  end;
-end;
-}
 end.
 
