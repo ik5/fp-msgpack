@@ -50,6 +50,9 @@ resourcestring
   RawDataLenError   = 'RawData.Len does not contain the proper length';
   RawDataWrongType  = 'RawData.RawBytes[0] contain wrong data type';
   BooleanWrongValue = 'Boolean contain wrong value';
+  ByteLength        = 'Input of %d have length of %d';
+  ByteOutput        = 'Input of %d must be equal to the value with not change';
+  BytePrefix        = 'Byte Prefix: %2x';
 
 procedure TConvertTest.SetUp;
 begin
@@ -57,38 +60,36 @@ begin
 end;
 
 procedure TConvertTest.TestPackedBytes;
-(*const
-  ByteLength = 'Input of %d have length of %d';
-  ByteOutput = 'Input of %d must be equal to the value with not change';
-  BytePrefix = 'Byte Prefix: %2x';
-
 var Input  : Byte;
-    //Output : TByteList;
-  *)
+    Number : TMsgPackNumber;
 begin
-  (*
+  Number := TMsgPackNumber.Create;
   Input := 1; // Almost start
-  //pack(Input, Output);
-  CheckEquals(1, Length(Output), Format(ByteLength, [Input, 1]));
-  CheckEquals(Input, Input, Format(ByteOutput, [Input]));
+
+  Number.Value(Input);
+  CheckEquals(1, Number.RawData.Len, Format(ByteLength, [Input, 1]));
+  CheckEquals(Input, Number.AsByte, Format(ByteOutput, [Input]));
 
   Input := 127; // Last low byte
-  //pack(Input, Output);
-  CheckEquals(1, Length(Output), Format(ByteLength, [Input, 1]));
-  CheckEquals(Input, Output[0], Format(ByteOutput, [Input]));
+  Number.Value(Input);
+  CheckEquals(1, Number.RawData.Len, Format(ByteLength, [Input, 1]));
+  CheckEquals(Input, Number.AsByte, Format(ByteOutput, [Input]));
 
   Input := 128; // Start high byte
-  //pack(Input, Output);
-  CheckEquals(2, Length(Output), Format(ByteLength, [Input, 2]));
-  CheckEquals(notUInt8, Output[0], Format(BytePrefix, [Output[0]]));
-  CheckEquals(Input, Output[1], Format(ByteOutput, [Input]));
+  Number.Value(Input);
+  CheckEquals(2, Number.RawData.Len, Format(ByteLength, [Input, 2]));
+  CheckEquals(notUInt8, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(Input, Number.AsByte, Format(ByteOutput, [Input]));
 
   Input := 255; // Last high byte
-  //pack(Input, Output);
-  CheckEquals(2, Length(Output), Format(ByteLength, [Input, 2]));
-  CheckEquals(notUInt8, Output[0], Format(BytePrefix, [Output[0]]));
-  CheckEquals(Input, Output[1], Format(ByteOutput, [Input]));
-  *)
+  Number.Value(Input);
+  CheckEquals(2, Number.RawData.Len, Format(ByteLength, [Input, 2]));
+  CheckEquals(notUInt8, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(Input, Number.AsByte, Format(ByteOutput, [Input]));
+
+  Number.Free;
 end;
 
 procedure TConvertTest.TestNil;
