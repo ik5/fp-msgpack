@@ -168,7 +168,7 @@ procedure pack(AData : Shortint; out APacked : TByteList); overload;
 procedure unpack(APacked : TByteList; out AData : Byte); overload;
 }
 implementation
-uses msgpack_bits;
+uses msgpack_bits, msgpack_errors;
 
 { TMsgPackNumber }
 
@@ -292,8 +292,6 @@ begin
 
 end;
 
-//uses msgpack_errors;
-
 { TMsgPackBoolean }
 
 function TMsgPackBoolean.GetValue: Boolean;
@@ -301,6 +299,8 @@ begin
   case FRawData.RawBytes[0] of
     notFalse : Result := False;
     notTrue  : Result := True;
+  else
+    raise EMsgPackWrongType.Create(errInvalidDataType);
   end;
 end;
 
@@ -322,7 +322,8 @@ begin
     notFalse : Result := mpstFalse;
     notTrue  : Result := mpstTrue;
   else
-    Result := mpstUnknown;
+    raise EMsgPackWrongType.Create(errInvalidDataType);
+    //Result := mpstUnknown;
   end;
 end;
 
