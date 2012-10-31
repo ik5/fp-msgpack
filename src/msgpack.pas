@@ -55,6 +55,8 @@ type
     class function MsgType : TMsgPackDataTypes; virtual; abstract;
     function SubType : TMsgPackSubTypes;  virtual; abstract;
 
+    constructor Create; virtual;
+
     function AsByte     : Byte;     virtual;
     function AsWord     : Word;     virtual;
     function AsCardinal : Cardinal; virtual;
@@ -86,7 +88,8 @@ type
     class function MsgType : TMsgPackDataTypes; override;
     function SubType : TMsgPackSubTypes;  override;
 
-    constructor Create; virtual;
+    constructor Create; override;
+
     function IsNil : Boolean; override;
   end;
 
@@ -100,7 +103,7 @@ type
     class function MsgType : TMsgPackDataTypes; override;
     function SubType : TMsgPackSubTypes; override;
 
-    constructor Create; virtual;
+    constructor Create; Override;
 
     function IsNil     : Boolean; override;
     function AsBoolean : Boolean; override;
@@ -114,6 +117,8 @@ type
   public
     class function MsgType : TMsgPackDataTypes; override;
     function SubType : TMsgPackSubTypes;  override;
+
+    constructor Create; override;
 
     function AsByte     : Byte;     override;
     function AsWord     : Word;     override;
@@ -172,6 +177,13 @@ uses msgpack_bits, msgpack_errors;
 
 { TMsgPackType }
 
+constructor TMsgPackType.Create;
+begin
+  FillChar(FRawData, SizeOf(TRawData), 0);
+  FRawData.Len         := 1;
+  FRawData.RawBytes[0] := notNil; // Default value is nil. Please
+end;
+
 function TMsgPackType.AsByte: Byte;
 begin
   Result := 0;
@@ -214,12 +226,12 @@ end;
 
 function TMsgPackType.AsSingle: Single;
 begin
-  Result := 0;
+  Result := 0.0;
 end;
 
 function TMsgPackType.AsDouble: Double;
 begin
-  Result := 0;
+  Result := 0.0;
 end;
 
 function TMsgPackType.AsRaw: TMsgPackRaw;
@@ -261,6 +273,13 @@ begin
   else
     raise EMsgPackWrongType.Create(errInvalidDataType);
   end;
+end;
+
+constructor TMsgPackNumber.Create;
+begin
+  inherited Create;
+  FRawData.Len         := 1;
+  FRawData.RawBytes[0] := 0;
 end;
 
 function TMsgPackNumber.AsByte: Byte;
@@ -431,6 +450,7 @@ end;
 
 constructor TMsgPackBoolean.Create;
 begin
+  inherited;
   FRawData.Len         := 1;
   FRawData.RawBytes[0] := notFalse;
 end;
@@ -459,8 +479,7 @@ end;
 
 constructor TMsgPackNil.Create;
 begin
-  FRawData.Len         := 1;
-  FRawData.RawBytes[0] := notNil;
+  Inherited;
 end;
 
 function TMsgPackNil.IsNil: Boolean;
