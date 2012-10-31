@@ -256,7 +256,11 @@ end;
 
 function TMsgPackNumber.SubType: TMsgPackSubTypes;
 begin
-
+  case FRawData.RawBytes[0] of
+    0..127, notUInt8 : Result := mpstUInt8;
+  else
+    raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 function TMsgPackNumber.AsByte: Byte;
