@@ -261,7 +261,19 @@ end;
 
 function TMsgPackNumber.AsByte: Byte;
 begin
-
+  case FRawData.Len of
+     1 : begin
+           if FRawData.RawBytes[0] in [0..127] then
+             Result := FRawData.RawBytes[0]
+           else raise EMsgPackWrongType.Create(errInvalidDataType);
+          end;
+     2 : begin
+          if FRawData.RawBytes[0] = notUInt8 then
+           Result := FRawData.RawBytes[1]
+          else raise EMsgPackWrongType.Create(errInvalidDataType);
+         end;
+     else raise EMsgPackWrongType.Create(errInvalidDataType);
+    end;
 end;
 
 function TMsgPackNumber.AsWord: Word;
@@ -321,7 +333,16 @@ end;
 
 procedure TMsgPackNumber.Value(AValue: Byte);
 begin
-
+  if AValue > 127 then
+  begin
+    FRawData.Len         := 2;
+    FRawData.RawBytes[0] := notUInt8;
+    FRawData.RawBytes[1] := AValue;
+  end
+ else begin
+   FRawData.Len         := 1;
+   FRawData.RawBytes[0] := AValue;
+ end;
 end;
 
 procedure TMsgPackNumber.Value(AValue: Word);
@@ -443,20 +464,7 @@ begin
   Result := True;
 end;
 
-{procedure pack(AData: Byte; out APacked: TByteList);
-begin
- if AData > 127 then
-  begin
-    SetLength(APacked, 2);
-    APacked[0] := notUInt8;
-    APacked[1] := AData;
-  end
- else begin
-   SetLength(APacked,1);
-   APacked[0] := AData;
- end;
-end;
-
+{
 procedure pack(AData: Shortint; out APacked: TByteList);
 begin
   if AData >= 0 then
