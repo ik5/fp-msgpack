@@ -55,26 +55,26 @@ type
     class function MsgType : TMsgPackDataTypes; virtual; abstract;
     function SubType : TMsgPackSubTypes;  virtual; abstract;
 
-    function AsByte     : Byte;     virtual; abstract;
-    function AsWord     : Word;     virtual; abstract;
-    function AsCardinal : Cardinal; virtual; abstract;
-    function AsQWord    : QWord;    virtual; abstract;
+    function AsByte     : Byte;     virtual;
+    function AsWord     : Word;     virtual;
+    function AsCardinal : Cardinal; virtual;
+    function AsQWord    : QWord;    virtual;
 
-    function AsShortInt : ShortInt; virtual; abstract;
-    function AsSmallInt : SmallInt; virtual; abstract;
-    function AsLongInt  : LongInt;  virtual; abstract;
-    function AsInt4     : Int64;    virtual; abstract;
+    function AsShortInt : ShortInt; virtual;
+    function AsSmallInt : SmallInt; virtual;
+    function AsLongInt  : LongInt;  virtual;
+    function AsInt4     : Int64;    virtual;
 
-    function AsSingle : Single; virtual; abstract;
-    function AsDouble : Double; virtual; abstract;
+    function AsSingle : Single; virtual;
+    function AsDouble : Double; virtual;
 
-    function AsRaw    : TMsgPackRaw;   virtual; abstract;
-    function AsArray  : TMsgPackArray; virtual; abstract;
-    function AsMap    : TMsgPackMap;   virtual; abstract;
+    function AsRaw    : TMsgPackRaw;   virtual;
+    function AsArray  : TMsgPackArray; virtual;
+    function AsMap    : TMsgPackMap;   virtual;
 
-    function AsBoolean : Boolean; virtual; abstract;
+    function AsBoolean : Boolean; virtual;
 
-    function IsNil : Boolean; virtual; abstract;
+    function IsNil : Boolean; virtual;
 
     property RawData : TRawData read FRawData write FRawData;
   end;
@@ -169,6 +169,83 @@ procedure unpack(APacked : TByteList; out AData : Byte); overload;
 }
 implementation
 uses msgpack_bits, msgpack_errors;
+
+{ TMsgPackType }
+
+function TMsgPackType.AsByte: Byte;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsWord: Word;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsCardinal: Cardinal;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsQWord: QWord;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsShortInt: ShortInt;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsSmallInt: SmallInt;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsLongInt: LongInt;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsInt4: Int64;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsSingle: Single;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsDouble: Double;
+begin
+  Result := 0;
+end;
+
+function TMsgPackType.AsRaw: TMsgPackRaw;
+begin
+  Result := Nil;
+end;
+
+function TMsgPackType.AsArray: TMsgPackArray;
+begin
+  Result := Nil;
+end;
+
+function TMsgPackType.AsMap: TMsgPackMap;
+begin
+  Result := nil;
+end;
+
+function TMsgPackType.AsBoolean: Boolean;
+begin
+  Result := False;
+end;
+
+function TMsgPackType.IsNil: Boolean;
+begin
+  Result := True;
+end;
 
 { TMsgPackNumber }
 
