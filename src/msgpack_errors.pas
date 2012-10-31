@@ -28,6 +28,7 @@ interface
 
 resourcestring
   errInvalidDataType = 'Wrong data type was given';
+  errNotImplemented  = 'Method not implemented';
 
 implementation
 
