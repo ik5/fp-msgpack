@@ -40,6 +40,7 @@ type
     procedure TestPackedBytes;
     procedure TestNil;
     procedure TestBoolean;
+    procedure TestWord;
   end;
 
 implementation
@@ -115,6 +116,11 @@ begin
   CheckEquals(1, BooleanClass.RawData.Len, RawDataLenError);
   CheckEquals(notTrue, BooleanClass.RawData.RawBytes[0], RawDataWrongType);
   BooleanClass.Free;
+end;
+
+procedure TConvertTest.TestWord;
+begin
+
 end;
 
 
