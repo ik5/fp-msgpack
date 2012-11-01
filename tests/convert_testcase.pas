@@ -119,8 +119,19 @@ begin
 end;
 
 procedure TConvertTest.TestWord;
+var Number : TMsgPackNumber;
+    n      : Word;
 begin
+  Number := TMsgPackNumber.Create;
 
+  n := 256; // Minimal Value
+  Number.Value(n);
+  CheckEquals(3, Number.RawData.Len, Format(ByteLength, [n, 3]));
+  CheckEquals(notUInt16, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsWord, Format(ByteOutput, [n]));
+
+  Number.Free;
 end;
 
 
