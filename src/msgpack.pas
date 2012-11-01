@@ -300,8 +300,20 @@ begin
 end;
 
 function TMsgPackNumber.AsWord: Word;
+var Data : Word;
 begin
-
+  case FRawData.Len of
+     1..2 : Result := self.AsByte;
+        3 : begin
+              if FRawData.RawBytes[0] = notUInt16 then
+               begin
+                 Move(FRawData.RawBytes[1], Data, SizeOf(Word));
+                 Result := BEtoN(Data); // Move Big Endian to Native ...
+               end
+              else raise EMsgPackWrongType.Create(errInvalidDataType);
+            end;
+    else raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 function TMsgPackNumber.AsCardinal: Cardinal;
