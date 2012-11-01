@@ -369,8 +369,15 @@ begin
 end;
 
 procedure TMsgPackNumber.Value(AValue: Word);
+var ConvertedValue : Word;
 begin
-
+  if AValue <= High(Byte) then self.Value(Byte(AValue))
+  else begin
+    ConvertedValue       := NtoBE(AValue); // Convert our native Endian to Big Endian ...
+    FRawData.Len         := 3;
+    FRawData.RawBytes[0] := notUInt16;
+    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(Word));
+  end;
 end;
 
 procedure TMsgPackNumber.Value(AValue: Cardinal);
