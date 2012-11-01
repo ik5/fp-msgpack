@@ -131,6 +131,20 @@ begin
               Format(BytePrefix, [Number.RawData.RawBytes[0]]));
   CheckEquals(n, Number.AsWord, Format(ByteOutput, [n]));
 
+  n := 32767; // middle range
+  Number.Value(n);
+  CheckEquals(3, Number.RawData.Len, Format(ByteLength, [n, 3]));
+  CheckEquals(notUInt16, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsWord, Format(ByteOutput, [n]));
+
+  n := High(Word); // maximal range (65535)
+  Number.Value(n);
+  CheckEquals(3, Number.RawData.Len, Format(ByteLength, [n, 3]));
+  CheckEquals(notUInt16, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsWord, Format(ByteOutput, [n]));
+
   Number.Free;
 end;
 
