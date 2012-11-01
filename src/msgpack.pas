@@ -269,7 +269,8 @@ end;
 function TMsgPackNumber.SubType: TMsgPackSubTypes;
 begin
   case FRawData.RawBytes[0] of
-    0..127, notUInt8 : Result := mpstUInt8;
+    0..127, notUInt8  : Result := mpstUInt8;
+            notUInt16 : Result := mpstUInt16;
   else
     raise EMsgPackWrongType.Create(errInvalidDataType);
   end;
@@ -307,7 +308,11 @@ begin
         3 : begin
               if FRawData.RawBytes[0] = notUInt16 then
                begin
+                 {$HINTS OFF}
+                 // Compiler warns about lack of initialization of "data" variable
+                 // The Move procedure is the one that add it's content
                  Move(FRawData.RawBytes[1], Data, SizeOf(Word));
+                 {$HINTS ON} // Continue reporting from here on
                  Result := BEtoN(Data); // Move Big Endian to Native ...
                end
               else raise EMsgPackWrongType.Create(errInvalidDataType);
