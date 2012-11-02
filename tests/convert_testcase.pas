@@ -58,7 +58,7 @@ uses MsgPack_Consts;
 resourcestring
   IsNilError        = 'IsNil function contain wrong value';
   RawDataLenError   = 'RawData.Len does not contain the proper length';
-  RawDataWrongType  = 'RawData.RawBytes[0] contain wrong data type';
+  RawDataWrongType  = 'RawData[0] contain wrong data type';
   BooleanWrongValue = 'Boolean contain wrong value';
   ByteLength        = 'Input of %d have length of %d';
   ByteOutput        = 'Input of %d must be equal to the value with not change';
@@ -77,8 +77,8 @@ begin
   MsgPackType := TMsgPackNil.create;
 
   CheckEquals(True, MsgPackType.IsNil, IsNilError);
-  CheckEquals(1, MsgPackType.RawData.Len, RawDataLenError);
-  CheckEquals(notNil, MsgPackType.RawData.RawBytes[0], RawDataWrongType);
+  CheckEquals(1, Length(MsgPackType.RawData), RawDataLenError);
+  CheckEquals(notNil, MsgPackType.RawData[0], RawDataWrongType);
 
   MsgPackType.Free;
 end;
@@ -87,14 +87,14 @@ procedure TConvertTest.TestBoolean;
 begin
   MsgPackType := TMsgPackBoolean.Create;
   CheckEquals(False, TMsgPackBoolean(MsgPackType).Value, BooleanWrongValue);
-  CheckEquals(1, MsgPackType.RawData.Len, RawDataLenError);
-  CheckEquals(notFalse, MsgPackType.RawData.RawBytes[0], RawDataWrongType);
+  CheckEquals(1, Length(MsgPackType.RawData), RawDataLenError);
+  CheckEquals(notFalse, MsgPackType.RawData[0], RawDataWrongType);
 
   TMsgPackBoolean(MsgPackType).Value := True;
   CheckEquals(True, TMsgPackBoolean(MsgPackType).Value, BooleanWrongValue);
   CheckEquals(True, MsgPackType.AsBoolean, BooleanWrongValue);
-  CheckEquals(1, MsgPackType.RawData.Len, RawDataLenError);
-  CheckEquals(notTrue, MsgPackType.RawData.RawBytes[0], RawDataWrongType);
+  CheckEquals(1, Length(MsgPackType.RawData), RawDataLenError);
+  CheckEquals(notTrue, MsgPackType.RawData[0], RawDataWrongType);
 
   MsgPackType.Free;
 end;
@@ -106,26 +106,26 @@ begin
   n := 1; // Almost start
 
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(1, MsgPackType.RawData.Len, Format(ByteLength, [n, 1]));
+  CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
   CheckEquals(n, MsgPackType.AsByte, Format(ByteOutput, [n]));
 
   n := 127; // Last low byte
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(1, MsgPackType.RawData.Len, Format(ByteLength, [n, 1]));
+  CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
   CheckEquals(n, MsgPackType.AsByte, Format(ByteOutput, [n]));
 
   n := 128; // Start high byte
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(2, MsgPackType.RawData.Len, Format(ByteLength, [n, 2]));
-  CheckEquals(notUInt8, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
+  CheckEquals(notUInt8, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsByte, Format(ByteOutput, [n]));
 
   n := 255; // Last high byte
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(2, MsgPackType.RawData.Len, Format(ByteLength, [n, 2]));
-  CheckEquals(notUInt8, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
+  CheckEquals(notUInt8, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsByte, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
@@ -138,23 +138,23 @@ begin
 
   n := 256; // Minimal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
-  CheckEquals(notUInt16, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
+  CheckEquals(notUInt16, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsWord, Format(ByteOutput, [n]));
 
   n := 32767; // middle range
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
-  CheckEquals(notUInt16, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
+  CheckEquals(notUInt16, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsWord, Format(ByteOutput, [n]));
 
   n := High(Word); // maximal range (65535)
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
-  CheckEquals(notUInt16, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
+  CheckEquals(notUInt16, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsWord, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
@@ -167,23 +167,23 @@ begin
 
   n := 65536; // Minimal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
-  CheckEquals(notUInt32, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
+  CheckEquals(notUInt32, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
 
   n := 2147483647; // middle range
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
-  CheckEquals(notUInt32, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
+  CheckEquals(notUInt32, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
 
   n := High(LongWord); // maximal range (4294967295)
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
-  CheckEquals(notUInt32, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
+  CheckEquals(notUInt32, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
@@ -196,23 +196,23 @@ begin
 
   n := 4294967296; // Minimal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
-  CheckEquals(notUInt64, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
+  CheckEquals(notUInt64, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsQWord, Format(ByteOutput, [n]));
 
   n := 9223372036854775807; // middle range
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
-  CheckEquals(notUInt64, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
+  CheckEquals(notUInt64, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsQWord, Format(ByteOutput, [n]));
 
   n := High(QWord); // maximal range (18446744073709551615)
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
-  CheckEquals(notUInt64, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
+  CheckEquals(notUInt64, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsQWord, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
@@ -225,31 +225,31 @@ begin
 
   n := -128; // Minimal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(2, MsgPackType.RawData.Len, Format(ByteLength, [n, 2]));
-  CheckEquals(notInt8, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
+  CheckEquals(notInt8, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
 
   n := -64; // Middle value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(2, MsgPackType.RawData.Len, Format(ByteLength, [n, 2]));
-  CheckEquals(notInt8, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
+  CheckEquals(notInt8, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
 
   n := -32; // Middle value Single Values
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(1, MsgPackType.RawData.Len, Format(ByteLength, [n, 1]));
-  CheckEquals(Byte(n), MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
+  CheckEquals(Byte(n), MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
 
 
   n := -1; // maximal range
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(1, MsgPackType.RawData.Len, Format(ByteLength, [n, 1]));
-  CheckEquals(Byte(n), MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
+  CheckEquals(Byte(n), MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
@@ -262,23 +262,23 @@ begin
 
   n := -32768; // Minimal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
-  CheckEquals(notInt16, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
+  CheckEquals(notInt16, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
 
   n := -16384; // Middle value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
-  CheckEquals(notInt16, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
+  CheckEquals(notInt16, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
 
   n := -129; // maximal value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
-  CheckEquals(notInt16, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
+  CheckEquals(notInt16, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
@@ -291,23 +291,23 @@ begin
 
   n := -2147483648; // Minimal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
-  CheckEquals(notInt32, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
+  CheckEquals(notInt32, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
 
   n := -1073741824; // middle Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
-  CheckEquals(notInt32, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
+  CheckEquals(notInt32, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
 
   n := -32769; // maximal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
-  CheckEquals(notInt32, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
+  CheckEquals(notInt32, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
@@ -320,23 +320,23 @@ begin
 
   n := -9223372036854775808; // Minimal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
-  CheckEquals(notInt64, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
+  CheckEquals(notInt64, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
 
   n := -4611686018427387904; // middle Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
-  CheckEquals(notInt64, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
+  CheckEquals(notInt64, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
 
   n := -2147483649; // maximal Value
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
-  CheckEquals(notInt64, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
+  CheckEquals(notInt64, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
@@ -349,25 +349,25 @@ begin
 
   n := 1.10; // Minimal Value +-
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(FloatLength, [n, 5]));
-  CheckEquals(notFloat, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(FloatLength, [n, 5]));
+  CheckEquals(notFloat, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   a := MsgPackType.AsSingle;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
   n := 2.5; // middle value +-
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(FloatLength, [n, 5]));
-  CheckEquals(notFloat, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(FloatLength, [n, 5]));
+  CheckEquals(notFloat, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   a := MsgPackType.AsSingle;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
   n := 3.4E38; // maximal value +-
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(5, MsgPackType.RawData.Len, Format(FloatLength, [n, 5]));
-  CheckEquals(notFloat, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(5, Length(MsgPackType.RawData), Format(FloatLength, [n, 5]));
+  CheckEquals(notFloat, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   a := MsgPackType.AsSingle;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
@@ -381,25 +381,25 @@ begin
 
   n := 3.4E38 * 1.0000000000000001; // minimal Value +-
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(FloatLength, [n, 9]));
-  CheckEquals(notDouble, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(FloatLength, [n, 9]));
+  CheckEquals(notDouble, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   a := MsgPackType.AsDouble;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
   n := 1.7E308 / 2; // middle Value +-
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(FloatLength, [n, 9]));
-  CheckEquals(notDouble, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(FloatLength, [n, 9]));
+  CheckEquals(notDouble, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   a := MsgPackType.AsDouble;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
   n := 1.7E308; // maximal Value +-
   TMsgPackNumber(MsgPackType).Value(n);
-  CheckEquals(9, MsgPackType.RawData.Len, Format(FloatLength, [n, 9]));
-  CheckEquals(notDouble, MsgPackType.RawData.RawBytes[0],
-              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(9, Length(MsgPackType.RawData), Format(FloatLength, [n, 9]));
+  CheckEquals(notDouble, MsgPackType.RawData[0],
+              Format(BytePrefix, [MsgPackType.RawData[0]]));
   a := MsgPackType.AsDouble;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
