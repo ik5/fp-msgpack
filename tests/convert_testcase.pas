@@ -47,6 +47,7 @@ type
     procedure TestShortInt;
     procedure TestSmallInt;
     procedure TestLongInt;
+    procedure TestInt64;
   end;
 
 implementation
@@ -303,6 +304,35 @@ begin
   CheckEquals(notInt32, MsgPackType.RawData.RawBytes[0],
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
   CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestInt64;
+var n : Int64;
+begin
+  MsgPackType := TMsgPackNumber.Create;
+
+  n := -9223372036854775808; // Minimal Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
+  CheckEquals(notInt64, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
+
+  n := -4611686018427387904; // middle Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
+  CheckEquals(notInt64, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
+
+  n := -2147483649; // maximal Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(9, MsgPackType.RawData.Len, Format(ByteLength, [n, 9]));
+  CheckEquals(notInt64, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
 end;
