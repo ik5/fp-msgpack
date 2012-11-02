@@ -63,39 +63,6 @@ begin
 
 end;
 
-procedure TConvertTest.TestBytes;
-var Input  : Byte;
-    Number : TMsgPackNumber;
-begin
-  Number := TMsgPackNumber.Create;
-  Input := 1; // Almost start
-
-  Number.Value(Input);
-  CheckEquals(1, Number.RawData.Len, Format(ByteLength, [Input, 1]));
-  CheckEquals(Input, Number.AsByte, Format(ByteOutput, [Input]));
-
-  Input := 127; // Last low byte
-  Number.Value(Input);
-  CheckEquals(1, Number.RawData.Len, Format(ByteLength, [Input, 1]));
-  CheckEquals(Input, Number.AsByte, Format(ByteOutput, [Input]));
-
-  Input := 128; // Start high byte
-  Number.Value(Input);
-  CheckEquals(2, Number.RawData.Len, Format(ByteLength, [Input, 2]));
-  CheckEquals(notUInt8, Number.RawData.RawBytes[0],
-              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
-  CheckEquals(Input, Number.AsByte, Format(ByteOutput, [Input]));
-
-  Input := 255; // Last high byte
-  Number.Value(Input);
-  CheckEquals(2, Number.RawData.Len, Format(ByteLength, [Input, 2]));
-  CheckEquals(notUInt8, Number.RawData.RawBytes[0],
-              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
-  CheckEquals(Input, Number.AsByte, Format(ByteOutput, [Input]));
-
-  Number.Free;
-end;
-
 procedure TConvertTest.TestNil;
 var NilClass : TMsgPackNil;
 begin
@@ -119,6 +86,39 @@ begin
   CheckEquals(1, BooleanClass.RawData.Len, RawDataLenError);
   CheckEquals(notTrue, BooleanClass.RawData.RawBytes[0], RawDataWrongType);
   BooleanClass.Free;
+end;
+
+procedure TConvertTest.TestBytes;
+var Number : TMsgPackNumber;
+    n      : Byte;
+begin
+  Number := TMsgPackNumber.Create;
+  n := 1; // Almost start
+
+  Number.Value(n);
+  CheckEquals(1, Number.RawData.Len, Format(ByteLength, [n, 1]));
+  CheckEquals(n, Number.AsByte, Format(ByteOutput, [n]));
+
+  n := 127; // Last low byte
+  Number.Value(n);
+  CheckEquals(1, Number.RawData.Len, Format(ByteLength, [n, 1]));
+  CheckEquals(n, Number.AsByte, Format(ByteOutput, [n]));
+
+  n := 128; // Start high byte
+  Number.Value(n);
+  CheckEquals(2, Number.RawData.Len, Format(ByteLength, [n, 2]));
+  CheckEquals(notUInt8, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsByte, Format(ByteOutput, [n]));
+
+  n := 255; // Last high byte
+  Number.Value(n);
+  CheckEquals(2, Number.RawData.Len, Format(ByteLength, [n, 2]));
+  CheckEquals(notUInt8, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsByte, Format(ByteOutput, [n]));
+
+  Number.Free;
 end;
 
 procedure TConvertTest.TestWord;
