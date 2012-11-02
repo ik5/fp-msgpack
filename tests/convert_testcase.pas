@@ -49,6 +49,7 @@ type
     procedure TestLongInt;
     procedure TestInt64;
     procedure TestSingle;
+    procedure TestDouble;
   end;
 
 implementation
@@ -368,6 +369,38 @@ begin
   CheckEquals(notFloat, MsgPackType.RawData.RawBytes[0],
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
   a := MsgPackType.AsSingle;
+  AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestDouble;
+var n,a : Double;
+begin
+  MsgPackType := TMsgPackNumber.Create;
+
+  n := 3.4E38 * 1.0000000000000001; // minimal Value +-
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(9, MsgPackType.RawData.Len, Format(FloatLength, [n, 9]));
+  CheckEquals(notDouble, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  a := MsgPackType.AsDouble;
+  AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
+
+  n := 1.7E308 / 2; // middle Value +-
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(9, MsgPackType.RawData.Len, Format(FloatLength, [n, 9]));
+  CheckEquals(notDouble, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  a := MsgPackType.AsDouble;
+  AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
+
+  n := 1.7E308; // maximal Value +-
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(9, MsgPackType.RawData.Len, Format(FloatLength, [n, 9]));
+  CheckEquals(notDouble, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  a := MsgPackType.AsDouble;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
   MsgPackType.Free;
