@@ -405,8 +405,24 @@ begin
 end;
 
 function TMsgPackNumber.AsLongInt: LongInt;
+var Data : LongInt;
 begin
-
+  case FRawData.Len of
+     1..3 : Result := Self.AsSmallInt;
+        5 : begin
+              if FRawData.RawBytes[0] = notInt32 then
+               begin
+                 {$HINTS OFF}
+                 // Compiler warns about lack of initialization of "data" variable
+                 // The Move procedure is the one that add it's content
+                 Move(FRawData.RawBytes[1], Data, SizeOf(Data));
+                 {$HINTS ON} // Continue reporting from here on
+                 Result := BEtoN(Data); // Move Big Endian to Native ...
+               end
+              else raise EMsgPackWrongType.Create(errInvalidDataType);
+            end;
+    else raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 function TMsgPackNumber.AsInt4: Int64;
