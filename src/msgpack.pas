@@ -570,8 +570,12 @@ begin
 end;
 
 procedure TMsgPackNumber.Value(AValue: Single);
+var ConvertedValue : Cardinal;
 begin
-
+  ConvertedValue       := NtoBE(Cardinal(AValue));
+  FRawData.Len         := 5;
+  FRawData.RawBytes[0] := notFloat;
+  Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(ConvertedValue));
 end;
 
 procedure TMsgPackNumber.Value(AValue: Double);
