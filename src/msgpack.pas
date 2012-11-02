@@ -173,7 +173,7 @@ procedure pack(AData : Shortint; out APacked : TByteList); overload;
 procedure unpack(APacked : TByteList; out AData : Byte); overload;
 }
 implementation
-uses msgpack_bits, msgpack_errors;
+uses msgpack_errors;
 
 { TMsgPackType }
 
@@ -458,7 +458,19 @@ end;
 
 procedure TMsgPackNumber.Value(AValue: ShortInt);
 begin
-
+  if AValue > 0 then self.Value(Byte(AValue))
+  else begin
+         if AValue >= -32 then
+           begin
+            FRawData.Len         := 1;
+            FRawData.RawBytes[0] := Byte(AValue);
+           end
+         else begin
+           FRawData.Len         := 2;
+           FRawData.RawBytes[0] := notInt8;
+           FRawData.RawBytes[1] := Byte(AValue);
+         end;
+       end;
 end;
 
 procedure TMsgPackNumber.Value(AValue: SmallInt);
