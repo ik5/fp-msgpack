@@ -46,6 +46,7 @@ type
     procedure TestQWord;
     procedure TestShortInt;
     procedure TestSmallInt;
+    procedure TestLongInt;
   end;
 
 implementation
@@ -273,6 +274,35 @@ begin
   CheckEquals(notInt16, MsgPackType.RawData.RawBytes[0],
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
   CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestLongInt;
+var n : LongInt;
+begin
+  MsgPackType := TMsgPackNumber.Create;
+
+  n := -2147483648; // Minimal Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
+  CheckEquals(notInt32, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
+
+  n := -1073741824; // middle Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
+  CheckEquals(notInt32, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
+
+  n := -32769; // maximal Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
+  CheckEquals(notInt32, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
 end;
