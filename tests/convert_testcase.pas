@@ -48,6 +48,7 @@ type
     procedure TestSmallInt;
     procedure TestLongInt;
     procedure TestInt64;
+    procedure TestSingle;
   end;
 
 implementation
@@ -61,6 +62,9 @@ resourcestring
   ByteLength        = 'Input of %d have length of %d';
   ByteOutput        = 'Input of %d must be equal to the value with not change';
   BytePrefix        = 'Number Prefix: %2x';
+  FloatLength       = 'Input of %f have length of %d';
+  FloatOutput       = 'Input of %f must be equal %f';
+
 
 procedure TConvertTest.SetUp;
 begin
@@ -333,6 +337,23 @@ begin
   CheckEquals(notInt64, MsgPackType.RawData.RawBytes[0],
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
   CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestSingle;
+var n, a : Single;
+begin
+  MsgPackType := TMsgPackNumber.Create;
+
+  n := 1.10; // Minimal Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(5, MsgPackType.RawData.Len, Format(FloatLength, [n, 5]));
+  CheckEquals(notFloat, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  //CheckEquals(n, MsgPackType.AsSingle, Format(FloatOutput, [n]));
+  a := MsgPackType.AsSingle;
+  AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
   MsgPackType.Free;
 end;
