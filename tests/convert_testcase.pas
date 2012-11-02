@@ -231,7 +231,6 @@ begin
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
   CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
 
-
   n := -32; // Middle value Single Values
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(1, MsgPackType.RawData.Len, Format(ByteLength, [n, 1]));
@@ -256,6 +255,20 @@ begin
   MsgPackType := TMsgPackNumber.Create;
 
   n := -32768; // Minimal Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
+  CheckEquals(notInt16, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
+
+  n := -16384; // Middle value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
+  CheckEquals(notInt16, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
+
+  n := -129; // maximal value
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
   CheckEquals(notInt16, MsgPackType.RawData.RawBytes[0],
