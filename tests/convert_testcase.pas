@@ -217,6 +217,36 @@ var Number : TMsgPackNumber;
 begin
   Number := TMsgPackNumber.Create;
 
+  n := -128; // Minimal Value
+  Number.Value(n);
+  CheckEquals(2, Number.RawData.Len, Format(ByteLength, [n, 2]));
+  CheckEquals(notInt8, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsShortInt, Format(ByteOutput, [n]));
+
+  n := -64; // Middle value
+  Number.Value(n);
+  CheckEquals(2, Number.RawData.Len, Format(ByteLength, [n, 2]));
+  CheckEquals(notInt8, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsShortInt, Format(ByteOutput, [n]));
+
+
+  n := -32; // Middle value Single Values
+  Number.Value(n);
+  CheckEquals(1, Number.RawData.Len, Format(ByteLength, [n, 1]));
+  CheckEquals(Byte(n), Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsShortInt, Format(ByteOutput, [n]));
+
+
+  n := -1; // maximal range
+  Number.Value(n);
+  CheckEquals(1, Number.RawData.Len, Format(ByteLength, [n, 1]));
+  CheckEquals(Byte(n), Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsShortInt, Format(ByteOutput, [n]));
+
   Number.Free;
 end;
 
