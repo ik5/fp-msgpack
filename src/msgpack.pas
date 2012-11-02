@@ -467,8 +467,26 @@ begin
 end;
 
 function TMsgPackNumber.AsDouble: Double;
+var Data : QWord;
 begin
-
+  case FRawData.Len of
+   5 : Result := Self.AsSingle;
+   9 : begin
+        if FRawData.RawBytes[0] = notDouble then
+         begin
+           {$HINTS OFF}
+           // Compiler warns about lack of initialization of "data" variable
+           // The Move procedure is the one that add it's content
+           Move(FRawData.RawBytes[1], Data, SizeOf(Data));
+           {$HINTS ON} // Continue reporting from here on
+           Data   := BEtoN(Data);
+           Result := 0;
+           Move(Data, Result, SizeOf(Data));
+         end
+        else raise EMsgPackWrongType.Create(errInvalidDataType);
+       end;
+   else raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 function TMsgPackNumber.AsBoolean: Boolean;
