@@ -42,6 +42,7 @@ type
     procedure TestBoolean;
     procedure TestWord;
     procedure TestCardinal;
+    procedure TestQWord;
   end;
 
 implementation
@@ -177,6 +178,37 @@ begin
   CheckEquals(n, Number.AsCardinal, Format(ByteOutput, [n]));
 
   Number.Free;
+end;
+
+procedure TConvertTest.TestQWord;
+var Number : TMsgPackNumber;
+    n      : QWord;
+begin
+  Number := TMsgPackNumber.Create;
+
+  n := 4294967297; // Minimal Value
+  Number.Value(n);
+  CheckEquals(9, Number.RawData.Len, Format(ByteLength, [n, 9]));
+  CheckEquals(notUInt64, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsQWord, Format(ByteOutput, [n]));
+
+  n := 9223372036854775807; // middle range
+  Number.Value(n);
+  CheckEquals(9, Number.RawData.Len, Format(ByteLength, [n, 9]));
+  CheckEquals(notUInt64, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsQWord, Format(ByteOutput, [n]));
+
+  n := High(QWord); // maximal range (18446744073709551615)
+  Number.Value(n);
+  CheckEquals(9, Number.RawData.Len, Format(ByteLength, [n, 9]));
+  CheckEquals(notUInt64, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsQWord, Format(ByteOutput, [n]));
+
+  Number.Free;
+
 end;
 
 
