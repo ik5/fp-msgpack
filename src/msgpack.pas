@@ -145,7 +145,26 @@ type
   { TMsgPackRaw }
 
   TMsgPackRaw = class(TMsgPackType)
+  public
+    class function MsgType : TMsgPackDataTypes; override;
+    function SubType : TMsgPackSubTypes;  override;
 
+    constructor Create; override;
+
+    function AsByte     : Byte;     override;
+    function AsWord     : Word;     override;
+
+    function IsNil : Boolean;       override;
+
+    procedure Value(AValue : Byte);        virtual;
+    procedure Value(AValue : Word);        virtual;
+    procedure Value(AValue : Char);        virtual;
+    procedure Value(AValue : AnsiChar);    virtual;
+    procedure Value(AValue : WideChar);    virtual;
+    procedure Value(AValue : ShortString); virtual;
+    procedure Value(AValue : AnsiString);  virtual;
+    procedure Value(AValue : UTF8String);  virtual;
+    procedure Value(AValue : WideString);  virtual;
   end;
 
   { TMsgPackArray }
@@ -162,6 +181,83 @@ type
 
 implementation
 uses msgpack_errors;
+
+{ TMsgPackRaw }
+
+class function TMsgPackRaw.MsgType: TMsgPackDataTypes;
+begin
+
+end;
+
+function TMsgPackRaw.SubType: TMsgPackSubTypes;
+begin
+
+end;
+
+constructor TMsgPackRaw.Create;
+begin
+  inherited Create;
+end;
+
+function TMsgPackRaw.AsByte: Byte;
+begin
+  Result:=inherited AsByte;
+end;
+
+function TMsgPackRaw.AsWord: Word;
+begin
+  Result:=inherited AsWord;
+end;
+
+function TMsgPackRaw.IsNil: Boolean;
+begin
+  Result:=inherited IsNil;
+end;
+
+procedure TMsgPackRaw.Value(AValue: Byte);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: Word);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: Char);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: AnsiChar);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: WideChar);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: ShortString);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: AnsiString);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: UTF8String);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: WideString);
+begin
+
+end;
 
 { TMsgPackType }
 
