@@ -594,8 +594,12 @@ begin
 end;
 
 procedure TMsgPackNumber.Value(AValue: Double);
+var ConvertedValue : QWord;
 begin
-
+  ConvertedValue       := NtoBE(QWord(AValue));
+  FRawData.Len         := 9;
+  FRawData.RawBytes[0] := notDouble;
+  Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(ConvertedValue));
 end;
 
 { TMsgPackBoolean }
