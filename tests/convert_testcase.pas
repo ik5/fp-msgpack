@@ -42,7 +42,7 @@ type
     procedure TestBoolean;
     procedure TestBytes;
     procedure TestWord;
-    procedure TestCardinal;
+    procedure TestLongWord;
     procedure TestQWord;
     procedure TestShortInt;
     procedure TestSmallInt;
@@ -159,8 +159,8 @@ begin
   MsgPackType.Free;
 end;
 
-procedure TConvertTest.TestCardinal;
-var n : Cardinal;
+procedure TConvertTest.TestLongWord;
+var n : LongWord;
 begin
   MsgPackType := TMsgPackNumber.Create;
 
@@ -169,21 +169,21 @@ begin
   CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
   CheckEquals(notUInt32, MsgPackType.RawData.RawBytes[0],
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
-  CheckEquals(n, MsgPackType.AsCardinal, Format(ByteOutput, [n]));
+  CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
 
   n := 2147483647; // middle range
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
   CheckEquals(notUInt32, MsgPackType.RawData.RawBytes[0],
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
-  CheckEquals(n, MsgPackType.AsCardinal, Format(ByteOutput, [n]));
+  CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
 
-  n := High(Cardinal); // maximal range (4294967295)
+  n := High(LongWord); // maximal range (4294967295)
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(5, MsgPackType.RawData.Len, Format(ByteLength, [n, 5]));
   CheckEquals(notUInt32, MsgPackType.RawData.RawBytes[0],
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
-  CheckEquals(n, MsgPackType.AsCardinal, Format(ByteOutput, [n]));
+  CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
 
   MsgPackType.Free;
 end;

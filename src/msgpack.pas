@@ -59,7 +59,7 @@ type
 
     function AsByte     : Byte;     virtual;
     function AsWord     : Word;     virtual;
-    function AsCardinal : Cardinal; virtual;
+    function AsLongWord : LongWord; virtual;
     function AsQWord    : QWord;    virtual;
 
     function AsShortInt : ShortInt; virtual;
@@ -122,7 +122,7 @@ type
 
     function AsByte     : Byte;     override;
     function AsWord     : Word;     override;
-    function AsCardinal : Cardinal; override;
+    function AsLongWord : LongWord; override;
     function AsQWord    : QWord;    override;
 
     function AsShortInt : ShortInt; override;
@@ -139,7 +139,7 @@ type
 
     procedure Value(AValue : Byte);     virtual;
     procedure Value(AValue : Word);     virtual;
-    procedure Value(AValue : Cardinal); virtual;
+    procedure Value(AValue : LongWord); virtual;
     procedure Value(AValue : QWord);    virtual;
     procedure Value(AValue : ShortInt); virtual;
     procedure Value(AValue : SmallInt); virtual;
@@ -189,7 +189,7 @@ begin
   Result := 0;
 end;
 
-function TMsgPackType.AsCardinal: Cardinal;
+function TMsgPackType.AsLongWord: LongWord;
 begin
   Result := 0;
 end;
@@ -324,8 +324,8 @@ begin
   end;
 end;
 
-function TMsgPackNumber.AsCardinal: Cardinal;
-var Data : Cardinal;
+function TMsgPackNumber.AsLongWord: LongWord;
+var Data : LongWord;
 begin
   case FRawData.Len of
     1..3 : Result := self.AsWord;
@@ -335,7 +335,7 @@ begin
                {$HINTS OFF}
                // Compiler warns about lack of initialization of "data" variable
                // The Move procedure is the one that add it's content
-               Move(FRawData.RawBytes[1], Data, SizeOf(Cardinal));
+               Move(FRawData.RawBytes[1], Data, SizeOf(LongWord));
                {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
@@ -349,7 +349,7 @@ function TMsgPackNumber.AsQWord: QWord;
 var Data : QWord;
 begin
   case FRawData.Len of
-    1..5 : Result := self.AsCardinal;
+    1..5 : Result := self.AsLongWord;
        9 : begin
              if FRawData.RawBytes[0] = notUInt64 then
               begin
@@ -507,22 +507,22 @@ begin
   end;
 end;
 
-procedure TMsgPackNumber.Value(AValue: Cardinal);
-var ConvertedValue : Cardinal;
+procedure TMsgPackNumber.Value(AValue: LongWord);
+var ConvertedValue : LongWord;
 begin
   if AValue <= High(Word) then self.Value(Word(AValue))
   else begin
     ConvertedValue       := NtoBE(AValue); // Convert our native Endian to Big Endian ...
     FRawData.Len         := 5;
     FRawData.RawBytes[0] := notUInt32;
-    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(Cardinal));
+    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(LongWord));
   end;
 end;
 
 procedure TMsgPackNumber.Value(AValue: QWord);
 var ConvertedValue : QWord;
 begin
-  if AValue <= High(Cardinal) then self.Value(Cardinal(AValue))
+  if AValue <= High(LongWord) then self.Value(LongWord(AValue))
   else begin
     ConvertedValue       := NtoBE(AValue); // Convert our native Endian to Big Endian ...
     FRawData.Len         := 9;
