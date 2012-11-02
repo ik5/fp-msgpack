@@ -322,8 +322,24 @@ begin
 end;
 
 function TMsgPackNumber.AsCardinal: Cardinal;
+var Data : Cardinal;
 begin
-
+  case FRawData.Len of
+    1..3 : Result := self.AsWord;
+       5 : begin
+             if FRawData.RawBytes[0] = notUInt32 then
+              begin
+               {$HINTS OFF}
+               // Compiler warns about lack of initialization of "data" variable
+               // The Move procedure is the one that add it's content
+               Move(FRawData.RawBytes[1], Data, SizeOf(Cardinal));
+               {$HINTS ON} // Continue reporting from here on
+               Result := BEtoN(Data); // Move Big Endian to Native ...
+              end
+             else raise EMsgPackWrongType.Create(errInvalidDataType);
+           end;
+    else raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 function TMsgPackNumber.AsQWord: QWord;
