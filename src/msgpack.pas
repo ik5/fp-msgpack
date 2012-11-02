@@ -65,7 +65,7 @@ type
     function AsShortInt : ShortInt; virtual;
     function AsSmallInt : SmallInt; virtual;
     function AsLongInt  : LongInt;  virtual;
-    function AsInt4     : Int64;    virtual;
+    function AsInt64    : Int64;    virtual;
 
     function AsSingle : Single; virtual;
     function AsDouble : Double; virtual;
@@ -128,7 +128,7 @@ type
     function AsShortInt : ShortInt; override;
     function AsSmallInt : SmallInt; override;
     function AsLongInt  : LongInt;  override;
-    function AsInt4     : Int64;    override;
+    function AsInt64    : Int64;    override;
 
     function AsSingle : Single; override;
     function AsDouble : Double; override;
@@ -214,7 +214,7 @@ begin
   Result := 0;
 end;
 
-function TMsgPackType.AsInt4: Int64;
+function TMsgPackType.AsInt64: Int64;
 begin
   Result := 0;
 end;
@@ -425,7 +425,7 @@ begin
   end;
 end;
 
-function TMsgPackNumber.AsInt4: Int64;
+function TMsgPackNumber.AsInt64: Int64;
 var Data : Int64;
 begin
   case FRawData.Len of
