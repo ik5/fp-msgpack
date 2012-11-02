@@ -54,7 +54,7 @@ resourcestring
   BooleanWrongValue = 'Boolean contain wrong value';
   ByteLength        = 'Input of %d have length of %d';
   ByteOutput        = 'Input of %d must be equal to the value with not change';
-  BytePrefix        = 'Byte Prefix: %2x';
+  BytePrefix        = 'Number Prefix: %2x';
 
 procedure TConvertTest.SetUp;
 begin
