@@ -44,6 +44,7 @@ type
     procedure TestCardinal;
     procedure TestQWord;
     procedure TestShortInt;
+    procedure TestSmallInt;
   end;
 
 implementation
@@ -248,6 +249,11 @@ begin
   CheckEquals(n, Number.AsShortInt, Format(ByteOutput, [n]));
 
   Number.Free;
+end;
+
+procedure TConvertTest.TestSmallInt;
+begin
+
 end;
 
 
