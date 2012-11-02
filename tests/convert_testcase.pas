@@ -186,7 +186,7 @@ var Number : TMsgPackNumber;
 begin
   Number := TMsgPackNumber.Create;
 
-  n := 4294967297; // Minimal Value
+  n := 4294967296; // Minimal Value
   Number.Value(n);
   CheckEquals(9, Number.RawData.Len, Format(ByteLength, [n, 9]));
   CheckEquals(notUInt64, Number.RawData.RawBytes[0],
