@@ -271,6 +271,7 @@ begin
   case FRawData.RawBytes[0] of
     0..127, notUInt8  : Result := mpstUInt8;
             notUInt16 : Result := mpstUInt16;
+
   else
     raise EMsgPackWrongType.Create(errInvalidDataType);
   end;
@@ -426,8 +427,15 @@ begin
 end;
 
 procedure TMsgPackNumber.Value(AValue: QWord);
+var ConvertedValue : QWord;
 begin
-
+  if AValue <= High(Cardinal) then self.Value(Cardinal(AValue))
+  else begin
+    ConvertedValue       := NtoBE(AValue); // Convert our native Endian to Big Endian ...
+    FRawData.Len         := 9;
+    FRawData.RawBytes[0] := notUInt64;
+    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(QWord));
+  end;
 end;
 
 procedure TMsgPackNumber.Value(AValue: ShortInt);
