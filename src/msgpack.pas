@@ -269,7 +269,11 @@ begin
               notUInt32 : Result := mpstUInt32;
               notUInt64 : Result := mpstUInt64;
     224..255, notInt8   : Result := mpstInt8;
-
+              notInt16  : Result := mpstInt16;
+              notInt32  : Result := mpstInt32;
+              notInt64  : Result := mpstInt64;
+              notFloat  : Result := mpstFloat;
+              notDouble : Result := mpstDouble;
   else
     raise EMsgPackWrongType.Create(errInvalidDataType);
   end;
