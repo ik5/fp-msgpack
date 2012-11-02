@@ -364,7 +364,19 @@ end;
 
 function TMsgPackNumber.AsShortInt: ShortInt;
 begin
-
+  case FRawData.Len of
+       1 : begin
+             if FRawData.RawBytes[0] in [224..255] then
+               Result := FRawData.RawBytes[0] - 256
+             else raise EMsgPackWrongType.Create(errInvalidDataType);
+            end;
+       2 : begin
+            if FRawData.RawBytes[0] = notInt8 then
+             Result := FRawData.RawBytes[1] - 256
+            else raise EMsgPackWrongType.Create(errInvalidDataType);
+           end;
+       else raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 function TMsgPackNumber.AsSmallInt: SmallInt;
