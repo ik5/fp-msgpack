@@ -302,11 +302,8 @@ begin
         3 : begin
               if FRawData[0] = notUInt16 then
                begin
-                 {$HINTS OFF}
-                 // Compiler warns about lack of initialization of "data" variable
-                 // The Move procedure is the one that add it's content
+                 Data := 0;
                  Move(FRawData[1], Data, SizeOf(Word));
-                 {$HINTS ON} // Continue reporting from here on
                  Result := BEtoN(Data); // Move Big Endian to Native ...
                end
               else raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -323,11 +320,8 @@ begin
        5 : begin
              if FRawData[0] = notUInt32 then
               begin
-               {$HINTS OFF}
-               // Compiler warns about lack of initialization of "data" variable
-               // The Move procedure is the one that add it's content
+               Data := 0;
                Move(FRawData[1], Data, SizeOf(LongWord));
-               {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
              else raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -344,11 +338,8 @@ begin
        9 : begin
              if FRawData[0] = notUInt64 then
               begin
-               {$HINTS OFF}
-               // Compiler warns about lack of initialization of "data" variable
-               // The Move procedure is the one that add it's content
+               Data := 0;
                Move(FRawData[1], Data, SizeOf(QWord));
-               {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
              else raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -382,11 +373,8 @@ begin
        3 : begin
             if FRawData[0] = notInt16 then
               begin
-               {$HINTS OFF}
-               // Compiler warns about lack of initialization of "data" variable
-               // The Move procedure is the one that add it's content
+               Data := 0;
                Move(FRawData[1], Data, SizeOf(Data));
-               {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
              else raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -403,11 +391,8 @@ begin
         5 : begin
               if FRawData[0] = notInt32 then
                begin
-                 {$HINTS OFF}
-                 // Compiler warns about lack of initialization of "data" variable
-                 // The Move procedure is the one that add it's content
+                 Data := 0;
                  Move(FRawData[1], Data, SizeOf(Data));
-                 {$HINTS ON} // Continue reporting from here on
                  Result := BEtoN(Data); // Move Big Endian to Native ...
                end
               else raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -424,11 +409,8 @@ begin
        9 : begin
              if FRawData[0] = notInt64 then
               begin
-               {$HINTS OFF}
-               // Compiler warns about lack of initialization of "data" variable
-               // The Move procedure is the one that add it's content
+               Data := 0;
                Move(FRawData[1], Data, SizeOf(Data));
-               {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
              else raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -445,11 +427,8 @@ begin
 
   if FRawData[0] = notFloat then
    begin
-     {$HINTS OFF}
-     // Compiler warns about lack of initialization of "data" variable
-     // The Move procedure is the one that add it's content
+     Data := 0;
      Move(FRawData[1], Data, SizeOf(Data));
-     {$HINTS ON} // Continue reporting from here on
      Data   := BEtoN(Data);
      Result := 0;
      Move(Data, Result, SizeOf(Data));
@@ -465,11 +444,8 @@ begin
    9 : begin
         if FRawData[0] = notDouble then
          begin
-           {$HINTS OFF}
-           // Compiler warns about lack of initialization of "data" variable
-           // The Move procedure is the one that add it's content
+           Data := 0;
            Move(FRawData[1], Data, SizeOf(Data));
-           {$HINTS ON} // Continue reporting from here on
            Data   := BEtoN(Data);
            Result := 0;
            Move(Data, Result, SizeOf(Data));
