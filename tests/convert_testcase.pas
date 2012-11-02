@@ -251,8 +251,18 @@ begin
 end;
 
 procedure TConvertTest.TestSmallInt;
+var n : SmallInt;
 begin
+  MsgPackType := TMsgPackNumber.Create;
 
+  n := -32768; // Minimal Value
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(3, MsgPackType.RawData.Len, Format(ByteLength, [n, 3]));
+  CheckEquals(notInt16, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
+
+  MsgPackType.Free;
 end;
 
 
