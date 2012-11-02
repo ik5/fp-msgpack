@@ -382,12 +382,12 @@ end;
 
 function TMsgPackNumber.AsBoolean: Boolean;
 begin
-
+  Result := ((self.SubType <> mpstUInt8) or (Self.AsByte <> 0));
 end;
 
 function TMsgPackNumber.IsNil: Boolean;
 begin
-
+  Result := False;
 end;
 
 procedure TMsgPackNumber.Value(AValue: Byte);
