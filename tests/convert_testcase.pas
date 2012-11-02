@@ -37,7 +37,6 @@ type
   protected
     MsgPackType : TMsgPackType;
     procedure SetUp; override;
-
   published
     procedure TestNil;
     procedure TestBoolean;
@@ -278,9 +277,7 @@ begin
   MsgPackType.Free;
 end;
 
-
 initialization
-
   RegisterTest(TConvertTest);
 end.
 
