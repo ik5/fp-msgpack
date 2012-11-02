@@ -389,7 +389,7 @@ begin
   case FRawData.Len of
     1..2 : Result := Self.AsShortInt;
        3 : begin
-            if FRawData.RawBytes[0] = notUInt64 then
+            if FRawData.RawBytes[0] = notInt16 then
               begin
                {$HINTS OFF}
                // Compiler warns about lack of initialization of "data" variable
