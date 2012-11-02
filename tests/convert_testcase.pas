@@ -37,12 +37,13 @@ type
   protected
     procedure SetUp; override;
   published
-    procedure TestPackedBytes;
     procedure TestNil;
     procedure TestBoolean;
+    procedure TestBytes;
     procedure TestWord;
     procedure TestCardinal;
     procedure TestQWord;
+    procedure TestShortInt;
   end;
 
 implementation
@@ -62,7 +63,7 @@ begin
 
 end;
 
-procedure TConvertTest.TestPackedBytes;
+procedure TConvertTest.TestBytes;
 var Input  : Byte;
     Number : TMsgPackNumber;
 begin
@@ -208,7 +209,15 @@ begin
   CheckEquals(n, Number.AsQWord, Format(ByteOutput, [n]));
 
   Number.Free;
+end;
 
+procedure TConvertTest.TestShortInt;
+var Number : TMsgPackNumber;
+    n      : ShortInt;
+begin
+  Number := TMsgPackNumber.Create;
+
+  Number.Free;
 end;
 
 
