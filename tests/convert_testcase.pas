@@ -346,12 +346,27 @@ var n, a : Single;
 begin
   MsgPackType := TMsgPackNumber.Create;
 
-  n := 1.10; // Minimal Value
+  n := 1.10; // Minimal Value +-
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(5, MsgPackType.RawData.Len, Format(FloatLength, [n, 5]));
   CheckEquals(notFloat, MsgPackType.RawData.RawBytes[0],
               Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
-  //CheckEquals(n, MsgPackType.AsSingle, Format(FloatOutput, [n]));
+  a := MsgPackType.AsSingle;
+  AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
+
+  n := 2.5; // middle value +-
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(5, MsgPackType.RawData.Len, Format(FloatLength, [n, 5]));
+  CheckEquals(notFloat, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
+  a := MsgPackType.AsSingle;
+  AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
+
+  n := 3.4E38; // maximal value +-
+  TMsgPackNumber(MsgPackType).Value(n);
+  CheckEquals(5, MsgPackType.RawData.Len, Format(FloatLength, [n, 5]));
+  CheckEquals(notFloat, MsgPackType.RawData.RawBytes[0],
+              Format(BytePrefix, [MsgPackType.RawData.RawBytes[0]]));
   a := MsgPackType.AsSingle;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
 
