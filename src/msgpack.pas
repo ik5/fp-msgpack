@@ -542,8 +542,15 @@ begin
 end;
 
 procedure TMsgPackNumber.Value(AValue: Int64);
+var ConvertedValue : Int64;
 begin
-
+  if AValue >= -2147483648 then Self.Value(LongInt(AValue))
+  else begin
+    ConvertedValue       := NtoBE(AValue);
+    FRawData.Len         := 9;
+    FRawData.RawBytes[0] := notInt64;
+    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(ConvertedValue));
+  end;
 end;
 
 procedure TMsgPackNumber.Value(AValue: Single);
