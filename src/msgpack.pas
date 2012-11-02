@@ -201,17 +201,17 @@ end;
 
 function TMsgPackRaw.AsByte: Byte;
 begin
-  Result:=inherited AsByte;
+
 end;
 
 function TMsgPackRaw.AsWord: Word;
 begin
-  Result:=inherited AsWord;
+
 end;
 
 function TMsgPackRaw.IsNil: Boolean;
 begin
-  Result:=inherited IsNil;
+
 end;
 
 procedure TMsgPackRaw.Value(AValue: Byte);
