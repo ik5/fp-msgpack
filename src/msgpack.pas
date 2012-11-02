@@ -447,8 +447,21 @@ begin
 end;
 
 function TMsgPackNumber.AsSingle: Single;
+var Data : Cardinal;
 begin
+  if FRawData.Len <> 5 then
+   raise EMsgPackWrongType.Create(errInvalidDataType);
 
+  if FRawData.RawBytes[0] = notFloat then
+   begin
+     {$HINTS OFF}
+     // Compiler warns about lack of initialization of "data" variable
+     // The Move procedure is the one that add it's content
+     Move(FRawData.RawBytes[1], Data, SizeOf(Data));
+     {$HINTS ON} // Continue reporting from here on
+     Result := Single(BEtoN(Data)); // Move Big Endian to Native ...
+   end
+  else raise EMsgPackWrongType.Create(errInvalidDataType);
 end;
 
 function TMsgPackNumber.AsDouble: Double;
