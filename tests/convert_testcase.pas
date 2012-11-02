@@ -41,6 +41,7 @@ type
     procedure TestNil;
     procedure TestBoolean;
     procedure TestWord;
+    procedure TestCardinal;
   end;
 
 implementation
@@ -144,6 +145,36 @@ begin
   CheckEquals(notUInt16, Number.RawData.RawBytes[0],
               Format(BytePrefix, [Number.RawData.RawBytes[0]]));
   CheckEquals(n, Number.AsWord, Format(ByteOutput, [n]));
+
+  Number.Free;
+end;
+
+procedure TConvertTest.TestCardinal;
+var Number : TMsgPackNumber;
+    n      : Cardinal;
+begin
+  Number := TMsgPackNumber.Create;
+
+  n := 65536; // Minimal Value
+  Number.Value(n);
+  CheckEquals(5, Number.RawData.Len, Format(ByteLength, [n, 5]));
+  CheckEquals(notUInt32, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsCardinal, Format(ByteOutput, [n]));
+
+  n := 2147483647; // middle range
+  Number.Value(n);
+  CheckEquals(5, Number.RawData.Len, Format(ByteLength, [n, 5]));
+  CheckEquals(notUInt32, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsCardinal, Format(ByteOutput, [n]));
+
+  n := High(Cardinal); // maximal range (4294967295)
+  Number.Value(n);
+  CheckEquals(5, Number.RawData.Len, Format(ByteLength, [n, 5]));
+  CheckEquals(notUInt32, Number.RawData.RawBytes[0],
+              Format(BytePrefix, [Number.RawData.RawBytes[0]]));
+  CheckEquals(n, Number.AsCardinal, Format(ByteOutput, [n]));
 
   Number.Free;
 end;
