@@ -33,6 +33,8 @@ type
   EMsgPack          = class(Exception);
   EMsgPackWrongType = class(EMsgPack);
 
+  TRawData = array of Byte;
+
   TMsgPackArray = class;
   TMsgPackMap   = class;
   TMsgPackRaw   = class;
@@ -41,15 +43,6 @@ type
 
   TMsgPackType = class(TObject)
   protected
-    type
-     TCharArray = Array[0..32767] of Char;
-     TRawData = record
-       Len : Word;
-       case Boolean of
-          False : (RawBytes : TByteArray);
-          True  : (RawChars : TCharArray);
-       end;
-    var
      FRawData : TRawData;
   public
     class function MsgType : TMsgPackDataTypes; virtual; abstract;
@@ -174,9 +167,9 @@ uses msgpack_errors;
 
 constructor TMsgPackType.Create;
 begin
+  SetLength(FRawData, 1);
   FillChar(FRawData, SizeOf(TRawData), 0);
-  FRawData.Len         := 1;
-  FRawData.RawBytes[0] := notNil; // Default value is nil. Please
+  FRawData[0] := notNil; // Default value is nil. Please
 end;
 
 function TMsgPackType.AsByte: Byte;
@@ -263,7 +256,7 @@ end;
 
 function TMsgPackNumber.SubType: TMsgPackSubTypes;
 begin
-  case FRawData.RawBytes[0] of
+  case FRawData[0] of
     0..127,   notUInt8  : Result := mpstUInt8;
               notUInt16 : Result := mpstUInt16;
               notUInt32 : Result := mpstUInt32;
@@ -282,21 +275,20 @@ end;
 constructor TMsgPackNumber.Create;
 begin
   inherited Create;
-  FRawData.Len         := 1;
-  FRawData.RawBytes[0] := 0;
+  FRawData[0] := 0;
 end;
 
 function TMsgPackNumber.AsByte: Byte;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
      1 : begin
-           if FRawData.RawBytes[0] in [0..127] then
-             Result := FRawData.RawBytes[0]
+           if FRawData[0] in [0..127] then
+             Result := FRawData[0]
            else raise EMsgPackWrongType.Create(errInvalidDataType);
           end;
      2 : begin
-          if FRawData.RawBytes[0] = notUInt8 then
-           Result := FRawData.RawBytes[1]
+          if FRawData[0] = notUInt8 then
+           Result := FRawData[1]
           else raise EMsgPackWrongType.Create(errInvalidDataType);
          end;
      else raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -306,15 +298,15 @@ end;
 function TMsgPackNumber.AsWord: Word;
 var Data : Word;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
      1..2 : Result := self.AsByte;
         3 : begin
-              if FRawData.RawBytes[0] = notUInt16 then
+              if FRawData[0] = notUInt16 then
                begin
                  {$HINTS OFF}
                  // Compiler warns about lack of initialization of "data" variable
                  // The Move procedure is the one that add it's content
-                 Move(FRawData.RawBytes[1], Data, SizeOf(Word));
+                 Move(FRawData[1], Data, SizeOf(Word));
                  {$HINTS ON} // Continue reporting from here on
                  Result := BEtoN(Data); // Move Big Endian to Native ...
                end
@@ -327,15 +319,15 @@ end;
 function TMsgPackNumber.AsLongWord: LongWord;
 var Data : LongWord;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
     1..3 : Result := self.AsWord;
        5 : begin
-             if FRawData.RawBytes[0] = notUInt32 then
+             if FRawData[0] = notUInt32 then
               begin
                {$HINTS OFF}
                // Compiler warns about lack of initialization of "data" variable
                // The Move procedure is the one that add it's content
-               Move(FRawData.RawBytes[1], Data, SizeOf(LongWord));
+               Move(FRawData[1], Data, SizeOf(LongWord));
                {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
@@ -348,15 +340,15 @@ end;
 function TMsgPackNumber.AsQWord: QWord;
 var Data : QWord;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
     1..5 : Result := self.AsLongWord;
        9 : begin
-             if FRawData.RawBytes[0] = notUInt64 then
+             if FRawData[0] = notUInt64 then
               begin
                {$HINTS OFF}
                // Compiler warns about lack of initialization of "data" variable
                // The Move procedure is the one that add it's content
-               Move(FRawData.RawBytes[1], Data, SizeOf(QWord));
+               Move(FRawData[1], Data, SizeOf(QWord));
                {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
@@ -368,15 +360,15 @@ end;
 
 function TMsgPackNumber.AsShortInt: ShortInt;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
        1 : begin
-             if FRawData.RawBytes[0] in [224..255] then
-               Result := FRawData.RawBytes[0] - 256
+             if FRawData[0] in [224..255] then
+               Result := FRawData[0] - 256
              else raise EMsgPackWrongType.Create(errInvalidDataType);
             end;
        2 : begin
-            if FRawData.RawBytes[0] = notInt8 then
-             Result := FRawData.RawBytes[1] - 256
+            if FRawData[0] = notInt8 then
+             Result := FRawData[1] - 256
             else raise EMsgPackWrongType.Create(errInvalidDataType);
            end;
        else raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -386,15 +378,15 @@ end;
 function TMsgPackNumber.AsSmallInt: SmallInt;
 var Data : SmallInt;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
     1..2 : Result := Self.AsShortInt;
        3 : begin
-            if FRawData.RawBytes[0] = notInt16 then
+            if FRawData[0] = notInt16 then
               begin
                {$HINTS OFF}
                // Compiler warns about lack of initialization of "data" variable
                // The Move procedure is the one that add it's content
-               Move(FRawData.RawBytes[1], Data, SizeOf(Data));
+               Move(FRawData[1], Data, SizeOf(Data));
                {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
@@ -407,15 +399,15 @@ end;
 function TMsgPackNumber.AsLongInt: LongInt;
 var Data : LongInt;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
      1..3 : Result := Self.AsSmallInt;
         5 : begin
-              if FRawData.RawBytes[0] = notInt32 then
+              if FRawData[0] = notInt32 then
                begin
                  {$HINTS OFF}
                  // Compiler warns about lack of initialization of "data" variable
                  // The Move procedure is the one that add it's content
-                 Move(FRawData.RawBytes[1], Data, SizeOf(Data));
+                 Move(FRawData[1], Data, SizeOf(Data));
                  {$HINTS ON} // Continue reporting from here on
                  Result := BEtoN(Data); // Move Big Endian to Native ...
                end
@@ -428,15 +420,15 @@ end;
 function TMsgPackNumber.AsInt64: Int64;
 var Data : Int64;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
     1..5 : Result := Self.AsLongInt;
        9 : begin
-             if FRawData.RawBytes[0] = notInt64 then
+             if FRawData[0] = notInt64 then
               begin
                {$HINTS OFF}
                // Compiler warns about lack of initialization of "data" variable
                // The Move procedure is the one that add it's content
-               Move(FRawData.RawBytes[1], Data, SizeOf(Data));
+               Move(FRawData[1], Data, SizeOf(Data));
                {$HINTS ON} // Continue reporting from here on
                Result := BEtoN(Data); // Move Big Endian to Native ...
               end
@@ -449,15 +441,15 @@ end;
 function TMsgPackNumber.AsSingle: Single;
 var Data : LongWord;
 begin
-  if FRawData.Len <> 5 then
+  if Length(FRawData) <> 5 then
    raise EMsgPackWrongType.Create(errInvalidDataType);
 
-  if FRawData.RawBytes[0] = notFloat then
+  if FRawData[0] = notFloat then
    begin
      {$HINTS OFF}
      // Compiler warns about lack of initialization of "data" variable
      // The Move procedure is the one that add it's content
-     Move(FRawData.RawBytes[1], Data, SizeOf(Data));
+     Move(FRawData[1], Data, SizeOf(Data));
      {$HINTS ON} // Continue reporting from here on
      Data   := BEtoN(Data);
      Result := 0;
@@ -469,15 +461,15 @@ end;
 function TMsgPackNumber.AsDouble: Double;
 var Data : QWord;
 begin
-  case FRawData.Len of
+  case Length(FRawData) of
    5 : Result := Self.AsSingle;
    9 : begin
-        if FRawData.RawBytes[0] = notDouble then
+        if FRawData[0] = notDouble then
          begin
            {$HINTS OFF}
            // Compiler warns about lack of initialization of "data" variable
            // The Move procedure is the one that add it's content
-           Move(FRawData.RawBytes[1], Data, SizeOf(Data));
+           Move(FRawData[1], Data, SizeOf(Data));
            {$HINTS ON} // Continue reporting from here on
            Data   := BEtoN(Data);
            Result := 0;
@@ -503,13 +495,13 @@ procedure TMsgPackNumber.Value(AValue: Byte);
 begin
   if AValue > 127 then
   begin
-    FRawData.Len         := 2;
-    FRawData.RawBytes[0] := notUInt8;
-    FRawData.RawBytes[1] := AValue;
+    SetLength(FRawData, 2);
+    FRawData[0] := notUInt8;
+    FRawData[1] := AValue;
   end
  else begin
-   FRawData.Len         := 1;
-   FRawData.RawBytes[0] := AValue;
+   SetLength(FRawData, 1);
+   FRawData[0] := AValue;
  end;
 end;
 
@@ -518,10 +510,10 @@ var ConvertedValue : Word;
 begin
   if AValue <= High(Byte) then self.Value(Byte(AValue))
   else begin
-    ConvertedValue       := NtoBE(AValue); // Convert our native Endian to Big Endian ...
-    FRawData.Len         := 3;
-    FRawData.RawBytes[0] := notUInt16;
-    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(Word));
+    SetLength(FRawData, 3);
+    ConvertedValue := NtoBE(AValue); // Convert our native Endian to Big Endian ...
+    FRawData[0]    := notUInt16;
+    Move(ConvertedValue, FRawData[1], SizeOf(Word));
   end;
 end;
 
@@ -530,10 +522,10 @@ var ConvertedValue : LongWord;
 begin
   if AValue <= High(Word) then self.Value(Word(AValue))
   else begin
-    ConvertedValue       := NtoBE(AValue); // Convert our native Endian to Big Endian ...
-    FRawData.Len         := 5;
-    FRawData.RawBytes[0] := notUInt32;
-    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(LongWord));
+    SetLength(FRawData, 5);
+    ConvertedValue  := NtoBE(AValue); // Convert our native Endian to Big Endian ...
+    FRawData[0]     := notUInt32;
+    Move(ConvertedValue, FRawData[1], SizeOf(LongWord));
   end;
 end;
 
@@ -542,10 +534,10 @@ var ConvertedValue : QWord;
 begin
   if AValue <= High(LongWord) then self.Value(LongWord(AValue))
   else begin
-    ConvertedValue       := NtoBE(AValue); // Convert our native Endian to Big Endian ...
-    FRawData.Len         := 9;
-    FRawData.RawBytes[0] := notUInt64;
-    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(QWord));
+    SetLength(FRawData, 9);
+    ConvertedValue := NtoBE(AValue); // Convert our native Endian to Big Endian ...
+    FRawData[0]    := notUInt64;
+    Move(ConvertedValue, FRawData[1], SizeOf(QWord));
   end;
 end;
 
@@ -555,13 +547,13 @@ begin
   else begin
          if AValue >= -32 then
            begin
-            FRawData.Len         := 1;
-            FRawData.RawBytes[0] := Byte(AValue);
+            SetLength(FRawData, 1);
+            FRawData[0] := Byte(AValue);
            end
          else begin
-           FRawData.Len         := 2;
-           FRawData.RawBytes[0] := notInt8;
-           FRawData.RawBytes[1] := Byte(AValue);
+           SetLength(FRawData, 2);
+           FRawData[0] := notInt8;
+           FRawData[1] := Byte(AValue);
          end;
        end;
 end;
@@ -571,10 +563,10 @@ var ConvertedValue : SmallInt;
 begin
   if AValue >= -128 then self.Value(ShortInt(AValue))
   else begin
-    ConvertedValue       := NtoBE(AValue);
-    FRawData.Len         := 3;
-    FRawData.RawBytes[0] := notInt16;
-    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(ConvertedValue));
+    SetLength(FRawData, 3);
+    ConvertedValue := NtoBE(AValue);
+    FRawData[0]    := notInt16;
+    Move(ConvertedValue, FRawData[1], SizeOf(ConvertedValue));
   end;
 end;
 
@@ -583,10 +575,10 @@ var ConvertedValue : LongInt;
 begin
   if AValue >= -32768 then Self.Value(SmallInt(AValue))
   else begin
-    ConvertedValue       := NtoBE(AValue);
-    FRawData.Len         := 5;
-    FRawData.RawBytes[0] := notInt32;
-    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(ConvertedValue));
+    SetLength(FRawData, 5);
+    ConvertedValue := NtoBE(AValue);
+    FRawData[0]    := notInt32;
+    Move(ConvertedValue, FRawData[1], SizeOf(ConvertedValue));
   end;
 end;
 
@@ -595,20 +587,20 @@ var ConvertedValue : Int64;
 begin
   if AValue >= -2147483648 then Self.Value(LongInt(AValue))
   else begin
-    ConvertedValue       := NtoBE(AValue);
-    FRawData.Len         := 9;
-    FRawData.RawBytes[0] := notInt64;
-    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(ConvertedValue));
+    SetLength(FRawData, 9);
+    ConvertedValue := NtoBE(AValue);
+    FRawData[0]    := notInt64;
+    Move(ConvertedValue, FRawData[1], SizeOf(ConvertedValue));
   end;
 end;
 
 procedure TMsgPackNumber.Value(AValue: Single);
 var ConvertedValue : LongWord;
 begin
-  ConvertedValue       := NtoBE(LongWord(AValue));
-  FRawData.Len         := 5;
-  FRawData.RawBytes[0] := notFloat;
-  Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(ConvertedValue));
+  SetLength(FRawData, 5);
+  ConvertedValue := NtoBE(LongWord(AValue));
+  FRawData[0]    := notFloat;
+  Move(ConvertedValue, FRawData[1], SizeOf(ConvertedValue));
 end;
 
 procedure TMsgPackNumber.Value(AValue: Double);
@@ -617,10 +609,10 @@ begin
   if AValue <= 3.4E38 then
    Self.Value(Single(AValue))
   else begin
-    ConvertedValue       := NtoBE(QWord(AValue));
-    FRawData.Len         := 9;
-    FRawData.RawBytes[0] := notDouble;
-    Move(ConvertedValue, FRawData.RawBytes[1], SizeOf(ConvertedValue));
+    SetLength(FRawData, 9);
+    ConvertedValue := NtoBE(QWord(AValue));
+    FRawData[0]    := notDouble;
+    Move(ConvertedValue, FRawData[1], SizeOf(ConvertedValue));
   end;
 end;
 
@@ -628,7 +620,7 @@ end;
 
 function TMsgPackBoolean.GetValue: Boolean;
 begin
-  case FRawData.RawBytes[0] of
+  case FRawData[0] of
     notFalse : Result := False;
     notTrue  : Result := True;
   else
@@ -639,8 +631,8 @@ end;
 procedure TMsgPackBoolean.SetValue(AValue: Boolean);
 const Values : array[Boolean] of Byte = (notFalse, notTrue);
 begin
-  FRawData.Len         := 1;
-  FRawData.RawBytes[0] := Values[AValue];
+  SetLength(FRawData, 1);
+  FRawData[0] := Values[AValue];
 end;
 
 class function TMsgPackBoolean.MsgType: TMsgPackDataTypes;
@@ -650,20 +642,19 @@ end;
 
 function TMsgPackBoolean.SubType: TMsgPackSubTypes;
 begin
-  case FRawData.RawBytes[0] of
+  case FRawData[0] of
     notFalse : Result := mpstFalse;
     notTrue  : Result := mpstTrue;
   else
     raise EMsgPackWrongType.Create(errInvalidDataType);
-    //Result := mpstUnknown;
   end;
 end;
 
 constructor TMsgPackBoolean.Create;
 begin
   inherited;
-  FRawData.Len         := 1;
-  FRawData.RawBytes[0] := notFalse;
+  SetLength(FRawData, 1);
+  FRawData[0] := notFalse;
 end;
 
 function TMsgPackBoolean.IsNil: Boolean;
@@ -697,7 +688,6 @@ function TMsgPackNil.IsNil: Boolean;
 begin
   Result := True;
 end;
-
 
 end.
 
