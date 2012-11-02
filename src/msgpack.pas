@@ -168,8 +168,7 @@ uses msgpack_errors;
 constructor TMsgPackType.Create;
 begin
   SetLength(FRawData, 1);
-  FillChar(FRawData, SizeOf(TRawData), 0);
-  FRawData[0] := notNil; // Default value is nil. Please
+  FRawData[0] := notNil; // Default value is nil.
 end;
 
 function TMsgPackType.AsByte: Byte;
