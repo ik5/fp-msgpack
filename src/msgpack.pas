@@ -203,7 +203,11 @@ end;
 
 function TMsgPackRaw.SubType: TMsgPackSubTypes;
 begin
-
+ case FRawData[0] of
+   notFixRawMin..notFixRawMax : Result := mpstFixedRaw;
+ else
+   Raise EMsgPackWrongType.Create(errInvalidDataType);
+ end;
 end;
 
 constructor TMsgPackRaw.Create;

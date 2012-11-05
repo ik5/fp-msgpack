@@ -69,24 +69,25 @@ type
 
   // Enum for the sub type of the data
   TMsgPackSubTypes = (
-    mpstInt8,   // Signed integer  8 bit
-    mpstInt16,  // Signed integer 16 bit
-    mpstInt32,  // Signed integer 32 bit
-    mpstInt64,  // Signed integer 64 bit
-    mpstUInt8,  // Unsgined integer  8 bit
-    mpstUInt16, // Unsigned integer 16 bit
-    mpstUInt32, // Unsigned integer 32 bit
-    mpstUInt64, // Unsigned integer 64 bit
-    mpstFloat,  // Single floating point
-    mpstDouble, // Double floating point
-    mpstRaw16,  // Raw bytes 16 bit - String
-    mpstRaw32,  // Raw bytes 32 bit
-    mpstMap16,  // Map 16 bit
-    mpstMap32,  // Map 32 bit
-    mpstTrue,   // Boolean True
-    mpstFalse,  // Boolean False
-    mpstNil,    // Nil value
-    mpstUnknown // Unknow type
+    mpstInt8,     // Signed integer  8 bit
+    mpstInt16,    // Signed integer 16 bit
+    mpstInt32,    // Signed integer 32 bit
+    mpstInt64,    // Signed integer 64 bit
+    mpstUInt8,    // Unsgined integer  8 bit
+    mpstUInt16,   // Unsigned integer 16 bit
+    mpstUInt32,   // Unsigned integer 32 bit
+    mpstUInt64,   // Unsigned integer 64 bit
+    mpstFloat,    // Single floating point
+    mpstDouble,   // Double floating point
+    mpstFixedRaw, // Chars from 0..31
+    mpstRaw16,    // Raw bytes 16 bit - String
+    mpstRaw32,    // Raw bytes 32 bit
+    mpstMap16,    // Map 16 bit
+    mpstMap32,    // Map 32 bit
+    mpstTrue,     // Boolean True
+    mpstFalse,    // Boolean False
+    mpstNil,      // Nil value
+    mpstUnknown   // Unknow type
   );
 
 implementation
