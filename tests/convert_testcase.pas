@@ -50,6 +50,7 @@ type
     procedure TestInt64;
     procedure TestSingle;
     procedure TestDouble;
+    procedure TestFixedRawByte;
   end;
 
 implementation
@@ -67,7 +68,9 @@ resourcestring
   FloatOutput       = 'Input of %f must be equal %f';
   WrongDataType     = 'Wrong Data type was given %s';
   WrongSubDataType  = 'Wrong sub Data type was given %s';
-
+  WrongRawLength    = 'Wrong Raw Length. Expected %d, got %d';
+  WrongRawValueInt  = 'Wrong Raw Value. Expected %d, got %d';
+  WrongRawValueStr  = 'Wrong Raw Value. Expected "%s", got "%s"';
 
 procedure TConvertTest.SetUp;
 begin
@@ -554,6 +557,47 @@ begin
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstDouble), Ord(MsgPackType.SubType));
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestFixedRawByte;
+var Ch : Byte;
+begin
+  MsgPackType := TMsgPackRaw.Create;
+
+  Ch := 97; // letter a
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notFixRawMin + 1, MsgPackType.RawData[0]]),
+               notFixRawMin + 1, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
+               ch, MsgPackType.AsByte);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  Ch := 32; // letter space
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notFixRawMin + 1, MsgPackType.RawData[0]]),
+               notFixRawMin + 1, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
+               ch, MsgPackType.AsByte);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  Ch := 219; // █ ( Block )
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notFixRawMin + 1, MsgPackType.RawData[0]]),
+               notFixRawMin + 1, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
+               ch, MsgPackType.AsByte);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
 
   MsgPackType.Free;
 end;
