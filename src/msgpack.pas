@@ -151,20 +151,32 @@ type
 
     constructor Create; override;
 
-    function AsByte     : Byte;     override;
-    function AsWord     : Word;     override;
+    function AsByte          : Byte;          override;
+    function AsWord          : Word;          override;
+    function AsAnsiChar      : AnsiChar;      virtual;
+    function AsWideChar      : WideChar;      virtual;
+    function AsUCS2Char      : UCS2Char;      virtual;
+    function AsUCS4Char      : UCS4Char;      virtual;
+    function AsShortString   : ShortString;   virtual;
+    function AsAnsiString    : AnsiString;    virtual;
+    function AsUTF8String    : UTF8String;    virtual;
+    function AsWideString    : WideString;    virtual;
+    function AsUnicodeString : UnicodeString; virtual;
+    function AsUCS4String    : UCS4String;    virtual;
 
-    function IsNil : Boolean;       override;
+    function IsNil : Boolean;                 override;
 
-    procedure Value(AValue : Byte);        virtual;
-    procedure Value(AValue : Word);        virtual;
-    procedure Value(AValue : Char);        virtual;
-    procedure Value(AValue : AnsiChar);    virtual;
-    procedure Value(AValue : WideChar);    virtual;
-    procedure Value(AValue : ShortString); virtual;
-    procedure Value(AValue : AnsiString);  virtual;
-    procedure Value(AValue : UTF8String);  virtual;
-    procedure Value(AValue : WideString);  virtual;
+    procedure Value(AValue : Byte);           virtual;
+    procedure Value(AValue : Word);           virtual;
+    procedure Value(AValue : AnsiChar);       virtual;
+    procedure Value(AValue : WideChar);       virtual;
+    procedure Value(AValue : UCS4Char);       virtual;
+    procedure Value(AValue : ShortString);    virtual;
+    procedure Value(AValue : AnsiString);     virtual;
+    procedure Value(AValue : UTF8String);     virtual;
+    procedure Value(AValue : WideString);     virtual;
+    procedure Value(AValue : UnicodeString);  virtual;
+    procedure Value(AValue : UCS4String);     virtual;
   end;
 
   { TMsgPackArray }
@@ -209,6 +221,56 @@ begin
 
 end;
 
+function TMsgPackRaw.AsAnsiChar: AnsiChar;
+begin
+
+end;
+
+function TMsgPackRaw.AsWideChar: WideChar;
+begin
+
+end;
+
+function TMsgPackRaw.AsUCS2Char: UCS2Char;
+begin
+
+end;
+
+function TMsgPackRaw.AsUCS4Char: UCS4Char;
+begin
+
+end;
+
+function TMsgPackRaw.AsShortString: ShortString;
+begin
+
+end;
+
+function TMsgPackRaw.AsAnsiString: AnsiString;
+begin
+
+end;
+
+function TMsgPackRaw.AsUTF8String: UTF8String;
+begin
+
+end;
+
+function TMsgPackRaw.AsWideString: WideString;
+begin
+
+end;
+
+function TMsgPackRaw.AsUnicodeString: UnicodeString;
+begin
+
+end;
+
+function TMsgPackRaw.AsUCS4String: UCS4String;
+begin
+
+end;
+
 function TMsgPackRaw.IsNil : Boolean;
 begin
   Result := False;
@@ -227,7 +289,7 @@ begin
  else begin
   SetLength(FRawData, 2);
   FRawData[0] := notFixRawMin +2; //Length of two chars
-  Move(AValue, FRawData[1], SizeOf(AValuw));
+  Move(AValue, FRawData[1], SizeOf(AValue));
  end;
 end;
 
@@ -236,12 +298,12 @@ begin
  Self.Value(Byte(Ord(AValue)));
 end;
 
-procedure TMsgPackRaw.Value(AValue: AnsiChar);
+procedure TMsgPackRaw.Value(AValue: WideChar);
 begin
-  Self.Value(Char(AValue));
+
 end;
 
-procedure TMsgPackRaw.Value(AValue: WideChar);
+procedure TMsgPackRaw.Value(AValue: UCS4Char);
 begin
 
 end;
@@ -262,6 +324,16 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: WideString);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: UnicodeString);
+begin
+
+end;
+
+procedure TMsgPackRaw.Value(AValue: UCS4String);
 begin
 
 end;
