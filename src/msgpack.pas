@@ -166,6 +166,7 @@ type
 
     function IsNil : Boolean;                 override;
 
+    procedure Value;                          virtual; // Adding empty raw
     procedure Value(AValue : Byte);           virtual;
     procedure Value(AValue : Word);           virtual;
     procedure Value(AValue : AnsiChar);       virtual;
@@ -213,6 +214,8 @@ end;
 constructor TMsgPackRaw.Create;
 begin
   inherited Create;
+  SetLength(FRawData, 1);
+  FRawData[0] := notFixRawMin; // Empty Raw
 end;
 
 function TMsgPackRaw.AsByte : Byte;
@@ -286,6 +289,12 @@ begin
   Result := False;
 end;
 
+procedure TMsgPackRaw.Value;
+begin
+  SetLength(FRawData, 1);
+  FRawData[0] := notFixRawMin;
+end;
+
 procedure TMsgPackRaw.Value(AValue: Byte);
 begin
   SetLength(FRawData, 2);
@@ -303,7 +312,7 @@ begin
  end;
 end;
 
-procedure TMsgPackRaw.Value(AValue: Char);
+procedure TMsgPackRaw.Value(AValue: AnsiChar);
 begin
  Self.Value(Byte(Ord(AValue)));
 end;
