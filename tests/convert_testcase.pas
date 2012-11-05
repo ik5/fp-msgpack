@@ -72,8 +72,9 @@ resourcestring
   WrongRawLength       = 'Wrong Raw Length. Expected %d, got %d';
   WrongRawValueInt     = 'Wrong Raw Value. Expected %d, got %d';
   WrongRawValueStr     = 'Wrong Raw Value. Expected "%s", got "%s"';
-  RawValueIsNotNil     = 'Raw Value is not nil (%d)';
+  RawValueIsNotNil     = 'Raw Value is not nil/empty (%d)';
   ExceptionWasNotRaisd = 'Exception was not raised';
+  RawValueIsNil        = 'Raw Value is nil/empty';
 
 procedure TConvertTest.SetUp;
 begin
@@ -618,6 +619,8 @@ begin
                notFixRawMin + 1, MsgPackType.RawData[0]);
   AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
                ch, MsgPackType.AsByte);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtRaw), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -629,6 +632,8 @@ begin
                notFixRawMin + 1, MsgPackType.RawData[0]);
   AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
                ch, MsgPackType.AsByte);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtRaw), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -640,6 +645,8 @@ begin
                notFixRawMin + 1, MsgPackType.RawData[0]);
   AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
                ch, MsgPackType.AsByte);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtRaw), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
