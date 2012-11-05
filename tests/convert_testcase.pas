@@ -50,27 +50,30 @@ type
     procedure TestInt64;
     procedure TestSingle;
     procedure TestDouble;
+    procedure TestEmptyRaw;
     procedure TestFixedRawByte;
   end;
 
 implementation
-uses MsgPack_Consts, TypInfo;
+uses MsgPack_Consts, TypInfo, msgpack_errors;
 
 resourcestring
-  IsNilError        = 'IsNil function contain wrong value';
-  RawDataLenError   = 'RawData does not contain the proper length';
-  RawDataWrongType  = 'RawData[0] contain wrong data type';
-  BooleanWrongValue = 'Boolean contain wrong value';
-  ByteLength        = 'Input of %d have length of %d';
-  ByteOutput        = 'Input of %d must be equal to the value with not change';
-  BytePrefix        = 'Number Prefix: %2x';
-  FloatLength       = 'Input of %f have length of %d';
-  FloatOutput       = 'Input of %f must be equal %f';
-  WrongDataType     = 'Wrong Data type was given %s';
-  WrongSubDataType  = 'Wrong sub Data type was given %s';
-  WrongRawLength    = 'Wrong Raw Length. Expected %d, got %d';
-  WrongRawValueInt  = 'Wrong Raw Value. Expected %d, got %d';
-  WrongRawValueStr  = 'Wrong Raw Value. Expected "%s", got "%s"';
+  IsNilError           = 'IsNil function contain wrong value';
+  RawDataLenError      = 'RawData does not contain the proper length';
+  RawDataWrongType     = 'RawData[0] contain wrong data type';
+  BooleanWrongValue    = 'Boolean contain wrong value';
+  ByteLength           = 'Input of %d have length of %d';
+  ByteOutput           = 'Input of %d must be equal to the value with not change';
+  BytePrefix           = 'Number Prefix: %2x';
+  FloatLength          = 'Input of %f have length of %d';
+  FloatOutput          = 'Input of %f must be equal %f';
+  WrongDataType        = 'Wrong Data type was given %s';
+  WrongSubDataType     = 'Wrong sub Data type was given %s';
+  WrongRawLength       = 'Wrong Raw Length. Expected %d, got %d';
+  WrongRawValueInt     = 'Wrong Raw Value. Expected %d, got %d';
+  WrongRawValueStr     = 'Wrong Raw Value. Expected "%s", got "%s"';
+  RawValueIsNotNil     = 'Raw Value is not nil (%d)';
+  ExceptionWasNotRaisd = 'Exception was not raised';
 
 procedure TConvertTest.SetUp;
 begin
@@ -557,6 +560,44 @@ begin
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstDouble), Ord(MsgPackType.SubType));
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestEmptyRaw;
+begin
+  MsgPackType := TMsgPackRaw.Create;
+
+  // After Creation
+  AssertEquals(Format(WrongRawLength, [notFixRawMin, MsgPackType.RawData[0]]),
+               notFixRawMin, MsgPackType.RawData[0]);
+  AssertEquals(Format(RawValueIsNotNil, [MsgPackType.RawData[0]]),
+               True, MsgPackType.IsNil);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  TMsgPackRaw(MsgPackType).Value; // Adding empty string
+  AssertEquals(Format(WrongRawLength, [notFixRawMin, MsgPackType.RawData[0]]),
+               notFixRawMin, MsgPackType.RawData[0]);
+  AssertEquals(Format(RawValueIsNotNil, [MsgPackType.RawData[0]]),
+               True, MsgPackType.IsNil);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  try
+    MsgPackType.AsByte; // Must raise an exception
+    Fail(ExceptionWasNotRaisd);
+  except
+    on E:Exception do
+    begin
+      CheckEquals(e.ClassName, 'EMsgPackWrongType');
+      CheckEquals(E.Message, errRawSizeTooBig);
+    end;
+  end;
 
   MsgPackType.Free;
 end;
