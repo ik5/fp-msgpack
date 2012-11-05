@@ -186,7 +186,7 @@ uses msgpack_errors;
 
 class function TMsgPackRaw.MsgType: TMsgPackDataTypes;
 begin
-
+  Result := mpdtRaw;
 end;
 
 function TMsgPackRaw.SubType: TMsgPackSubTypes;
@@ -199,19 +199,19 @@ begin
   inherited Create;
 end;
 
-function TMsgPackRaw.AsByte: Byte;
+function TMsgPackRaw.AsByte : Byte;
 begin
 
 end;
 
-function TMsgPackRaw.AsWord: Word;
+function TMsgPackRaw.AsWord : Word;
 begin
 
 end;
 
-function TMsgPackRaw.IsNil: Boolean;
+function TMsgPackRaw.IsNil : Boolean;
 begin
-
+  Result := False;
 end;
 
 procedure TMsgPackRaw.Value(AValue: Byte);
