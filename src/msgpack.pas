@@ -217,17 +217,23 @@ end;
 
 function TMsgPackRaw.AsByte : Byte;
 begin
-
+  if FRawData[0] = notFixRawMin+1 then
+    Result := FRawData[1]
+  else raise EMsgPackWrongType.Create(errRawSizeTooBig);
 end;
 
 function TMsgPackRaw.AsWord : Word;
 begin
-
+ case FRawData[0] of
+   notFixRawMin + 1 : Result := Self.AsByte;
+   notFixRawMin + 2 : Move(FRawData[1], Result, SizeOf(Result));
+ else raise EMsgPackWrongType.Create(errRawSizeTooBig);
+ end;
 end;
 
 function TMsgPackRaw.AsAnsiChar: AnsiChar;
 begin
-
+  Result := Chr(Self.AsByte);
 end;
 
 function TMsgPackRaw.AsWideChar: WideChar;
