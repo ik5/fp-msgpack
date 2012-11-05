@@ -164,6 +164,8 @@ type
     function AsUnicodeString : UnicodeString; virtual;
     function AsUCS4String    : UCS4String;    virtual;
 
+    function AsBoolean       : Boolean;       override;
+
     function IsNil   : Boolean;               override;
     function IsEmpty : Boolean;               virtual;
 
@@ -283,6 +285,11 @@ end;
 function TMsgPackRaw.AsUCS4String: UCS4String;
 begin
 
+end;
+
+function TMsgPackRaw.AsBoolean: Boolean;
+begin
+  Result := (FRawData[0] in [(notFixRawMin+1)..notFixRawMax, notRaw16, notRaw32]);
 end;
 
 function TMsgPackRaw.IsNil : Boolean;
