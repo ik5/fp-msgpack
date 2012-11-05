@@ -52,6 +52,7 @@ type
     procedure TestDouble;
     procedure TestEmptyRaw;
     procedure TestFixedRawByte;
+    procedure TestFixedRawWord;
   end;
 
 implementation
@@ -645,6 +646,53 @@ begin
                notFixRawMin + 1, MsgPackType.RawData[0]);
   AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
                ch, MsgPackType.AsByte);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestFixedRawWord;
+var ch : Word;
+begin
+  MsgPackType := TMsgPackRaw.Create;
+
+  ch := $100; // Letter Ā
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notFixRawMin + 2, MsgPackType.RawData[0]]),
+               notFixRawMin + 2, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsWord]),
+               ch, MsgPackType.AsWord);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  ch := $5d0; // Letter א
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notFixRawMin + 2, MsgPackType.RawData[0]]),
+               notFixRawMin + 2, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsWord]),
+               ch, MsgPackType.AsWord);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  ch := $fffc; // OBJECT REPLACEMENT CHARACTER
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notFixRawMin + 2, MsgPackType.RawData[0]]),
+               notFixRawMin + 2, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsWord]),
+               ch, MsgPackType.AsWord);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
