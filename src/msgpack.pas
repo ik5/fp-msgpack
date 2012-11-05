@@ -286,7 +286,7 @@ end;
 
 function TMsgPackRaw.IsNil : Boolean;
 begin
-  Result := False;
+  Result := FRawData[0] = notFixRawMin;
 end;
 
 procedure TMsgPackRaw.Value;
