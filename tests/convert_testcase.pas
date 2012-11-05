@@ -573,16 +573,21 @@ begin
                notFixRawMin, MsgPackType.RawData[0]);
   AssertEquals(Format(RawValueIsNotNil, [MsgPackType.RawData[0]]),
                True, MsgPackType.IsNil);
+  AssertEquals(Format(RawValueIsNotNil, [MsgPackType.RawData[0]]),
+               True, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtRaw), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
 
   TMsgPackRaw(MsgPackType).Value; // Adding empty string
   AssertEquals(Format(WrongRawLength, [notFixRawMin, MsgPackType.RawData[0]]),
                notFixRawMin, MsgPackType.RawData[0]);
   AssertEquals(Format(RawValueIsNotNil, [MsgPackType.RawData[0]]),
                True, MsgPackType.IsNil);
+  AssertEquals(Format(RawValueIsNotNil, [MsgPackType.RawData[0]]),
+               True, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtRaw), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
