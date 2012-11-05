@@ -216,22 +216,29 @@ end;
 
 procedure TMsgPackRaw.Value(AValue: Byte);
 begin
-
+  SetLength(FRawData, 2);
+  FRawData[0] := notFixRawMin + 1; // Length of one char
+  FRawData[1] := AValue;
 end;
 
 procedure TMsgPackRaw.Value(AValue: Word);
 begin
-
+ if AValue <= $FF then Self.Value(Byte(AValue))
+ else begin
+  SetLength(FRawData, 2);
+  FRawData[0] := notFixRawMin +2; //Length of two chars
+  Move(AValue, FRawData[1], SizeOf(AValuw));
+ end;
 end;
 
 procedure TMsgPackRaw.Value(AValue: Char);
 begin
-
+ Self.Value(Byte(Ord(AValue)));
 end;
 
 procedure TMsgPackRaw.Value(AValue: AnsiChar);
 begin
-
+  Self.Value(Char(AValue));
 end;
 
 procedure TMsgPackRaw.Value(AValue: WideChar);
