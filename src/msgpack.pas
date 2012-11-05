@@ -164,7 +164,8 @@ type
     function AsUnicodeString : UnicodeString; virtual;
     function AsUCS4String    : UCS4String;    virtual;
 
-    function IsNil : Boolean;                 override;
+    function IsNil   : Boolean;               override;
+    function IsEmpty : Boolean;               virtual;
 
     procedure Value;                          virtual; // Adding empty raw
     procedure Value(AValue : Byte);           virtual;
@@ -285,6 +286,11 @@ begin
 end;
 
 function TMsgPackRaw.IsNil : Boolean;
+begin
+  Result := FRawData[0] = notFixRawMin;
+end;
+
+function TMsgPackRaw.IsEmpty: Boolean;
 begin
   Result := FRawData[0] = notFixRawMin;
 end;
