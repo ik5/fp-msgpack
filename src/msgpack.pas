@@ -244,7 +244,7 @@ end;
 
 function TMsgPackRaw.AsWideChar: WideChar;
 begin
-
+  Result := WideChar(Self.AsWord);
 end;
 
 function TMsgPackRaw.AsUCS2Char: UCS2Char;
@@ -332,7 +332,7 @@ end;
 
 procedure TMsgPackRaw.Value(AValue: WideChar);
 begin
-
+ Self.Value(Word(AValue));
 end;
 
 procedure TMsgPackRaw.Value(AValue: UCS4Char);
