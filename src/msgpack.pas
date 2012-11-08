@@ -249,7 +249,7 @@ end;
 
 function TMsgPackRaw.AsUCS2Char: UCS2Char;
 begin
-
+  Result := Self.AsWideChar;
 end;
 
 function TMsgPackRaw.AsUCS4Char: UCS4Char;
