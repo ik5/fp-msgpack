@@ -267,7 +267,8 @@ function TMsgPackRaw.AsShortString: ShortString;
 var l : integer;
 begin
   case FRawData[0] of
-    notFixRawMin..notFixRawMax : begin
+                      notFixRawMin : Result := '';
+    (notFixRawMin+1)..notFixRawMax : begin
                                    l := FRawData[0] - notFixRawMin;
                                    SetLength(Result, l);
                                    Move(FRawData[1], Result[1],l);
