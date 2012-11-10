@@ -68,7 +68,7 @@ Files
 
 
  * tests/
-   - convert.lpr - program that uses fpcunit
+   - msgpack\_testing.lpr - program that uses fpcunit
    - convert\_testcase.pas - unit test for msgpack.pas
 
  * examples/
