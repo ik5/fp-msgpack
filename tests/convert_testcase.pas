@@ -55,6 +55,7 @@ type
     procedure TestFixedChar;
     procedure TestFixedRawWord;
     procedure TestFixedRawWideChar;
+    procedure TestUCS4Char;
   end;
 
 implementation
@@ -796,6 +797,53 @@ begin
                Ord(mpdtRaw), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestUCS4Char;
+var ch : UCS4Char;
+begin
+  MsgPackType := TMsgPackRaw.Create;
+
+  ch := $100; // Letter Ā
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notRaw32, MsgPackType.RawData[0]]),
+               notRaw32, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsUCS4Char]),
+               ch, TMsgPackRaw(MsgPackType).AsUCS4Char);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstRaw32), Ord(MsgPackType.SubType));
+
+  ch := $5d0; // Letter א
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notRaw32, MsgPackType.RawData[0]]),
+               notRaw32, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsUCS4Char]),
+               ch, TMsgPackRaw(MsgPackType).AsUCS4Char);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstRaw32), Ord(MsgPackType.SubType));
+
+  ch := $fffc; // OBJECT REPLACEMENT CHARACTER
+  TMsgPackRaw(MsgPackType).Value(Ch);
+  AssertEquals(Format(WrongRawLength, [notRaw32, MsgPackType.RawData[0]]),
+               notRaw32, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsUCS4Char]),
+               ch, TMsgPackRaw(MsgPackType).AsUCS4Char);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
+  AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
+  AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
+               Ord(mpdtRaw), Ord(MsgPackType.MsgType));
+  AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
+               Ord(mpstRaw32), Ord(MsgPackType.SubType));
 
   MsgPackType.Free;
 end;
