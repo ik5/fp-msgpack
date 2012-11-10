@@ -209,6 +209,8 @@ function TMsgPackRaw.SubType: TMsgPackSubTypes;
 begin
  case FRawData[0] of
    notFixRawMin..notFixRawMax : Result := mpstFixedRaw;
+                 notRaw16     : Result := mpstRaw16;
+                 notRaw32     : Result := mpstRaw32;
  else
    Raise EMsgPackWrongType.Create(errInvalidDataType);
  end;
@@ -254,7 +256,12 @@ end;
 
 function TMsgPackRaw.AsUCS4Char: UCS4Char;
 begin
-
+  if FRawData[0] = notRaw32 then
+    begin
+      Move(FRawData[1], Result, SizeOf(Result));
+      Result := BEtoN(Result);
+    end
+  else raise EMsgPackWrongType.Create(errRawSizeTooBig);
 end;
 
 function TMsgPackRaw.AsShortString: ShortString;
@@ -502,7 +509,7 @@ begin
           else raise EMsgPackWrongType.Create(errInvalidDataType);
          end;
      else raise EMsgPackWrongType.Create(errInvalidDataType);
-    end;
+  end;
 end;
 
 function TMsgPackNumber.AsWord: Word;
