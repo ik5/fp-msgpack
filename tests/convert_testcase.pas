@@ -55,7 +55,7 @@ type
     procedure TestFixedChar;
     procedure TestFixedRawWord;
     procedure TestFixedRawWideChar;
-    procedure TestUCS4Char;
+    //procedure TestUCS4Char;
     procedure TestShortString;
   end;
 
@@ -802,7 +802,7 @@ begin
   MsgPackType.Free;
 end;
 
-procedure TConvertTest.TestUCS4Char;
+{procedure TConvertTest.TestUCS4Char;
 var ch : UCS4Char;
 begin
   MsgPackType := TMsgPackRaw.Create;
@@ -847,7 +847,7 @@ begin
                Ord(mpstRaw32), Ord(MsgPackType.SubType));
 
   MsgPackType.Free;
-end;
+end; }
 
 procedure TConvertTest.TestShortString;
 var s : ShortString;

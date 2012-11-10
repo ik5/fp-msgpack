@@ -255,12 +255,14 @@ end;
 
 function TMsgPackRaw.AsUCS4Char: UCS4Char;
 begin
-  if FRawData[0] = notRaw32 then
+  raise EMsgPack.Create(errNotImplemented);
+(*  if FRawData[0] = notRaw32 then
     begin
       Move(FRawData[2], Result, SizeOf(Result));
       Result := BEtoN(Result);
     end
   else raise EMsgPackWrongType.Create(errRawSizeTooBig);
+*)
 end;
 
 function TMsgPackRaw.AsShortString: ShortString;
@@ -358,11 +360,13 @@ end;
 procedure TMsgPackRaw.Value(AValue: UCS4Char);
 var ConvertedValue : UCS4Char;
 begin
-  SetLength(FRawData, SizeOf(AValue) +2);
+  raise EMsgPack.Create(errNotImplemented);
+(*  SetLength(FRawData, SizeOf(AValue) +2);
   FRawData[0]    := notRaw32;
   FRawData[1]    := SizeOf(AValue);
   ConvertedValue := NtoBE(AValue);
   Move(ConvertedValue, FRawData[2], SizeOf(AValue));
+*)
 end;
 
 procedure TMsgPackRaw.Value(AValue: ShortString);
