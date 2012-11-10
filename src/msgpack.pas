@@ -266,7 +266,7 @@ begin
 end;
 
 function TMsgPackRaw.AsShortString: ShortString;
-var l : integer;
+var l : Word;
 begin
   case FRawData[0] of
                       notFixRawMin : Result := '';
@@ -276,16 +276,18 @@ begin
                                    Move(FRawData[1], Result[1],l);
                                  end;
                       notRaw16 : begin
-                                  if ((Length(FRawData) -2) <= 255) then
+                                  if ((Length(FRawData) -3) <= 255) then
                                     begin
-                                      l := FRawData[1];
+                                      //l := FRawData[1];
+                                      Move(FRawData[1], l, SizeOf(l));
+                                      l := BEtoN(l);
                                       SetLength(Result, l);
-                                      Move(FRawData[2], Result[1], l);
+                                      Move(FRawData[3], Result[1], l);
                                     end
                                   else raise EMsgPackLength.Create(errRawSizeTooBig);
                                  end;
 
-    else raise EMsgPackLength.Create(errRawSizeTooBig);
+    else raise EMsgPackWrongType.Create(errInvalidDataType);
   end;
 end;
 
@@ -370,7 +372,7 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: ShortString);
-var l : Byte;
+var l, be_l : Word;
 begin
   l := Length(Avalue);
   case l of
@@ -381,10 +383,11 @@ begin
               Move(AValue[1], FRawData[1], l);
             end;
     else begin
-          SetLength(FRawData, l+2);
+          SetLength(FRawData, l+SizeOf(l)+1);
           FRawData[0] := notRaw16;
-          FRawData[1] := l;
-          Move(AValue[1], FRawData[2], l);
+          be_l := NtoBE(l);
+          Move(be_l, FRawData[1], SizeOf(l));
+          Move(AValue[1], FRawData[3], l);
          end;
   end;
 end;
