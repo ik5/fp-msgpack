@@ -336,8 +336,12 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: UCS4Char);
+var ConvertedValue : UCS4Char;
 begin
-
+  SetLength(FRawData, SizeOf(AValue) +1);
+  FRawData[0]    := notRaw32;
+  ConvertedValue := NtoBE(AValue);
+  Move(ConvertedValue, FRawData[1], SizeOf(AValue));
 end;
 
 procedure TMsgPackRaw.Value(AValue: ShortString);
