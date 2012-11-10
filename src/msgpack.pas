@@ -162,7 +162,6 @@ type
     function AsUTF8String    : UTF8String;    virtual;
     function AsWideString    : WideString;    virtual;
     function AsUnicodeString : UnicodeString; virtual;
-    function AsUCS4String    : UCS4String;    virtual;
 
     function AsBoolean       : Boolean;       override;
 
@@ -180,7 +179,6 @@ type
     procedure Value(AValue : UTF8String);     virtual;
     procedure Value(AValue : WideString);     virtual;
     procedure Value(AValue : UnicodeString);  virtual;
-    procedure Value(AValue : UCS4String);     virtual;
   end;
 
   { TMsgPackArray }
@@ -289,11 +287,6 @@ begin
 
 end;
 
-function TMsgPackRaw.AsUCS4String: UCS4String;
-begin
-
-end;
-
 function TMsgPackRaw.AsBoolean: Boolean;
 begin
   Result := (FRawData[0] in [(notFixRawMin+1)..notFixRawMax, notRaw16, notRaw32]);
@@ -372,11 +365,6 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: UnicodeString);
-begin
-
-end;
-
-procedure TMsgPackRaw.Value(AValue: UCS4String);
 begin
 
 end;
