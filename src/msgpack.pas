@@ -32,6 +32,7 @@ uses SysUtils,       // for exceptions
 type
   EMsgPack          = class(Exception);
   EMsgPackWrongType = class(EMsgPack);
+  EMsgPackLength    = class(EMsgPack);
 
   TRawData = array of Byte;
 
@@ -263,8 +264,26 @@ begin
 end;
 
 function TMsgPackRaw.AsShortString: ShortString;
+var l : integer;
 begin
+  case FRawData[0] of
+    notFixRawMin..notFixRawMax : begin
+                                   l := FRawData[0] - notFixRawMin;
+                                   SetLength(Result, l);
+                                   Move(FRawData[1], Result[1],l);
+                                 end;
+                      notRaw16 : begin
+                                  if ((Length(FRawData) -2) <= 255) then
+                                    begin
+                                      l := FRawData[1];
+                                      SetLength(Result, l);
+                                      Move(FRawData[2], Result, l);
+                                    end
+                                  else raise EMsgPackLength.Create(errRawSizeTooBig);
+                                 end;
 
+    else raise EMsgPackLength.Create(errRawSizeTooBig);
+  end;
 end;
 
 function TMsgPackRaw.AsAnsiString: AnsiString;
