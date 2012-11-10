@@ -278,7 +278,7 @@ begin
                                     begin
                                       l := FRawData[1];
                                       SetLength(Result, l);
-                                      Move(FRawData[2], Result, l);
+                                      Move(FRawData[2], Result[1], l);
                                     end
                                   else raise EMsgPackLength.Create(errRawSizeTooBig);
                                  end;
