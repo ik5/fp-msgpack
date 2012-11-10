@@ -346,8 +346,23 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: ShortString);
+var l : Byte;
 begin
-
+  l := Length(Avalue);
+  case l of
+        0 : self.Value; // Add it as empty string
+    1..31 : begin
+              SetLength(FRawData, l+1);
+              FRawData[0] := notFixRawMin + l;
+              Move(AValue[1], FRawData[1], l);
+            end;
+    else begin
+          SetLength(FRawData, l+2);
+          FRawData[0] := notRaw16;
+          FRawData[1] := l;
+          Move(AValue[1], FRawData[2], l);
+         end;
+  end;
 end;
 
 procedure TMsgPackRaw.Value(AValue: AnsiString);
