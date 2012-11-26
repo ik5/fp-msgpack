@@ -27,25 +27,38 @@ unit msgpack_bits;
 
 interface
 
-function OneToTwoComplement(AValue : Byte)     : Byte;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function OneToTwoComplement(AValue : Word)     : Word;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function OneToTwoComplement(AValue : Cardinal) : Cardinal; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function OneToTwoComplement(AValue : QWord)    : QWord;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function OneToTwoComplement(AValue : ShortInt) : ShortInt; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function OneToTwoComplement(AValue : SmallInt) : SmallInt; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function OneToTwoComplement(AValue : LongInt)  : LongInt;  {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function OneToTwoComplement(AValue : Int64)    : Int64;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : Byte)     : Byte;        {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : Word)     : Word;        {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : Cardinal) : Cardinal;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : QWord)    : QWord;       {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : ShortInt) : ShortInt;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : SmallInt) : SmallInt;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : LongInt)  : LongInt;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function OneToTwoComplement(AValue : Int64)    : Int64;       {$ifdef SYSTEMINLINE} inline; {$ENDIF}
 
-function TwoToOneComplement(AValue : Byte)     : Byte;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function TwoToOneComplement(AValue : Word)     : Word;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function TwoToOneComplement(AValue : Cardinal) : Cardinal; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function TwoToOneComplement(AValue : QWord)    : QWord;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function TwoToOneComplement(AValue : ShortInt) : ShortInt; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function TwoToOneComplement(AValue : SmallInt) : SmallInt; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function TwoToOneComplement(AValue : LongInt)  : LongInt;  {$ifdef SYSTEMINLINE} inline; {$ENDIF}
-function TwoToOneComplement(AValue : Int64)    : Int64;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : Byte)     : Byte;        {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : Word)     : Word;        {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : Cardinal) : Cardinal;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : QWord)    : QWord;       {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : ShortInt) : ShortInt;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : SmallInt) : SmallInt;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : LongInt)  : LongInt;     {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function TwoToOneComplement(AValue : Int64)    : Int64;       {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+
+function NtoBE(const AValue : ShortString)   : ShortString;   {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function NtoBE(const AValue : AnsiString)    : AnsiString;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function NtoBE(const AValue : UTF8String)    : UTF8String;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function NtoBE(const AValue : WideString)    : WideString;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function NtoBE(const AValue : UnicodeString) : UnicodeString; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+
+function BEtoN(const AValue : ShortString)   : ShortString;   {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function BEtoN(const AValue : AnsiString)    : AnsiString;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function BEtoN(const AValue : UTF8String)    : UTF8String;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function BEtoN(const AValue : WideString)    : WideString;    {$ifdef SYSTEMINLINE} inline; {$ENDIF}
+function BEtoN(const AValue : UnicodeString) : UnicodeString; {$ifdef SYSTEMINLINE} inline; {$ENDIF}
 
 implementation
+uses strutils;
 
 function OneToTwoComplement(AValue: Byte): Byte;
 begin
@@ -125,6 +138,96 @@ end;
 function TwoToOneComplement(AValue: Int64): Int64;
 begin
   Result := Abs(AValue) xor $FFFFFFFFFFFFFFFF;
+end;
+
+function NtoBE(const AValue: ShortString): ShortString;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function NtoBE(const AValue: AnsiString): AnsiString;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function NtoBE(const AValue: UTF8String): UTF8String;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function NtoBE(const AValue: WideString): WideString;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function NtoBE(const AValue: UnicodeString): UnicodeString;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function BEtoN(const AValue: ShortString): ShortString;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function BEtoN(const AValue: AnsiString): AnsiString;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function BEtoN(const AValue: UTF8String): UTF8String;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function BEtoN(const AValue: WideString): WideString;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
+end;
+
+function BEtoN(const AValue: UnicodeString): UnicodeString;
+begin
+  {$IFDEF LITTLE_ENDIAN}
+  Result := ReverseString(AValue);
+  {$ELSE}
+  Result := AValue;
+  {$ENDIF}
 end;
 
 end.
