@@ -195,7 +195,7 @@ type
   end;
 
 implementation
-uses msgpack_errors;
+uses msgpack_errors, msgpack_bits;
 
 { TMsgPackRaw }
 
