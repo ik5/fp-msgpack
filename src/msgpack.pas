@@ -372,7 +372,8 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: ShortString);
-var l, be_l : Word;
+var l    : Byte;
+    be_l : word;
 begin
   l := Length(Avalue);
   case l of
@@ -393,8 +394,15 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: AnsiString);
+var l : byte;
 begin
+  l := Length(AValue);
+  case l of
+    0..255 : Value(ShortString(AValue));
+  else begin
 
+       end;
+  end;
 end;
 
 procedure TMsgPackRaw.Value(AValue: UTF8String);
