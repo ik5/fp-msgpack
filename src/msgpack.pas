@@ -384,7 +384,7 @@ begin
               Move(AValue[1], FRawData[1], l);
             end;
     else begin
-          SetLength(FRawData, l+SizeOf(l)+1);
+          SetLength(FRawData, l+SizeOf(word)+1);
           FRawData[0] := notRaw16;
           be_l := NtoBE(l);
           Move(be_l, FRawData[1], SizeOf(l));
@@ -394,13 +394,30 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: AnsiString);
-var l : byte;
+var l     : longword;
+    be_16 : word;
+    be_32 : longword;
 begin
   l := Length(AValue);
   case l of
-    0..255 : Value(ShortString(AValue));
+      0..255             : Value(ShortString(AValue));
+    256..High(LongWowrd) : begin
+                             SetLength(FRawData, l + SizeOf(be_16) + 1);
+                             FRawData[0] := notRaw16;
+                             be_16       := NtoBE(l);
+                             Move(be_16, FRawData[1], SizeOf(be_16));
+                             Move(AValue[1], FRawData[3], l);
+                           end;
+    (High(LongWord)+1)..(High(QWord)) :
+                           begin
+                             SetLength(FRawData, l + SizeOf(be_32) +1);
+                             FRawData[0] := notRaw32;
+                             be_32       := NtoBE(l);
+                             Move(be_32, FRawData[1], SizeOf(be_32));
+                             Move(AValue[1], FRawData[1+SizeOf(be_32)], l);
+                           end;
   else begin
-
+         raise EMsgPackLength.Create(errRawSizeTooBig);
        end;
   end;
 end;
