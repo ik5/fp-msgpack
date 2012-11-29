@@ -416,7 +416,7 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: AnsiString);
-var l     : longword;
+var l     : qword;
     be_16 : word;
     be_32 : longword;
 begin
