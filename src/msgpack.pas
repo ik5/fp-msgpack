@@ -195,7 +195,12 @@ type
   end;
 
 implementation
-uses msgpack_errors, msgpack_bits;
+uses msgpack_errors;
+
+const
+  lw_length = High(LongWord);
+  lw2       = lw_length + 1;
+  qw_length = High(QWord);
 
 { TMsgPackRaw }
 
@@ -292,8 +297,25 @@ begin
 end;
 
 function TMsgPackRaw.AsAnsiString: AnsiString;
+var be_16 : word;
+    be_32 : longword;
 begin
-
+  case FRawData[0] of
+    notFixRawMin..notFixRawMax : Result := Self.AsShortString;
+                      notRaw16 : begin
+                                   Move(FRawData[1], be_16, SizeOf(be_16));
+                                   be_16 := BEtoN(be_16);
+                                   SetLength(Result, be_16);
+                                   Move(FRawData[1+SizeOf(be_16)], Result[1], be_16);
+                                 end;
+                      notRaw32 : begin
+                                   Move(FRawData[1], be_32, SizeOf(be_32));
+                                   be_32 := BEtoN(be_32);
+                                   SetLength(Result, be_32);
+                                   Move(FRawData[1+SizeOf(be_32)], Result[1], be_32);
+                                 end;
+    else raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 function TMsgPackRaw.AsUTF8String: UTF8String;
@@ -400,22 +422,21 @@ var l     : longword;
 begin
   l := Length(AValue);
   case l of
-      0..255             : Value(ShortString(AValue));
-    256..High(LongWowrd) : begin
-                             SetLength(FRawData, l + SizeOf(be_16) + 1);
-                             FRawData[0] := notRaw16;
-                             be_16       := NtoBE(l);
-                             Move(be_16, FRawData[1], SizeOf(be_16));
-                             Move(AValue[1], FRawData[3], l);
-                           end;
-    (High(LongWord)+1)..(High(QWord)) :
-                           begin
-                             SetLength(FRawData, l + SizeOf(be_32) +1);
-                             FRawData[0] := notRaw32;
-                             be_32       := NtoBE(l);
-                             Move(be_32, FRawData[1], SizeOf(be_32));
-                             Move(AValue[1], FRawData[1+SizeOf(be_32)], l);
-                           end;
+      0..255       : Value(ShortString(AValue));
+    256..lw_length : begin
+                       SetLength(FRawData, l + SizeOf(be_16) + 1);
+                       FRawData[0] := notRaw16;
+                       be_16       := NtoBE(l);
+                       Move(be_16, FRawData[1], SizeOf(be_16));
+                       Move(AValue[1], FRawData[3], l);
+                     end;
+    lw2..qw_length : begin
+                       SetLength(FRawData, l + SizeOf(be_32) +1);
+                       FRawData[0] := notRaw32;
+                       be_32       := NtoBE(l);
+                       Move(be_32, FRawData[1], SizeOf(be_32));
+                       Move(AValue[1], FRawData[1+SizeOf(be_32)], l);
+                     end;
   else begin
          raise EMsgPackLength.Create(errRawSizeTooBig);
        end;
