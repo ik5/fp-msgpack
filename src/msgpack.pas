@@ -320,7 +320,7 @@ end;
 
 function TMsgPackRaw.AsUTF8String: UTF8String;
 begin
-
+ Result := Self.AsAnsiString;
 end;
 
 function TMsgPackRaw.AsWideString: WideString;
@@ -449,7 +449,7 @@ end;
 
 procedure TMsgPackRaw.Value(AValue: UTF8String);
 begin
-
+  self.Value(AnsiString(AValue));
 end;
 
 procedure TMsgPackRaw.Value(AValue: WideString);

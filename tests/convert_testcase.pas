@@ -58,6 +58,7 @@ type
     //procedure TestUCS4Char;
     procedure TestShortString;
     procedure TestAnsiString;
+    procedure TestUTF8String;
   end;
 
 implementation
@@ -991,7 +992,6 @@ begin
   AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsAnsiString]),
                s, TMsgPackRaw(MsgPackType).AsAnsiString);
 
-
   s := StringOfChar('#', High(Word) +1);
   l := Length(s);
   TMsgPackRaw(MsgPackType).Value(s);
@@ -1009,6 +1009,105 @@ begin
   AssertEquals(RawDataWrongType, notRaw32, MsgPackType.RawData[0]);
   AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsAnsiString]),
                s, TMsgPackRaw(MsgPackType).AsAnsiString);
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestUTF8String;
+var s : UTF8String;
+    l : longword;
+begin
+  MsgPackType := TMsgPackRaw.Create;
+
+  s := ''; // Empty string - first fixed raw
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+1, Length(MsgPackType.RawData)]),
+               l+1, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notFixRawMin +l, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := 'a'; // 1 Char
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+1, Length(MsgPackType.RawData)]),
+               l+1, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notFixRawMin +l, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := 'abcdefghijklmnopqrstuvwxyz'; // 26 chars ...
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+1, Length(MsgPackType.RawData)]),
+               l+1, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notFixRawMin +l, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := 'abcdefghijklmnopqrstuvwxyz12345'; // 31 Chars - last fixed raw
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+1, Length(MsgPackType.RawData)]),
+               l+1, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notFixRawMin +l, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := 'abcdefghijklmnopqrstuvwxyz1234567890'; // 36 Chars - 16 bit raw
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+3, Length(MsgPackType.RawData)]),
+               l+3, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw16, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := AddChar('-', s, 255); // Filling up to 255 chars
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+3, Length(MsgPackType.RawData)]),
+               l+3, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw16, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := StringOfChar('*', 1024);
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+3, Length(MsgPackType.RawData)]),
+               l+3, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw16, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := StringOfChar('*', High(Word));
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+3, Length(MsgPackType.RawData)]),
+               l+3, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw16, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := StringOfChar('#', High(Word) +1);
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+5, Length(MsgPackType.RawData)]),
+               l+5, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw32, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
+
+  s := StringOfChar('#', High(longword) div 512 ); // 8 Mega bytes.
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+5, Length(MsgPackType.RawData)]),
+               l+5, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw32, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsUTF8String]),
+               s, TMsgPackRaw(MsgPackType).AsUTF8String);
 
   MsgPackType.Free;
 end;
