@@ -23,7 +23,7 @@
 
 unit msgpack;
 
-{$mode objfpc}{$H+}
+{$mode objfpc}{$H+}{$R+}
 
 interface
 uses SysUtils,       // for exceptions
@@ -198,9 +198,9 @@ implementation
 uses msgpack_errors;
 
 const
+  wr_length  = High(Word);
+  wr2_length = wr_length +1;
   lw_length = High(LongWord);
-  lw2       = lw_length + 1;
-  qw_length = High(QWord);
 
 { TMsgPackRaw }
 
@@ -423,7 +423,7 @@ begin
   l := Length(AValue);
   case l of
       0..255       : Value(ShortString(AValue));
-    256..lw_length : begin
+    256..wr_length : begin
                        SetLength(FRawData, l + SizeOf(be_16) + 1);
                        FRawData[0] := notRaw16;
                        be_16       := l;
@@ -431,7 +431,9 @@ begin
                        Move(be_16, FRawData[1], SizeOf(be_16));
                        Move(AValue[1], FRawData[3], l);
                      end;
-    lw2..qw_length : begin
+
+    wr2_length..lw_length :
+                     begin
                        SetLength(FRawData, l + SizeOf(be_32) +1);
                        FRawData[0] := notRaw32;
                        be_32       := l;
