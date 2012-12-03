@@ -426,14 +426,16 @@ begin
     256..lw_length : begin
                        SetLength(FRawData, l + SizeOf(be_16) + 1);
                        FRawData[0] := notRaw16;
-                       be_16       := NtoBE(l);
+                       be_16       := l;
+                       be_16       := NtoBE(be_16);
                        Move(be_16, FRawData[1], SizeOf(be_16));
                        Move(AValue[1], FRawData[3], l);
                      end;
     lw2..qw_length : begin
                        SetLength(FRawData, l + SizeOf(be_32) +1);
                        FRawData[0] := notRaw32;
-                       be_32       := NtoBE(l);
+                       be_32       := l;
+                       be_32       := NtoBE(be_32);
                        Move(be_32, FRawData[1], SizeOf(be_32));
                        Move(AValue[1], FRawData[1+SizeOf(be_32)], l);
                      end;
