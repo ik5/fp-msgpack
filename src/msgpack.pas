@@ -325,7 +325,7 @@ end;
 
 function TMsgPackRaw.AsWideString: WideString;
 begin
-
+  Result := Self.AsAnsiString;
 end;
 
 function TMsgPackRaw.AsUnicodeString: UnicodeString;
@@ -454,7 +454,7 @@ end;
 
 procedure TMsgPackRaw.Value(AValue: WideString);
 begin
-
+  Self.Value(AnsiString(AValue));
 end;
 
 procedure TMsgPackRaw.Value(AValue: UnicodeString);
