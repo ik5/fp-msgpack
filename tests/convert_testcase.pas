@@ -57,6 +57,7 @@ type
     procedure TestFixedRawWideChar;
     //procedure TestUCS4Char;
     procedure TestShortString;
+    procedure TestAnsiString;
   end;
 
 implementation
@@ -851,7 +852,7 @@ end; }
 
 procedure TConvertTest.TestShortString;
 var s : ShortString;
-    l : Byte;
+    l : word;
 begin
   MsgPackType := TMsgPackRaw.Create;
 
@@ -908,6 +909,79 @@ begin
   AssertEquals(RawDataWrongType, notRaw16, MsgPackType.RawData[0]);
   AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsShortString]),
                s, TMsgPackRaw(MsgPackType).AsShortString);
+
+  MsgPackType.Free;
+end;
+
+procedure TConvertTest.TestAnsiString;
+var s : AnsiString;
+    l : word;
+begin
+  MsgPackType := TMsgPackRaw.Create;
+
+  s := ''; // Empty string - first fixed raw
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+1, Length(MsgPackType.RawData)]),
+               l+1, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notFixRawMin +l, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsShortString]),
+               s, TMsgPackRaw(MsgPackType).AsShortString);
+
+  s := 'a'; // 1 Char
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+1, Length(MsgPackType.RawData)]),
+               l+1, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notFixRawMin +l, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsShortString]),
+               s, TMsgPackRaw(MsgPackType).AsShortString);
+
+  s := 'abcdefghijklmnopqrstuvwxyz'; // 26 chars ...
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+1, Length(MsgPackType.RawData)]),
+               l+1, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notFixRawMin +l, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsShortString]),
+               s, TMsgPackRaw(MsgPackType).AsShortString);
+
+  s := 'abcdefghijklmnopqrstuvwxyz12345'; // 31 Chars - last fixed raw
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+1, Length(MsgPackType.RawData)]),
+               l+1, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notFixRawMin +l, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsShortString]),
+               s, TMsgPackRaw(MsgPackType).AsShortString);
+
+  s := 'abcdefghijklmnopqrstuvwxyz1234567890'; // 36 Chars - 16 bit raw
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+3, Length(MsgPackType.RawData)]),
+               l+3, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw16, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsShortString]),
+               s, TMsgPackRaw(MsgPackType).AsShortString);
+
+  s := AddChar('-', s, 255); // Filling up to 255 chars
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+3, Length(MsgPackType.RawData)]),
+               l+3, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw16, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsShortString]),
+               s, TMsgPackRaw(MsgPackType).AsShortString);
+
+  s := StringOfChar('*', 1024); // testing long string, but not really 16/64 bits ...
+                                // it takes too much memory for that
+  l := Length(s);
+  TMsgPackRaw(MsgPackType).Value(s);
+  AssertEquals(Format(WrongRawLength, [l+3, Length(MsgPackType.RawData)]),
+               l+3, Length(MsgPackType.RawData));
+  AssertEquals(RawDataWrongType, notRaw16, MsgPackType.RawData[0]);
+  AssertEquals(Format(WrongRawValueStr, [s, TMsgPackRaw(MsgPackType).AsAnsiString]),
+               s, TMsgPackRaw(MsgPackType).AsAnsiString);
 
   MsgPackType.Free;
 end;
