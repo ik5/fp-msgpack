@@ -409,7 +409,7 @@ begin
           SetLength(FRawData, l+SizeOf(word)+1);
           FRawData[0] := notRaw16;
           be_l := NtoBE(l);
-          Move(be_l, FRawData[1], SizeOf(l));
+          Move(be_l, FRawData[1], SizeOf(be_l));
           Move(AValue[1], FRawData[3], l);
          end;
   end;
