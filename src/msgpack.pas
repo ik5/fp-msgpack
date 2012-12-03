@@ -330,7 +330,7 @@ end;
 
 function TMsgPackRaw.AsUnicodeString: UnicodeString;
 begin
-
+ Result := Self.AsAnsiString;
 end;
 
 function TMsgPackRaw.AsBoolean: Boolean;
@@ -459,7 +459,7 @@ end;
 
 procedure TMsgPackRaw.Value(AValue: UnicodeString);
 begin
-
+  Self.Value(AnsiString(AValue));
 end;
 
 { TMsgPackType }
