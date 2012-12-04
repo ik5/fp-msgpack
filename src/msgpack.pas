@@ -51,25 +51,6 @@ type
 
     constructor Create; virtual;
 
-    function AsByte     : Byte;     virtual;
-    function AsWord     : Word;     virtual;
-    function AsLongWord : LongWord; virtual;
-    function AsQWord    : QWord;    virtual;
-
-    function AsShortInt : ShortInt; virtual;
-    function AsSmallInt : SmallInt; virtual;
-    function AsLongInt  : LongInt;  virtual;
-    function AsInt64    : Int64;    virtual;
-
-    function AsSingle : Single; virtual;
-    function AsDouble : Double; virtual;
-
-    function AsRaw    : TMsgPackRaw;   virtual;
-    function AsArray  : TMsgPackArray; virtual;
-    function AsMap    : TMsgPackMap;   virtual;
-
-    function AsBoolean : Boolean; virtual;
-
     function IsNil : Boolean; virtual;
 
     property RawData : TRawData read FRawData write FRawData;
@@ -100,7 +81,7 @@ type
     constructor Create; Override;
 
     function IsNil     : Boolean; override;
-    function AsBoolean : Boolean; override;
+    function AsBoolean : Boolean; virtual;
 
     property Value : Boolean read GetValue write SetValue;
   end;
@@ -114,20 +95,20 @@ type
 
     constructor Create; override;
 
-    function AsByte     : Byte;     override;
-    function AsWord     : Word;     override;
-    function AsLongWord : LongWord; override;
-    function AsQWord    : QWord;    override;
+    function AsByte     : Byte;     virtual;
+    function AsWord     : Word;     virtual;
+    function AsLongWord : LongWord; virtual;
+    function AsQWord    : QWord;    virtual;
 
-    function AsShortInt : ShortInt; override;
-    function AsSmallInt : SmallInt; override;
-    function AsLongInt  : LongInt;  override;
-    function AsInt64    : Int64;    override;
+    function AsShortInt : ShortInt; virtual;
+    function AsSmallInt : SmallInt; virtual;
+    function AsLongInt  : LongInt;  virtual;
+    function AsInt64    : Int64;    virtual;
 
-    function AsSingle : Single; override;
-    function AsDouble : Double; override;
+    function AsSingle : Single; virtual;
+    function AsDouble : Double; virtual;
 
-    function AsBoolean : Boolean; override;
+    function AsBoolean : Boolean; virtual;
 
     function IsNil : Boolean; override;
 
@@ -152,8 +133,8 @@ type
 
     constructor Create; override;
 
-    function AsByte          : Byte;          override;
-    function AsWord          : Word;          override;
+    function AsByte          : Byte;          virtual;
+    function AsWord          : Word;          virtual;
     function AsAnsiChar      : AnsiChar;      virtual;
     function AsWideChar      : WideChar;      virtual;
     function AsUCS2Char      : UCS2Char;      virtual;
@@ -164,7 +145,7 @@ type
     function AsWideString    : WideString;    virtual;
     function AsUnicodeString : UnicodeString; virtual;
 
-    function AsBoolean       : Boolean;       override;
+    function AsBoolean       : Boolean;       virtual;
 
     function IsNil   : Boolean;               override;
     function IsEmpty : Boolean;               virtual;
@@ -468,76 +449,6 @@ constructor TMsgPackType.Create;
 begin
   SetLength(FRawData, 1);
   FRawData[0] := notNil; // Default value is nil.
-end;
-
-function TMsgPackType.AsByte: Byte;
-begin
-  Result := 0;
-end;
-
-function TMsgPackType.AsWord: Word;
-begin
-  Result := 0;
-end;
-
-function TMsgPackType.AsLongWord: LongWord;
-begin
-  Result := 0;
-end;
-
-function TMsgPackType.AsQWord: QWord;
-begin
-  Result := 0;
-end;
-
-function TMsgPackType.AsShortInt: ShortInt;
-begin
-  Result := 0;
-end;
-
-function TMsgPackType.AsSmallInt: SmallInt;
-begin
-  Result := 0;
-end;
-
-function TMsgPackType.AsLongInt: LongInt;
-begin
-  Result := 0;
-end;
-
-function TMsgPackType.AsInt64: Int64;
-begin
-  Result := 0;
-end;
-
-function TMsgPackType.AsSingle: Single;
-begin
-  Result := 0.0;
-end;
-
-function TMsgPackType.AsDouble: Double;
-begin
-  Result := 0.0;
-end;
-
-function TMsgPackType.AsRaw: TMsgPackRaw;
-begin
-  Result := Nil;
-end;
-
-function TMsgPackType.AsArray: TMsgPackArray;
-begin
-  Result := Nil;
-end;
-
-function TMsgPackType.AsMap: TMsgPackMap;
-begin
-  Result := nil;
-end;
-
-function TMsgPackType.AsBoolean: Boolean;
-begin
-  Result := False;
 end;
 
 function TMsgPackType.IsNil: Boolean;
