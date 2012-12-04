@@ -30,6 +30,7 @@ resourcestring
   errInvalidDataType = 'Wrong data type was given';
   errNotImplemented  = 'Method not implemented';
   errRawSizeTooBig   = 'Raw Size is too big';
+  errArraySizeTooBig = 'Array Size is too big';
 
 implementation
 
