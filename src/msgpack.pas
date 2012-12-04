@@ -169,6 +169,8 @@ type
   TMsgPackArray = class(TMsgPackType)
   protected
     FList : TList;
+
+    procedure ToRawData; virtual;
   public
     class function MsgType : TMsgPackDataTypes; override;
     function SubType : TMsgPackSubTypes;  override;
@@ -194,6 +196,47 @@ const
   lw_length = High(LongWord);
 
 { TMsgPackArray }
+
+procedure TMsgPackArray.ToRawData;
+var i, l, start : longword;
+    t, idx      : byte;
+
+begin
+  if FList.Count > lw_length then
+   raise EMsgPackLength.Create(errArraySizeTooBig) at get_caller_addr(get_frame),
+                                                      get_caller_frame(get_frame);
+
+  l := FList.Count;
+  case l of
+             0..15        : begin
+                              FRawData[0] := (notFixArrayMax + l);
+                              idx         := 1;
+                              SetLength(FRawData, 2);
+                            end;
+            16..wr_length : begin
+                              FRawData[0] := notArray16;
+                              idx         := 1 + SizeOf(Word);
+                              SetLength(FRawData, idx);
+                              ;
+                            end;
+    wr2_length..lw_length : begin
+                              FRawData[0] := notArray32;
+                              idx         := 1 + SizeOf(longword);
+                              SetLength(FRawData, idx);
+
+                            end;
+  // better safe then sorry
+  else raise EMsgPackLength.Create(errArraySizeTooBig) at get_caller_addr(get_frame),
+                                                          get_caller_frame(get_frame);
+  end;
+
+  start := 1;
+
+  for i := 0 to l-1 do
+    begin
+      FRawData[start] := ;
+    end;
+end;
 
 class function TMsgPackArray.MsgType: TMsgPackDataTypes;
 begin
