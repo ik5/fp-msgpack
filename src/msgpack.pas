@@ -27,6 +27,7 @@ unit msgpack;
 
 interface
 uses SysUtils,       // for exceptions
+     Classes,        // for TList
      MsgPack_Consts; // Constants for msgpack
 
 type
@@ -166,6 +167,12 @@ type
   { TMsgPackArray }
 
   TMsgPackArray = class(TMsgPackType)
+  protected
+    FList : TList;
+  public
+    constructor Create; override;
+    destructor Destroy; override;
+
 
   end;
 
@@ -182,6 +189,26 @@ const
   wr_length  = High(Word);
   wr2_length = wr_length +1;
   lw_length = High(LongWord);
+
+{ TMsgPackArray }
+
+constructor TMsgPackArray.Create;
+begin
+  inherited Create;
+  FList := TList.Create;
+end;
+
+destructor TMsgPackArray.Destroy;
+var i : longword;
+begin
+  for i := 0 to FList.Count do
+    begin
+      TMsgPackType(FList.Items[i]).Free;
+    end;
+
+  FList.Free;
+  inherited Destroy;
+end;
 
 { TMsgPackRaw }
 
