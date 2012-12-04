@@ -128,7 +128,7 @@ begin
 
   TMsgPackBoolean(MsgPackType).Value := True;
   CheckEquals(True, TMsgPackBoolean(MsgPackType).Value, BooleanWrongValue);
-  CheckEquals(True, MsgPackType.AsBoolean, BooleanWrongValue);
+  CheckEquals(True, TMsgPackBoolean(MsgPackType).AsBoolean, BooleanWrongValue);
   CheckEquals(1, Length(MsgPackType.RawData), RawDataLenError);
   CheckEquals(notTrue, MsgPackType.RawData[0], RawDataWrongType);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
@@ -147,7 +147,7 @@ begin
   n := 1; // Almost start
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
-  CheckEquals(n, MsgPackType.AsByte, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsByte, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -156,7 +156,7 @@ begin
   n := 127; // Last low byte
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
-  CheckEquals(n, MsgPackType.AsByte, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsByte, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -167,7 +167,7 @@ begin
   CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
   CheckEquals(notUInt8, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsByte, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsByte, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -178,7 +178,7 @@ begin
   CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
   CheckEquals(notUInt8, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsByte, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsByte, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -197,7 +197,7 @@ begin
   CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
   CheckEquals(notUInt16, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -208,7 +208,7 @@ begin
   CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
   CheckEquals(notUInt16, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -219,7 +219,7 @@ begin
   CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
   CheckEquals(notUInt16, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -238,7 +238,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
   CheckEquals(notUInt32, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsLongWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -249,7 +249,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
   CheckEquals(notUInt32, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsLongWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -260,7 +260,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
   CheckEquals(notUInt32, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsLongWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsLongWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -279,7 +279,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
   CheckEquals(notUInt64, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsQWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsQWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -290,7 +290,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
   CheckEquals(notUInt64, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsQWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsQWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -301,7 +301,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
   CheckEquals(notUInt64, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsQWord, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsQWord, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -320,7 +320,7 @@ begin
   CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
   CheckEquals(notInt8, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsShortInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -331,7 +331,7 @@ begin
   CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
   CheckEquals(notInt8, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsShortInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -342,7 +342,7 @@ begin
   CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
   CheckEquals(Byte(n), MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsShortInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -354,7 +354,7 @@ begin
   CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
   CheckEquals(Byte(n), MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsShortInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsShortInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -373,7 +373,7 @@ begin
   CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
   CheckEquals(notInt16, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsSmallInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -384,7 +384,7 @@ begin
   CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
   CheckEquals(notInt16, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsSmallInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -395,7 +395,7 @@ begin
   CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
   CheckEquals(notInt16, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsSmallInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsSmallInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -414,7 +414,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
   CheckEquals(notInt32, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsLongInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -425,7 +425,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
   CheckEquals(notInt32, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsLongInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -436,7 +436,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(ByteLength, [n, 5]));
   CheckEquals(notInt32, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsLongInt, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsLongInt, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -455,7 +455,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
   CheckEquals(notInt64, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsInt64, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -466,7 +466,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
   CheckEquals(notInt64, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsInt64, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -477,7 +477,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(ByteLength, [n, 9]));
   CheckEquals(notInt64, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  CheckEquals(n, MsgPackType.AsInt64, Format(ByteOutput, [n]));
+  CheckEquals(n, TMsgPackNumber(MsgPackType).AsInt64, Format(ByteOutput, [n]));
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
@@ -496,7 +496,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(FloatLength, [n, 5]));
   CheckEquals(notFloat, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  a := MsgPackType.AsSingle;
+  a := TMsgPackNumber(MsgPackType).AsSingle;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
@@ -508,7 +508,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(FloatLength, [n, 5]));
   CheckEquals(notFloat, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  a := MsgPackType.AsSingle;
+  a := TMsgPackNumber(MsgPackType).AsSingle;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
@@ -520,7 +520,7 @@ begin
   CheckEquals(5, Length(MsgPackType.RawData), Format(FloatLength, [n, 5]));
   CheckEquals(notFloat, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  a := MsgPackType.AsSingle;
+  a := TMsgPackNumber(MsgPackType).AsSingle;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
@@ -540,7 +540,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(FloatLength, [n, 9]));
   CheckEquals(notDouble, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  a := MsgPackType.AsDouble;
+  a := TMsgPackNumber(MsgPackType).AsDouble;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
@@ -552,7 +552,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(FloatLength, [n, 9]));
   CheckEquals(notDouble, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  a := MsgPackType.AsDouble;
+  a := TMsgPackNumber(MsgPackType).AsDouble;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
@@ -564,7 +564,7 @@ begin
   CheckEquals(9, Length(MsgPackType.RawData), Format(FloatLength, [n, 9]));
   CheckEquals(notDouble, MsgPackType.RawData[0],
               Format(BytePrefix, [MsgPackType.RawData[0]]));
-  a := MsgPackType.AsDouble;
+  a := TMsgPackNumber(MsgPackType).AsDouble;
   AssertEquals(Format(FloatOutput, [n, a]), n, a, 0.1);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
@@ -604,7 +604,7 @@ begin
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
 
   try
-    MsgPackType.AsByte; // Must raise an exception
+    TMsgPackNumber(MsgPackType).AsByte; // Must raise an exception
     Fail(ExceptionWasNotRaisd);
   except
     on E:Exception do
@@ -626,8 +626,8 @@ begin
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 1, MsgPackType.RawData[0]]),
                notFixRawMin + 1, MsgPackType.RawData[0]);
-  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
-               ch, MsgPackType.AsByte);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsByte]),
+               ch, TMsgPackRaw(MsgPackType).AsByte);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
@@ -639,8 +639,8 @@ begin
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 1, MsgPackType.RawData[0]]),
                notFixRawMin + 1, MsgPackType.RawData[0]);
-  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
-               ch, MsgPackType.AsByte);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsByte]),
+               ch, TMsgPackRaw(MsgPackType).AsByte);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
@@ -652,8 +652,8 @@ begin
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 1, MsgPackType.RawData[0]]),
                notFixRawMin + 1, MsgPackType.RawData[0]);
-  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsByte]),
-               ch, MsgPackType.AsByte);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsByte]),
+               ch, TMsgPackRaw(MsgPackType).AsByte);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
@@ -721,8 +721,8 @@ begin
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 2, MsgPackType.RawData[0]]),
                notFixRawMin + 2, MsgPackType.RawData[0]);
-  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsWord]),
-               ch, MsgPackType.AsWord);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsWord]),
+               ch, TMsgPackRaw(MsgPackType).AsWord);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
@@ -734,8 +734,8 @@ begin
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 2, MsgPackType.RawData[0]]),
                notFixRawMin + 2, MsgPackType.RawData[0]);
-  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsWord]),
-               ch, MsgPackType.AsWord);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsWord]),
+               ch, TMsgPackRaw(MsgPackType).AsWord);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
@@ -747,8 +747,8 @@ begin
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 2, MsgPackType.RawData[0]]),
                notFixRawMin + 2, MsgPackType.RawData[0]);
-  AssertEquals(Format(WrongRawValueInt, [ch, MsgPackType.AsWord]),
-               ch, MsgPackType.AsWord);
+  AssertEquals(Format(WrongRawValueInt, [ch, TMsgPackRaw(MsgPackType).AsWord]),
+               ch, TMsgPackRaw(MsgPackType).AsWord);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsNil);
   AssertEquals(RawValueIsNil, False, TMsgPackRaw(msgPackType).IsEmpty);
   AssertEquals(Format(WrongDataType, [DataTypesToString(MsgPackType.MsgType)]),
