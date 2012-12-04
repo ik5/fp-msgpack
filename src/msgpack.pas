@@ -170,6 +170,9 @@ type
   protected
     FList : TList;
   public
+    class function MsgType : TMsgPackDataTypes; override;
+    function SubType : TMsgPackSubTypes;  override;
+
     constructor Create; override;
     destructor Destroy; override;
 
@@ -191,6 +194,21 @@ const
   lw_length = High(LongWord);
 
 { TMsgPackArray }
+
+class function TMsgPackArray.MsgType: TMsgPackDataTypes;
+begin
+  Result := mpdtArray;
+end;
+
+function TMsgPackArray.SubType: TMsgPackSubTypes;
+begin
+  case FRawData[0] of
+    (notFixArrayMin)..(notFixArrayMax) : Result := mpstArrayFixed;
+    notArray16                         : Result := mpstArray16;
+    notArray32                         : Result := mpstArray32;
+  else raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
+end;
 
 constructor TMsgPackArray.Create;
 begin
