@@ -577,7 +577,10 @@ end;
 
 function TMsgPackType.GetLength : Longword;
 begin
-
+  if FRawData[0] = notNil then
+    Result := 1
+  else
+    raise EMsgPackWrongType.Create(errInvalidDataType);
 end;
 
 constructor TMsgPackType.Create;
