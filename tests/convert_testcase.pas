@@ -590,9 +590,7 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
 
-  AssertEquals(Format(errLengthIsWrong, [0, MsgPackType.Len]),
-               MsgPackType.Len, 0);
-
+  AssertEquals(errLengthIsWrong, MsgPackType.Len, 0);
 
   TMsgPackRaw(MsgPackType).Value; // Adding empty string
   AssertEquals(Format(WrongRawLength, [notFixRawMin, MsgPackType.RawData[0]]),
@@ -606,8 +604,7 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
 
-  AssertEquals(Format(errLengthIsWrong, [0, MsgPackType.Len]),
-               MsgPackType.Len, 0);
+  AssertEquals(errLengthIsWrong, MsgPackType.Len, 0);
 
   try
     TMsgPackNumber(MsgPackType).AsByte; // Must raise an exception
