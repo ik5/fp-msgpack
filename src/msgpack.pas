@@ -983,7 +983,11 @@ end;
 
 function TMsgPackBoolean.GetLength : QWord;
 begin
-
+  case SubType of
+    mpstFalse, mpstTrue : Result := 1;
+  else
+    raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 class function TMsgPackBoolean.MsgType: TMsgPackDataTypes;
