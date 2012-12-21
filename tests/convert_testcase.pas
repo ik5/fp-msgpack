@@ -156,6 +156,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstUInt8), Ord(MsgPackType.SubType));
 
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 1);
+
   n := 127; // Last low byte
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(1, Length(MsgPackType.RawData), Format(ByteLength, [n, 1]));
@@ -164,6 +166,8 @@ begin
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstUInt8), Ord(MsgPackType.SubType));
+
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 1);
 
   n := 128; // Start high byte
   TMsgPackNumber(MsgPackType).Value(n);
@@ -176,6 +180,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstUInt8), Ord(MsgPackType.SubType));
 
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 1);
+
   n := 255; // Last high byte
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(2, Length(MsgPackType.RawData), Format(ByteLength, [n, 2]));
@@ -186,6 +192,8 @@ begin
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstUInt8), Ord(MsgPackType.SubType));
+
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 1);
 
   MsgPackType.Free;
 end;
