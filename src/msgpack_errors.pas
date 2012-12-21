@@ -31,7 +31,6 @@ resourcestring
   errNotImplemented  = 'Method not implemented';
   errRawSizeTooBig   = 'Raw Size is too big';
   errArraySizeTooBig = 'Array Size is too big';
-  errLengthIsWrong   = 'Invalid type length';
 
 implementation
 
