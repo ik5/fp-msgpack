@@ -638,6 +638,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
 
+  AssertEquals(errLengthIsWrong, MsgPackType.Len, 1);
+
   Ch := 32; // letter space
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 1, MsgPackType.RawData[0]]),
@@ -651,6 +653,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
 
+  AssertEquals(errLengthIsWrong, MsgPackType.Len, 1);
+
   Ch := 219; // █ ( Block )
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 1, MsgPackType.RawData[0]]),
@@ -663,6 +667,8 @@ begin
                Ord(mpdtRaw), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  AssertEquals(errLengthIsWrong, MsgPackType.Len, 1);
 
   MsgPackType.Free;
 end;
