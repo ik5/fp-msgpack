@@ -797,6 +797,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
 
+  AssertEquals(errLengthIsWrong, MsgPackType.Len, 2);
+
   ch := #$5d0; // Letter א
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 2, MsgPackType.RawData[0]]),
@@ -810,6 +812,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
 
+  AssertEquals(errLengthIsWrong, MsgPackType.Len, 2);
+
   ch := #$fffc; // OBJECT REPLACEMENT CHARACTER
   TMsgPackRaw(MsgPackType).Value(Ch);
   AssertEquals(Format(WrongRawLength, [notFixRawMin + 2, MsgPackType.RawData[0]]),
@@ -822,6 +826,8 @@ begin
                Ord(mpdtRaw), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFixedRaw), Ord(MsgPackType.SubType));
+
+  AssertEquals(errLengthIsWrong, MsgPackType.Len, 2);
 
   MsgPackType.Free;
 end;
