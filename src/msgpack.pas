@@ -492,7 +492,7 @@ begin
 end;
 
 procedure TMsgPackRaw.Value(AValue: UCS4Char);
-var ConvertedValue : UCS4Char;
+//var ConvertedValue : UCS4Char;
 begin
   raise EMsgPack.Create(errNotImplemented);
 (*  SetLength(FRawData, SizeOf(AValue) +2);
