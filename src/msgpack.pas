@@ -303,7 +303,7 @@ begin
     mpstFixedRaw : Result := FRawData[0] - notFixRawMin;
     mpstRaw16    : begin
                      Move(FRawData[1], Result, SizeOf(Word));
-                     Result := BEtoN(Result);
+                     Result := BEtoN(Word(Result));
                    end;
     mpstRaw32    : begin
                      Move(FRawData[1], Result, SizeOf(Result));
