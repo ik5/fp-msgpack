@@ -598,7 +598,20 @@ end;
 
 function TMsgPackNumber.GetLength : Longword;
 begin
-
+  case SubType of
+    mpstInt8,
+    mpstInt16,
+    mpstInt32,
+    mpstInt64,
+    mpstUInt8,
+    mpstUInt16,
+    mpstUInt32,
+    mpstUInt64,
+    mpstFloat,
+    mpstDouble  : Result := Length(FRawData) -1;
+  else
+    raise EMsgPackWrongType.Create(errInvalidDataType);
+  end;
 end;
 
 class function TMsgPackNumber.MsgType: TMsgPackDataTypes;
