@@ -129,6 +129,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstFalse), Ord(MsgPackType.SubType));
 
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 1);
+
   TMsgPackBoolean(MsgPackType).Value := True;
   CheckEquals(True, TMsgPackBoolean(MsgPackType).Value, BooleanWrongValue);
   CheckEquals(True, TMsgPackBoolean(MsgPackType).AsBoolean, BooleanWrongValue);
@@ -138,6 +140,8 @@ begin
                Ord(mpdtBoolean), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstTrue), Ord(MsgPackType.SubType));
+
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 1);
 
   MsgPackType.Free;
 end;
