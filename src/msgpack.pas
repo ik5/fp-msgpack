@@ -299,7 +299,7 @@ end;
 function TMsgPackRaw.GetLength : Longword;
 begin
   case SubType of
-    mpstFixedRaw : Result := FRawData[0];
+    mpstFixedRaw : Result := FRawData[0] - notFixRawMin;
     mpstRaw16    : begin
                      Move(FRawData[1], Result, 2);
                      Result := BEtoN(Result);
