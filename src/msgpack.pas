@@ -47,7 +47,7 @@ type
   protected
      FRawData : TRawData;
 
-     function GetLength : Longword; virtual;
+     function GetLength : QWord; virtual;
   public
     class function MsgType : TMsgPackDataTypes; virtual; abstract;
     function SubType : TMsgPackSubTypes;  virtual; abstract;
@@ -57,7 +57,7 @@ type
     function IsNil : Boolean; virtual;
 
     property RawData : TRawData read FRawData write FRawData;
-    property Len     : Longword read GetLength;
+    property Len     : QWord read GetLength;
   end;
 
   { TMsgPackNil }
@@ -79,7 +79,7 @@ type
     function GetValue : Boolean;
     procedure SetValue(AValue : Boolean);
 
-    function GetLength : Longword; override;
+    function GetLength : QWord; override;
   public
     class function MsgType : TMsgPackDataTypes; override;
     function SubType : TMsgPackSubTypes; override;
@@ -96,7 +96,7 @@ type
 
   TMsgPackNumber = class(TMsgPackType)
   protected
-    function GetLength : Longword; override;
+    function GetLength : QWord; override;
   public
     class function MsgType : TMsgPackDataTypes; override;
     function SubType : TMsgPackSubTypes;  override;
@@ -136,7 +136,7 @@ type
 
   TMsgPackRaw = class(TMsgPackType)
   protected
-    function GetLength : Longword; override;
+    function GetLength : QWord; override;
   public
     class function MsgType : TMsgPackDataTypes; override;
     function SubType : TMsgPackSubTypes;  override;
@@ -180,7 +180,7 @@ type
     FList : TList;
 
     procedure ToRawData; virtual;
-    function GetLength : Longword; override;
+    function GetLength : QWord; override;
   public
     class function MsgType : TMsgPackDataTypes; override;
     function SubType : TMsgPackSubTypes;  override;
@@ -195,7 +195,7 @@ type
 
   TMsgPackMap  = class(TMsgPackType)
   protected
-    function GetLength : Longword; override;
+    function GetLength : QWord; override;
   end;
 
 implementation
@@ -208,7 +208,7 @@ const
 
 { TMsgPackMap }
 
-function TMsgPackMap.GetLength : Longword;
+function TMsgPackMap.GetLength : QWord;
 begin
 
 end;
@@ -256,7 +256,7 @@ begin
     end;}
 end;
 
-function TMsgPackArray.GetLength : Longword;
+function TMsgPackArray.GetLength : QWord;
 begin
 
 end;
@@ -296,7 +296,7 @@ end;
 
 { TMsgPackRaw }
 
-function TMsgPackRaw.GetLength : Longword;
+function TMsgPackRaw.GetLength : QWord;
 begin
   Result := 0;
   case SubType of
@@ -306,8 +306,8 @@ begin
                      Result := BEtoN(Word(Result));
                    end;
     mpstRaw32    : begin
-                     Move(FRawData[1], Result, SizeOf(Result));
-                     Result := BEtoN(Result);
+                     Move(FRawData[1], Result, SizeOf(longword));
+                     Result := BEtoN(Longword(Result));
                    end;
   else
     raise EMsgPackWrongType.Create(errInvalidDataType);
@@ -575,7 +575,7 @@ end;
 
 { TMsgPackType }
 
-function TMsgPackType.GetLength : Longword;
+function TMsgPackType.GetLength : QWord;
 begin
   if FRawData[0] = notNil then
     Result := 1
@@ -596,7 +596,8 @@ end;
 
 { TMsgPackNumber }
 
-function TMsgPackNumber.GetLength : Longword;
+function TMsgPackNumber.GetLength : QWord;
+var l : QWord;
 begin
   case SubType of
     mpstInt8,
@@ -608,7 +609,11 @@ begin
     mpstUInt32,
     mpstUInt64,
     mpstFloat,
-    mpstDouble  : Result := Length(FRawData) -1;
+    mpstDouble  : begin
+                   l      := Length(FRawData);
+                   Result := l;
+                   if l > 1 then dec(Result);
+                  end;
   else
     raise EMsgPackWrongType.Create(errInvalidDataType);
   end;
@@ -976,7 +981,7 @@ begin
   FRawData[0] := Values[AValue];
 end;
 
-function TMsgPackBoolean.GetLength : Longword;
+function TMsgPackBoolean.GetLength : QWord;
 begin
 
 end;
