@@ -214,6 +214,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstUInt16), Ord(MsgPackType.SubType));
 
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 2);
+
   n := 32767; // middle range
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
@@ -225,6 +227,8 @@ begin
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstUInt16), Ord(MsgPackType.SubType));
 
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 2);
+
   n := High(Word); // maximal range (65535)
   TMsgPackNumber(MsgPackType).Value(n);
   CheckEquals(3, Length(MsgPackType.RawData), Format(ByteLength, [n, 3]));
@@ -235,6 +239,8 @@ begin
                Ord(mpdtNumber), Ord(MsgPackType.MsgType));
   AssertEquals(Format(WrongSubDataType, [SubDataTypeToString(MsgPackType.SubType)]),
                Ord(mpstUInt16), Ord(MsgPackType.SubType));
+
+  AssertEquals(LengthIsWrong, MsgPackType.Len, 2);
 
   MsgPackType.Free;
 end;
