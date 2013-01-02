@@ -56,7 +56,7 @@ Each type has one or more serialize format:
 Current Implementation
 ======================
 The following code provides pure Object Pascal implementation of msgpack
-according to [Format Specification](http://wiki.msgpack.org/display/MSGPACK/Format+specification) from Jun 06 2011.
+according to [Format Specification](http://wiki.msgpack.org/display/MSGPACK/Format+specification) from Dec 31 2012.
 
 Files
 -----
